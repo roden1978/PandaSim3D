@@ -1,0 +1,28 @@
+using UnityEngine;
+
+[CreateAssetMenu(menuName = "Items/Item", fileName = "New Item", order = 51)]
+public class Item: ScriptableObject
+{
+    public ItemType Type;
+    public string Name;
+    public Sprite Sprite;
+    public string Description;
+    public int Price;
+    
+    private void OnValidate()
+    {
+        if (string.IsNullOrEmpty(Name))
+        {
+            Name = name;
+        }
+    }
+}
+
+
+
+public enum ItemType
+{
+    RedApple = 1,
+    GreenApple = 2,
+    Bananas = 3
+}

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93db826b26064c79ad51c752eb5a4bde, type: 3}
+  m_Name: SceneRoom
+  m_EditorClassIdentifier: 
+  LevelKey: Room
+  PlayerSpawnPoint: {x: 0, y: 0, z: 0}
+  EnvironmentObjectsSpawnData:
+  - Id: Room_314440e2-d25a-4f8c-8f58-af8da4c920aa
+    GameObjectsTypeId: 8
+    Position: {x: 0, y: 0, z: 0}
+  - Id: Room_258ae6f6-1588-45ac-b46e-c6b375aceefc
+    GameObjectsTypeId: 3
+    Position: {x: -1.81, y: 0, z: -2.63}
