@@ -1,13 +1,10 @@
-﻿using GameObjectsScripts;
-using Infrastructure.Factories;
-using StaticData;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Infrastructure.PickableObjectSpawners
 {
     public class EnvironmentObjectSpawner : MonoBehaviour
     {
-        private bool _pickedUp;
+        /*private bool _pickedUp;
         private string _id;
         private IGameFactory _gameFactory;
         private GameObjectsTypeId _gameObjectsTypeId;
@@ -23,7 +20,7 @@ namespace Infrastructure.PickableObjectSpawners
             /*if (playerProgress.PickableObjectData.ClearedSpawners.Contains(_id))
                 _pickedUp = true;
             else
-                Spawn();*/
+                Spawn();#1#
         }
 
         private void Spawn()
@@ -31,7 +28,7 @@ namespace Infrastructure.PickableObjectSpawners
             /*GameObject pickableObject = _gameFactory.CreatePickableObject(_pickableObjectTypeId, transform);
             _pickableObject = pickableObject.GetComponent<PickableObject>();
             _pickableObject.PickUp += OnPickUp;
-            Disable();*/
-        }
+            Disable();#1#
+        }*/
     }
 }

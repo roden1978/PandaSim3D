@@ -11,7 +11,7 @@ namespace UI
         [SerializeField] private Button _continue;
         [SerializeField] private Button _exit;
         private PlayerProgress _playerProgress;
-        private IGamesStateMachine _stateMachine;
+        //private IGamesStateMachine _stateMachine;
         private const string MainMenuSceneName = "MainMenu";
 
         
@@ -20,7 +20,7 @@ namespace UI
             _continue.onClick.AddListener(OnContinue);
             _exit.onClick.AddListener(OnExit);
             //_playerProgress = ServiceLocator.Container.Single<IPersistentProgressService>().PlayerProgress;
-            _stateMachine = ServiceLocator.Container.Single<IGamesStateMachine>();
+            //_stateMachine = ServiceLocator.Container.Single<IGamesStateMachine>();
         }
 
         private void OnExit()

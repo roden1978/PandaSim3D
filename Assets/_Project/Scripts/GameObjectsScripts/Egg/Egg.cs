@@ -4,8 +4,7 @@ using Zenject;
 
 public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
 {
-    [SerializeField][Range(1, 5)]
-    private int _touchesCount;
+    [SerializeField] [Range(1, 5)] private int _touchesCount;
 
     private ISaveLoadService _saveLoadService;
     private MeshRenderer _meshRenderer;
@@ -14,35 +13,40 @@ public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
     private Color _endColor;
     private Renderer _renderer;
 
+    private bool _firstGameStart;
+
     [Inject]
     public void Construct(ISaveLoadService saveLoadService)
     {
         _saveLoadService = saveLoadService;
-        /*_renderer = gameObject.GetComponent<Renderer>();
-        _startColor = _renderer.sharedMaterial.color;
-        _endColor = new Color(_startColor.r, _startColor.g, _startColor.b, 0);*/
+        _renderer = gameObject.GetComponentInChildren<MeshRenderer>();
+        _startColor = _renderer.materials[0].color;
+        _endColor = new Color(_startColor.r, _startColor.g, _startColor.b, 0);
     }
+
     public void LoadProgress(PlayerProgress playerProgress)
     {
-        
+        _firstGameStart = playerProgress.PlayerState.FirstStartGame;
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
     {
-        playerProgress.PlayerState.FirstStartGame = false;
+        if (false == _firstGameStart)
+            playerProgress.PlayerState.FirstStartGame = false;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         Debug.Log("Touch egg");
-        /*if (_touchesCount == 0)
+        if (_touchesCount <= 1)
         {
+            _firstGameStart = false;
             _saveLoadService.SaveProgress();
             Destroy(gameObject);
         }
 
-        Color lerpColor = Color.Lerp(_startColor, _endColor, 1 / _touchesCount);
-        _renderer.sharedMaterial.color = lerpColor;
-        _touchesCount -= 1;*/
+        _renderer.materials[0].color =
+            new Color(_startColor.r, _startColor.g, _startColor.b, 1 - (float)1 / _touchesCount);
+        _touchesCount -= 1;
     }
 }
