@@ -33,7 +33,6 @@ namespace Infrastructure.AssetManagement
             LoadProgressUpdater();
             
             //Methods below can move to another loader
-            LoadPlateSpawner();
             LoadPlatePrefab();
             LoadPlayerPrefab();
             LoadEggPrefab();
@@ -42,8 +41,6 @@ namespace Infrastructure.AssetManagement
             {
                 Debug.Log($"Prefab in storage {gameObject.name}");
             }
-            
-            //LoadScene(AssetPaths.CurtainSceneName);
         }
 
         private async void LoadUI()
@@ -61,13 +58,7 @@ namespace Infrastructure.AssetManagement
             GameObject progressUpdater = await _assetProvider.LoadAsync<GameObject>(AssetPaths.ProgressUpdater);
             _prefabsStorage.Register(typeof(ProgressUpdater), progressUpdater);
         }
-
-        private async void LoadPlateSpawner()
-        {
-            GameObject plateSpawner = await _assetProvider.LoadAsync<GameObject>(AssetPaths.PlateSpawnerPath);
-            _prefabsStorage.Register(typeof(PlateSpawner), plateSpawner);
-        }
-
+        
         private async void LoadPlatePrefab()
         {
             GameObject platePrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.PlatePath);

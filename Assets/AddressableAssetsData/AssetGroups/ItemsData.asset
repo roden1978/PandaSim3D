@@ -10,21 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: PlatePrefabs
+  m_Name: ItemsData
   m_EditorClassIdentifier: 
-  m_GroupName: PlatePrefabs
+  m_GroupName: Packed Assets
   m_Data:
     m_SerializedData: []
-  m_GUID: 65d99de01fa31534fb4c14f1beb14c5b
-  m_SerializeEntries:
-  - m_GUID: 399af7dc735734447b11b60d001303bc
-    m_Address: Plate
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_GUID: 3140e9e54f9492c4c9061901880778af
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 898818ca557bfe340a85e446da52ca59, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 4f7461b036eebcd49bf025359bceb19a, type: 2}
-    - {fileID: 11400000, guid: 4c9971cadf1274f468ff9c4b746c7789, type: 2}
+    - {fileID: 11400000, guid: f2e2f19da87e5b64eb4fbfc3b36a6557, type: 2}
+    - {fileID: 11400000, guid: ff1c16808313c8b4a86dd02869b753f3, type: 2}

@@ -1,4 +1,5 @@
 ﻿using System;
+using GameObjectsScripts;
 using Infrastructure.AssetManagement;
 using Infrastructure.PickableObjectSpawners;
 using PlayerScripts;
@@ -31,15 +32,15 @@ public class RoomInstaller : MonoInstaller
 
     public override void InstallBindings()
     {
+        BindEgg();
+        BindPlayer();
         BindGuiHolder();
         BindDialogManager();
+        BindPlate();
         BindInventory();
         BindInventoryDialog();
         BindShop();
         BindHud();
-        BindPlate();
-        BindEgg();
-        BindPlayer();
     }
 
     private void BindShop()
@@ -103,10 +104,20 @@ public class RoomInstaller : MonoInstaller
 
     private void BindPlate()
     {
-        EnvironmentObjectSpawnData plateSpawnData = _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
+        EnvironmentObjectSpawnData plateData = _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
+        GameObject platePrefab = _prefabsStorage.Get(typeof(Plate));
+        IPositionAdapter positionAdapter = platePrefab.GetComponent<IPositionAdapter>();
+        positionAdapter.Position = plateData.Position;
+        
+        Container.Bind<Plate>()
+            .FromComponentInNewPrefab(platePrefab)
+            .WithGameObjectName(nameof(Plate))
+            .AsSingle()
+            .NonLazy();
+        /*
         GameObject plateSpawner = Container.InstantiatePrefab(_prefabsStorage.Get(typeof(PlateSpawner)),
             plateSpawnData.Position, Quaternion.identity, null);
-        _saveLoadStorage.RegisterInSaveLoadRepositories(plateSpawner);
+        _saveLoadStorage.RegisterInSaveLoadRepositories(plateSpawner);*/
     }
 
     private void BindEgg()

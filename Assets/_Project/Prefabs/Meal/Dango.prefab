@@ -58,10 +58,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1054635102141754152, guid: b35fa5cc981707f49a05954c3ad56776,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: b35fa5cc981707f49a05954c3ad56776,
         type: 3}
       propertyPath: m_Name
       value: food
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b35fa5cc981707f49a05954c3ad56776,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8072538652498931544, guid: b35fa5cc981707f49a05954c3ad56776,
         type: 3}
@@ -83,7 +93,11 @@ PrefabInstance:
     - {fileID: 4011064184838194768, guid: b35fa5cc981707f49a05954c3ad56776, type: 3}
     - {fileID: -771211176940454782, guid: b35fa5cc981707f49a05954c3ad56776, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: -1054635102141754152, guid: b35fa5cc981707f49a05954c3ad56776,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4974839534486400036}
   m_SourcePrefab: {fileID: 100100000, guid: b35fa5cc981707f49a05954c3ad56776, type: 3}
 --- !u!4 &3043175936595524953 stripped
 Transform:
@@ -91,6 +105,33 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3292466787898596018}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6695761858262552170 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -1054635102141754152, guid: b35fa5cc981707f49a05954c3ad56776,
+    type: 3}
+  m_PrefabInstance: {fileID: 3292466787898596018}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &4974839534486400036
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6695761858262552170}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.41305625, y: 0.07884476, z: 0.41305625}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &8913732678641201953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -103,6 +144,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Dango
+      objectReference: {fileID: 0}
+    - target: {fileID: 4872327067082250507, guid: 0f471f7ecac79634c81f6af579346f07,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 5563796962586579669, guid: 0f471f7ecac79634c81f6af579346f07,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 8334949394477142890, guid: 0f471f7ecac79634c81f6af579346f07,
         type: 3}
@@ -216,3 +267,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82d97fcab689b9f4bbf9815512660c90, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _item: {fileID: 11400000, guid: cda987cfdcbfb16459e26551f33cfab7, type: 2}

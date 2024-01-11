@@ -39,7 +39,7 @@ public class Inventory : IInitializable, IInventory
 
         foreach (InventoryItemData item in _progressInventoryData)
         {
-            Item inventoryItem = await LoadInventoryItem(item.Name);
+            Item inventoryItem = await LoadInventoryItem(item.Name + "Data");
             if (inventoryItem is null) return;
             
             if (TryGetSlotById(item.SlotId, out Slot slot))

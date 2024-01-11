@@ -1,14 +1,23 @@
+using GameObjectsScripts;
+using PlayerScripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Meal : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
+    [SerializeField] private Item _item;
+    public Item Item => _item;
+    
+    private const int LayerMask = 1 << 8;
     private Vector3 _mousePosition;
     private Vector3 _startPosition;
-
-    private const int LayerMask = 1 << 8;
     private Camera _camera;
+    private Plate _plate;
 
+    public void Construct(Plate plate)
+    {
+        _plate = plate;
+    }
     private void Start()
     {
         _camera = Camera.main;
@@ -26,9 +35,15 @@ public class Meal : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IBeg
 
         if (hitResult)
         {
-            transform.position = _startPosition;
+            Head head = raycastHit.transform.GetComponent<Head>();
+            head.Feed(this);
+            _plate.RemoveMeal();
+            gameObject.SetActive(false);
+            
             Debug.Log($"Hit to {raycastHit.collider.gameObject.name}");
         }
+
+        transform.position = _startPosition;
     }
 
     public void OnDrag(PointerEventData eventData)

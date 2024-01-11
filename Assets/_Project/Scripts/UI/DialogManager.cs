@@ -26,7 +26,7 @@ namespace UI
             { typeof(InventoryDialog), AssetPaths.InventoryDialog }
         };
 
-        public void ShowDialog<T>() where T : Dialog
+        public T ShowDialog<T>() where T : Dialog
         {
             T component = _guiHolder.GetComponentInChildren<T>(true);
 
@@ -35,7 +35,7 @@ namespace UI
                 Canvas canvas = component.GetComponentInChildren<Canvas>(true);
                 if(canvas is not null)
                     canvas.gameObject.SetActive(true);
-                //return component;
+                return component;
             }
 
             /*T go = GetPrefabByType<T>();
@@ -46,6 +46,8 @@ namespace UI
             }
 
             return Object.Instantiate(go, _guiHolder.transform);*/
+
+            return null;
         }
 
         private T GetPrefabByType<T>() where T : Dialog

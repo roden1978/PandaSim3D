@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: AMealPrefabs
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: MealPrefabs
   m_Data:
     m_SerializedData: []
-  m_GUID: a027efacf49cda24e9292f17a8dcd076
+  m_GUID: a913c197192facd478153ca90fdc7b12
   m_SerializeEntries:
-  - m_GUID: ce1f6ed8a06801e438928a5ba96fc6b7
-    m_Address: Bao
+  - m_GUID: 58cb2461f677ee94a9f8a16c5ca9c801
+    m_Address: Sushi
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cda987cfdcbfb16459e26551f33cfab7
+  - m_GUID: f2e87737691f6c2468f986a0aa5758bb
     m_Address: Dango
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4037ba57824857f4e94f0211faf451a3
-    m_Address: Sushi
+  - m_GUID: fc013cdb7b7f60142853a83c2d470b55
+    m_Address: Bao
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -36,5 +36,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 898818ca557bfe340a85e446da52ca59, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: c3e4badfa1e324248a14b7474b699d8a, type: 2}
-    - {fileID: 11400000, guid: dcae5ffcdec09cf4bb522c04d23190bb, type: 2}
+    - {fileID: 11400000, guid: f9ad386c14ceff8409e4e8014012af3a, type: 2}
+    - {fileID: 11400000, guid: df7431341821fc94695b8a16cfadc5ea, type: 2}
