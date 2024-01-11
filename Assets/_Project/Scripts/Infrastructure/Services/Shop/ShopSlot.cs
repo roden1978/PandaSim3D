@@ -1,16 +1,17 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
-
-public class ShopSlot: MonoBehaviour
+public class ShopSlot: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private string _name;
     [SerializeField] private PointerListener _select;
     [SerializeField] private CanvasGroup _canvasGroup;
     [SerializeField] private Image _icon;
-    [SerializeField] private TMP_Text _gold;
+    [SerializeField] private TMP_Text _price;
+    [SerializeField] private TMP_Text _name;
+    [SerializeField] private CanvasGroup _frameCanvasGroup;
     public int Price => _item.Price;
     private Item _item;
     private const int Value = 1;
@@ -22,7 +23,8 @@ public class ShopSlot: MonoBehaviour
         _eventBus = eventBus;
         _item = item;
         _icon.sprite = _item.Sprite;
-        _gold.text =  Convert.ToString(_item.Price);
+        _name.text = _item.Name; 
+        _price.text =  Convert.ToString(_item.Price);
     }
 
     private void OnEnable()
@@ -33,11 +35,6 @@ public class ShopSlot: MonoBehaviour
     private void BuyItem(PointerEventData obj)
    {
        _eventBus.Invoke(new BuyItemSignal(this, _item, Value));
-       /*if (_walletService.TrySpend(CurrencyType.Coins, _item.Price))
-       {
-           _inventory.TryAddItem(this, _item, 1);
-           Debug.Log($"Was spend {_item.Price}");
-       }*/
    }
 
     private void OnDisable()
@@ -57,5 +54,15 @@ public class ShopSlot: MonoBehaviour
         _canvasGroup.alpha = 1f;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        _frameCanvasGroup.DOFade(1, 0.5f);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        _frameCanvasGroup.DOFade(0, 0.5f);
     }
 }

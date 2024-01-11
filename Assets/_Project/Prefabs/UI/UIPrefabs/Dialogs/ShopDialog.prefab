@@ -320,9 +320,9 @@ MonoBehaviour:
   _slotPrefab: {fileID: 8668840892349284661, guid: a9b89b54017a8f547aabd38ecdccec60,
     type: 3}
   _items:
-  - {fileID: 11400000, guid: c766ea8f8bd28614d9602312674c1a7a, type: 2}
-  - {fileID: 11400000, guid: 0980732ea42ed0647821eef42c0dff4c, type: 2}
-  - {fileID: 11400000, guid: 524eb11ead54f5e4c95382e0f2c31bb4, type: 2}
+  - {fileID: 11400000, guid: 4037ba57824857f4e94f0211faf451a3, type: 2}
+  - {fileID: 11400000, guid: cda987cfdcbfb16459e26551f33cfab7, type: 2}
+  - {fileID: 11400000, guid: ce1f6ed8a06801e438928a5ba96fc6b7, type: 2}
   _gold: {fileID: 1327352437004467163}
 --- !u!1 &4868040980540176724
 GameObject:
@@ -381,7 +381,7 @@ MonoBehaviour:
   m_StartCorner: 0
   m_StartAxis: 1
   m_CellSize: {x: 200, y: 200}
-  m_Spacing: {x: 30, y: 30}
+  m_Spacing: {x: 30, y: 200}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!1 &4914506614847129239

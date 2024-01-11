@@ -5,7 +5,7 @@ using Zenject;
 public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
 {
     [SerializeField] [Range(1, 5)] private int _touchesCount;
-
+    private long _reward = 200;
     private ISaveLoadService _saveLoadService;
     private MeshRenderer _meshRenderer;
     private int _touches;
@@ -14,11 +14,13 @@ public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
     private Renderer _renderer;
 
     private bool _firstGameStart;
+    private IWalletService _wallet;
 
     [Inject]
-    public void Construct(ISaveLoadService saveLoadService)
+    public void Construct(ISaveLoadService saveLoadService, IWalletService wallet)
     {
         _saveLoadService = saveLoadService;
+        _wallet = wallet;
         _renderer = gameObject.GetComponentInChildren<MeshRenderer>();
         _startColor = _renderer.materials[0].color;
         _endColor = new Color(_startColor.r, _startColor.g, _startColor.b, 0);
@@ -41,6 +43,7 @@ public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
         if (_touchesCount <= 1)
         {
             _firstGameStart = false;
+            _wallet.AddAmount(CurrencyType.Coins, _reward);
             _saveLoadService.SaveProgress();
             Destroy(gameObject);
         }

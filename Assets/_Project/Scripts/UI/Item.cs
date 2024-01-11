@@ -17,12 +17,3 @@ public class Item: ScriptableObject
         }
     }
 }
-
-
-
-public enum ItemType
-{
-    RedApple = 1,
-    GreenApple = 2,
-    Bananas = 3
-}

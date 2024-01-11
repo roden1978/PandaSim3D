@@ -88,10 +88,6 @@ public class WalletService : IWalletService, IInitializable
 
         foreach (int type in _walletTypes)
             _wallets.Add(type, 0);
-#if UNITY_EDITOR
-        //TODO: Test for first run game
-        _wallets[(int)CurrencyType.Coins] = 300;
-#endif
     }
 
     private void SetAmount(CurrencyType currency, long amount)
