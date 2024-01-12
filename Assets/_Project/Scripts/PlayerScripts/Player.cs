@@ -3,12 +3,18 @@ using UnityEngine;
 
 namespace PlayerScripts
 {
-    public class Player : MonoBehaviour, ISavedProgress, IHealth, IPositionAdapter
+    public class Player : MonoBehaviour, ISavedProgress, IHealth, IPositionAdapter, IRotationAdapter
     {
         public Action<int> Death;
         public int HP { get; private set; }
         public int MaxHealth { get; private set; }
         private int _currentLivesAmount;
+
+        public Quaternion Rotation
+        {
+            get => transform.rotation;
+            set => transform.rotation = value;
+        }
 
         public Vector3 Position
         {
@@ -19,14 +25,15 @@ namespace PlayerScripts
         public void TakeDamage(int damage)
         {
             HP -= damage;
-            if(HP < 0)
+            if (HP < 0)
             {
                 Death?.Invoke(_currentLivesAmount -= 1);
             }
-        } 
+        }
+
         public void Heal(int health)
         {
-            if(HP < MaxHealth)
+            if (HP < MaxHealth)
             {
                 HP += health;
             }
@@ -47,6 +54,5 @@ namespace PlayerScripts
         {
             //playerProgress.PlayerState.CurrentHealth = HP;
         }
-        
     }
 }

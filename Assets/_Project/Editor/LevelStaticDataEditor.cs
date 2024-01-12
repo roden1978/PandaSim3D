@@ -24,7 +24,9 @@ namespace Editor
                     .ToList();
                 
                 levelData.LevelKey = SceneManager.GetActiveScene().name;
-                levelData.PlayerSpawnPoint = FindObjectOfType<PlayerSpawnPoint>().transform.position;
+                Transform playerSpawnPointTransform = FindObjectOfType<PlayerSpawnPoint>().transform; 
+                levelData.PlayerSpawnPoint = playerSpawnPointTransform.position;
+                levelData.PlayerRotation = playerSpawnPointTransform.rotation;
             }
 
             if (GUILayout.Button("Clear level data"))

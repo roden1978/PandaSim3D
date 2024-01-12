@@ -28,7 +28,9 @@ public class WinterRoomInstaller : MonoInstaller
         _staticDataService = staticDataService;
         _persistenceProgress = persistentProgress;
 
-        _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
+        _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName);
+        _saveLoadStorage.Clear();
+
     }
 
     public override void InstallBindings()
@@ -39,10 +41,11 @@ public class WinterRoomInstaller : MonoInstaller
         //BindInputNameDialog();
         //BindEgg();
         BindPlayer();
-        //BindPlate();
+        BindCrateAkaBindPlate();
         BindInventory();
         BindInventoryDialog();
         BindShop();
+        BindSnowman();
     }
 
     private void BindShop()
@@ -104,17 +107,17 @@ public class WinterRoomInstaller : MonoInstaller
         _saveLoadStorage.RegisterInSaveLoadRepositories(hud);
     }
 
-    private void BindPlate()
+    private void BindCrateAkaBindPlate()
     {
-        EnvironmentObjectSpawnData plateData =
-            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
-        GameObject platePrefab = _prefabsStorage.Get(typeof(Plate));
-        IPositionAdapter positionAdapter = platePrefab.GetComponent<IPositionAdapter>();
-        positionAdapter.Position = plateData.Position;
+        EnvironmentObjectSpawnData crateData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Crate);
+        GameObject prefab = _prefabsStorage.Get(typeof(Crate));
+        IPositionAdapter positionAdapter = prefab.GetComponent<IPositionAdapter>();
+        positionAdapter.Position = crateData.Position;
 
         Container.Bind<Plate>()
-            .FromComponentInNewPrefab(platePrefab)
-            .WithGameObjectName(nameof(Plate))
+            .FromComponentInNewPrefab(prefab)
+            .WithGameObjectName("Crate")
             .AsSingle()
             .NonLazy();
     }
@@ -137,16 +140,29 @@ public class WinterRoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        LevelStaticData levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
-        Vector3 position = levelStaticData.PlayerSpawnPoint;
+        //LevelStaticData levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName);
+        Vector3 position = _levelStaticData.PlayerSpawnPoint;
+        Quaternion rotation = _levelStaticData.PlayerRotation;
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
         IPositionAdapter positionAdapter = playerPrefab.GetComponent<IPositionAdapter>();
+        IRotationAdapter rotationAdapter = playerPrefab.GetComponent<IRotationAdapter>();
         positionAdapter.Position = position;
+        rotationAdapter.Rotation = rotation;
 
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)
             .WithGameObjectName(nameof(Player))
             .AsSingle()
             .NonLazy();
+    }
+    
+    private void BindSnowman()
+    {
+        Debug.Log($"Instantiate snowman start ");
+        GameObject prefab = _prefabsStorage.Get(typeof(Snowman)); 
+        EnvironmentObjectSpawnData snowmanSpawnData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Snowman);
+        GameObject snowman = Container.InstantiatePrefab(prefab, snowmanSpawnData.Position, Quaternion.identity, null);
+        _saveLoadStorage.RegisterInSaveLoadRepositories(snowman);
     }
 }

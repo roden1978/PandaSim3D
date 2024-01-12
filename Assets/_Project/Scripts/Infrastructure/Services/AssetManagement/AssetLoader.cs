@@ -35,8 +35,10 @@ namespace Infrastructure.AssetManagement
 
             //Methods below can move to another loader
             LoadPlatePrefab();
+            LoadCratePrefab();
             LoadPlayerPrefab();
             LoadEggPrefab();
+            LoadSnowmanPrefab();
             //////////////////////////////////////
             foreach (var gameObject in _prefabsStorage.GetAll())
             {
@@ -65,11 +67,22 @@ namespace Infrastructure.AssetManagement
             GameObject platePrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.PlatePath);
             _prefabsStorage.Register(typeof(Plate), platePrefab);
         }
+        
+        private async void LoadCratePrefab()
+        {
+            GameObject cratePrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.CratePath);
+            _prefabsStorage.Register(typeof(Crate), cratePrefab);
+        }
 
         private async void LoadEggPrefab()
         {
             GameObject eggPrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.EggPath);
             _prefabsStorage.Register(typeof(Egg), eggPrefab);
+        }
+        private async void LoadSnowmanPrefab()
+        {
+            GameObject snowman = await _assetProvider.LoadAsync<GameObject>(AssetPaths.SnowmanPath);
+            _prefabsStorage.Register(typeof(Snowman), snowman);
         }
 
         private async void LoadPlayerPrefab()

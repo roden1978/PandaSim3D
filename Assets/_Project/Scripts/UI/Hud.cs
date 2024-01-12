@@ -1,5 +1,4 @@
 ﻿using System;
-using CustomEventBus;
 using CustomEventBus.Signals;
 using Infrastructure;
 using Infrastructure.AssetManagement;
@@ -50,7 +49,8 @@ public class Hud : MonoBehaviour, ISavedProgress
 
     private void OnRoomButtonClick(PointerEventData obj)
     {
-        throw new NotImplementedException();
+        _sceneLoader.LoadScene(AssetPaths.RoomSceneName);
+
     }
 
     private void OnWinterRoomButtonClick(PointerEventData obj)

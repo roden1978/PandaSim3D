@@ -9,6 +9,7 @@ namespace StaticData
     {
         public string LevelKey;
         public Vector3 PlayerSpawnPoint;
+        public Quaternion PlayerRotation;
         public List<EnvironmentObjectSpawnData> EnvironmentObjectsSpawnData;
 
         public EnvironmentObjectSpawnData GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId typeId)

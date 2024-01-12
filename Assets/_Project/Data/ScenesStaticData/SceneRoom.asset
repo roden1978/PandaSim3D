@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelKey: Room
   PlayerSpawnPoint: {x: 0, y: 0, z: 0}
+  PlayerRotation: {x: 0, y: 0, z: 0, w: 0}
   EnvironmentObjectsSpawnData:
   - Id: Room_314440e2-d25a-4f8c-8f58-af8da4c920aa
     GameObjectsTypeId: 8

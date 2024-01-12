@@ -13,7 +13,9 @@
         public const string ProgressUpdater = "ProgressUpdater";
         public const string PlayerPath = "Player";
         public const string PlatePath = "Plate";
+        public const string CratePath = "Crate";
         public const string EggPath = "Egg";
+        public const string SnowmanPath = "Snowman";
         public const string SceneStaticDataLabel = "SceneData";
         public const string EnvironmentStaticDataLabel = "EnvironmentData";
         public const string PlateSpawnerPath = "PlateSpawner";

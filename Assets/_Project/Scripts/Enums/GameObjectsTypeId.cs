@@ -11,5 +11,7 @@
         Spoon = 6,
         Player = 7,
         Egg = 8,
+        Snowman = 9,
+        Crate = 10,
     }
 }

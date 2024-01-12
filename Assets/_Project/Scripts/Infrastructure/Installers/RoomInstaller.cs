@@ -29,6 +29,7 @@ public class RoomInstaller : MonoInstaller
         _persistenceProgress = persistentProgress;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
+        _saveLoadStorage.Clear();
     }
 
     public override void InstallBindings()
@@ -137,8 +138,8 @@ public class RoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        LevelStaticData levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
-        Vector3 position = levelStaticData.PlayerSpawnPoint;
+        //LevelStaticData levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
+        Vector3 position = _levelStaticData.PlayerSpawnPoint;
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
         IPositionAdapter positionAdapter = playerPrefab.GetComponent<IPositionAdapter>();
         positionAdapter.Position = position;
