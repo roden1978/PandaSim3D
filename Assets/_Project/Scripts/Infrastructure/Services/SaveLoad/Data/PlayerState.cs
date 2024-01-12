@@ -11,10 +11,12 @@ public class PlayerState
     public float Toilet;
     public float Dream;
     public bool FirstStartGame;
+    public string PetName;
 
     public PlayerState()
     {
         FirstStartGame = true;
+        PetName = string.Empty;
     }
 
     public void ResetHP() => CurrentHealth = MaxHealth;

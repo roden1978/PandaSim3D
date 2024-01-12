@@ -44,14 +44,14 @@ public class ShopSlot: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public void DisableSlot()
     {
-        _canvasGroup.alpha = 0.5f;
+        _canvasGroup.DOFade(.5f, 0.5f);;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
     }
 
     public void EnableSlot()
     {
-        _canvasGroup.alpha = 1f;
+        _canvasGroup.DOFade(1, 0.5f);;
         _canvasGroup.interactable = true;
         _canvasGroup.blocksRaycasts = true;
     }

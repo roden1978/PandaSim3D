@@ -16,22 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: a027efacf49cda24e9292f17a8dcd076
-  m_SerializeEntries:
-  - m_GUID: ce1f6ed8a06801e438928a5ba96fc6b7
-    m_Address: Bao
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: cda987cfdcbfb16459e26551f33cfab7
-    m_Address: Dango
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4037ba57824857f4e94f0211faf451a3
-    m_Address: Sushi
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 898818ca557bfe340a85e446da52ca59, type: 2}
   m_SchemaSet:

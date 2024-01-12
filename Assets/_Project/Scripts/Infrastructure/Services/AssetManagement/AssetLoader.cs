@@ -13,25 +13,26 @@ namespace Infrastructure.AssetManagement
     {
         private readonly IAssetProvider _assetProvider;
         private readonly IPrefabsStorage _prefabsStorage;
-        
+
         private readonly IPersistentProgress _persistentProgress;
         private Dictionary<string, UniTask<GameObject>> _handles;
 
-        public AssetLoader(IAssetProvider assetProvider, IPrefabsStorage prefabsStorage, IPersistentProgress persistentProgress)
+        public AssetLoader(IAssetProvider assetProvider, IPrefabsStorage prefabsStorage,
+            IPersistentProgress persistentProgress)
         {
             _assetProvider = assetProvider;
             _prefabsStorage = prefabsStorage;
             _persistentProgress = persistentProgress;
-           _handles = new Dictionary<string, UniTask<GameObject>>();
+            _handles = new Dictionary<string, UniTask<GameObject>>();
         }
 
         public void Initialize()
         {
-           Debug.Log($"Asset loader init");
-            
+            Debug.Log($"Asset loader init");
+
             LoadUI();
             LoadProgressUpdater();
-            
+
             //Methods below can move to another loader
             LoadPlatePrefab();
             LoadPlayerPrefab();
@@ -58,7 +59,7 @@ namespace Infrastructure.AssetManagement
             GameObject progressUpdater = await _assetProvider.LoadAsync<GameObject>(AssetPaths.ProgressUpdater);
             _prefabsStorage.Register(typeof(ProgressUpdater), progressUpdater);
         }
-        
+
         private async void LoadPlatePrefab()
         {
             GameObject platePrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.PlatePath);
@@ -67,11 +68,8 @@ namespace Infrastructure.AssetManagement
 
         private async void LoadEggPrefab()
         {
-            if (_persistentProgress.PlayerProgress.PlayerState.FirstStartGame)
-            {
-                GameObject eggPrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.EggPath);
-                _prefabsStorage.Register(typeof(Egg), eggPrefab);
-            }
+            GameObject eggPrefab = await _assetProvider.LoadAsync<GameObject>(AssetPaths.EggPath);
+            _prefabsStorage.Register(typeof(Egg), eggPrefab);
         }
 
         private async void LoadPlayerPrefab()
@@ -110,7 +108,5 @@ namespace Infrastructure.AssetManagement
                 _prefabsStorage.Register(Type.GetType(gameObject.name), gameObject);
             }
         }*/
-
-        
     }
 }

@@ -3,17 +3,19 @@ using CustomEventBus;
 using CustomEventBus.Signals;
 using Infrastructure;
 using Infrastructure.AssetManagement;
+using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class Hud : MonoBehaviour
+public class Hud : MonoBehaviour, ISavedProgress
 {
     [SerializeField] private PointerListener _shop;
     [SerializeField] private PointerListener _winterRoom;
     [SerializeField] private PointerListener _room;
     [SerializeField] private PointerListener _ads;
+    [SerializeField] private TMP_Text _petName;
     
     private ISceneLoader _sceneLoader;
     private DialogManager _dialogManager;
@@ -33,7 +35,6 @@ public class Hud : MonoBehaviour
         _ads.Click += OnAdsButtonClick;
         Debug.Log($"Event bus in hud {_eventBus}");
         _eventBus.Subscribe<CoinsViewTextUpdateSignal>(OnWalletUpdateSignal);
-        //_room.gameObject.SetActive(false);
     }
 
     private void OnWalletUpdateSignal(CoinsViewTextUpdateSignal signal)
@@ -43,8 +44,7 @@ public class Hud : MonoBehaviour
 
     private void OnAdsButtonClick(PointerEventData obj)
     {
-      /*_dialogManager.ShowDialog<InventoryDialog>();
-      _eventBus.Invoke(new UpdateInventoryView());*/
+      
     }
 
     private void OnRoomButtonClick(PointerEventData obj)
@@ -69,5 +69,20 @@ public class Hud : MonoBehaviour
         _room.Click -= OnRoomButtonClick;
         _ads.Click -= OnAdsButtonClick;
         _eventBus.Unsubscribe<CoinsViewTextUpdateSignal>(OnWalletUpdateSignal);
+    }
+
+    public void UpdatePetName(string petName)
+    {
+        _petName.text = petName;
+    }
+
+    public void LoadProgress(PlayerProgress playerProgress)
+    {
+        _petName.text = playerProgress.PlayerState.PetName;
+    }
+
+    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    {
+        
     }
 }

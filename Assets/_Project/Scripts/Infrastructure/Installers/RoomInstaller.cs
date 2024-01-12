@@ -18,6 +18,8 @@ public class RoomInstaller : MonoInstaller
     private LevelStaticData _levelStaticData;
     private IPersistentProgress _persistenceProgress;
 
+    private Transform _guiHolderTransform;
+
     [Inject]
     public void Construct(PrefabsStorage prefabsStorage, ISaveLoadStorage saveLoadStorage,
         IStaticDataService staticDataService, IPersistentProgress persistentProgress)
@@ -26,31 +28,43 @@ public class RoomInstaller : MonoInstaller
         _saveLoadStorage = saveLoadStorage;
         _staticDataService = staticDataService;
         _persistenceProgress = persistentProgress;
-        
+
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.SceneName);
     }
 
     public override void InstallBindings()
     {
-        BindEgg();
-        BindPlayer();
         BindGuiHolder();
         BindDialogManager();
+        BindHud();
+        BindInputNameDialog();
+        BindEgg();
+        BindPlayer();
         BindPlate();
         BindInventory();
         BindInventoryDialog();
         BindShop();
-        BindHud();
     }
 
     private void BindShop()
     {
         GameObject shopDialog = _prefabsStorage.Get(typeof(ShopDialog));
-        Container.Bind<ShopDialog>()
-            .FromComponentInNewPrefab(shopDialog)
-            .UnderTransformGroup("GuiHolder")
-            .AsSingle()
-            .NonLazy();
+        Container.InstantiatePrefab(shopDialog, _guiHolderTransform);
+    }
+
+    private void BindInputNameDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(InputNameDialog));
+
+        if (false == _persistenceProgress.PlayerProgress.PlayerState.FirstStartGame)
+        {
+            _prefabsStorage.Unregister(prefab);
+            return;
+        }
+
+        GameObject inventoryNameDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.Bind<InputNameDialog>().FromComponentOn(inventoryNameDialog).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(inventoryNameDialog);
     }
 
     private void BindInventory()
@@ -62,12 +76,9 @@ public class RoomInstaller : MonoInstaller
 
     private void BindInventoryDialog()
     {
-        GameObject inventoryDialog = _prefabsStorage.Get(typeof(InventoryDialog));
-        Container.Bind<InventoryDialog>()
-            .FromComponentInNewPrefab(inventoryDialog)
-            .UnderTransformGroup("GuiHolder")
-            .AsSingle()
-            .NonLazy();
+        GameObject prefab = _prefabsStorage.Get(typeof(InventoryDialog));
+        GameObject inventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.Bind<InventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
     }
 
     private void BindDialogManager()
@@ -78,58 +89,51 @@ public class RoomInstaller : MonoInstaller
     private void BindGuiHolder()
     {
         Debug.Log($"Instantiate GuiHolder start");
-        GameObject guiHolder = _prefabsStorage.Get(typeof(GuiHolder));
-        Container
-            .Bind<GuiHolder>()
-            .FromComponentInNewPrefab(guiHolder)
-            .WithGameObjectName("GuiHolder")
-            .AsSingle()
-            .NonLazy();
-        Debug.Log($"Instantiate GuiHolder end");
+        GameObject prefab = _prefabsStorage.Get(typeof(GuiHolder));
+        GameObject guiHolder = Container.InstantiatePrefab(prefab);
+        _guiHolderTransform = guiHolder.transform;
+
+        Container.Bind<GuiHolder>().FromComponentOn(guiHolder).AsSingle();
     }
 
     private void BindHud()
     {
         Debug.Log($"Instantiate hud start ");
-        GameObject hud = _prefabsStorage.Get(Type.GetType("Hud")); //almost typeof(Hud)
-        Container
-            .Bind<Hud>()
-            .FromComponentInNewPrefab(hud)
-            .WithGameObjectName(nameof(Hud))
-            .UnderTransformGroup("GuiHolder")
-            .AsSingle()
-            .NonLazy();
-        Debug.Log($"Instantiate hud end {hud}");
+        GameObject prefab = _prefabsStorage.Get(Type.GetType("Hud")); //almost typeof(Hud)
+        GameObject hud = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.Bind<Hud>().FromComponentOn(hud).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(hud);
     }
 
     private void BindPlate()
     {
-        EnvironmentObjectSpawnData plateData = _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
+        EnvironmentObjectSpawnData plateData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
         GameObject platePrefab = _prefabsStorage.Get(typeof(Plate));
         IPositionAdapter positionAdapter = platePrefab.GetComponent<IPositionAdapter>();
         positionAdapter.Position = plateData.Position;
-        
+
         Container.Bind<Plate>()
             .FromComponentInNewPrefab(platePrefab)
             .WithGameObjectName(nameof(Plate))
             .AsSingle()
             .NonLazy();
-        /*
-        GameObject plateSpawner = Container.InstantiatePrefab(_prefabsStorage.Get(typeof(PlateSpawner)),
-            plateSpawnData.Position, Quaternion.identity, null);
-        _saveLoadStorage.RegisterInSaveLoadRepositories(plateSpawner);*/
     }
 
     private void BindEgg()
     {
-        if(_persistenceProgress.PlayerProgress.PlayerState.FirstStartGame)
+        GameObject eggPrefab = _prefabsStorage.Get(typeof(Egg));
+        
+        if (false == _persistenceProgress.PlayerProgress.PlayerState.FirstStartGame)
         {
-            EnvironmentObjectSpawnData eggSpawnData =
-                _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Egg);
-            GameObject egg = Container.InstantiatePrefab(_prefabsStorage.Get(typeof(Egg)),
-                eggSpawnData.Position, Quaternion.identity, null);
-            _saveLoadStorage.RegisterInSaveLoadRepositories(egg);
+            _prefabsStorage.Unregister(eggPrefab);
+            return;
         }
+
+        EnvironmentObjectSpawnData eggSpawnData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Egg);
+        GameObject egg = Container.InstantiatePrefab(eggPrefab, eggSpawnData.Position, Quaternion.identity, null);
+        _saveLoadStorage.RegisterInSaveLoadRepositories(egg);
     }
 
     private void BindPlayer()
@@ -139,7 +143,7 @@ public class RoomInstaller : MonoInstaller
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
         IPositionAdapter positionAdapter = playerPrefab.GetComponent<IPositionAdapter>();
         positionAdapter.Position = position;
-        
+
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)
             .WithGameObjectName(nameof(Player))

@@ -9,6 +9,7 @@
         public const string CurtainSceneName = "Loading";
         public const string InventoryDialog = "InventoryDialog";
         public const string ShopDialog = "ShopDialog";
+        public const string InputNameDialog = "InputNameDialog";
         public const string ProgressUpdater = "ProgressUpdater";
         public const string PlayerPath = "Player";
         public const string PlatePath = "Plate";

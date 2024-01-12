@@ -2,9 +2,6 @@ using System;
 using System.Collections.Generic;
 using Infrastructure.AssetManagement;
 using UnityEngine;
-using UnityEngine.Rendering;
-using Zenject;
-using Object = UnityEngine.Object;
 
 namespace UI
 {
@@ -23,7 +20,8 @@ namespace UI
         private readonly Dictionary<Type, string> PrefabsDictionary = new()
         {
             { typeof(ShopDialog), AssetPaths.ShopDialog },
-            { typeof(InventoryDialog), AssetPaths.InventoryDialog }
+            { typeof(InventoryDialog), AssetPaths.InventoryDialog },
+            { typeof(InputNameDialog), AssetPaths.InputNameDialog },
         };
 
         public T ShowDialog<T>() where T : Dialog

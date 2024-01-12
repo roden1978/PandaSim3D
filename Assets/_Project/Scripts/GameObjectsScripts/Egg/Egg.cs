@@ -1,3 +1,4 @@
+using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -15,12 +16,14 @@ public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
 
     private bool _firstGameStart;
     private IWalletService _wallet;
+    private DialogManager _dialogManager;
 
     [Inject]
-    public void Construct(ISaveLoadService saveLoadService, IWalletService wallet)
+    public void Construct(ISaveLoadService saveLoadService, IWalletService wallet, DialogManager dialogManager)
     {
         _saveLoadService = saveLoadService;
         _wallet = wallet;
+        _dialogManager = dialogManager;
         _renderer = gameObject.GetComponentInChildren<MeshRenderer>();
         _startColor = _renderer.materials[0].color;
         _endColor = new Color(_startColor.r, _startColor.g, _startColor.b, 0);
@@ -45,6 +48,7 @@ public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
             _firstGameStart = false;
             _wallet.AddAmount(CurrencyType.Coins, _reward);
             _saveLoadService.SaveProgress();
+            _dialogManager.ShowDialog<InputNameDialog>();
             Destroy(gameObject);
         }
 
