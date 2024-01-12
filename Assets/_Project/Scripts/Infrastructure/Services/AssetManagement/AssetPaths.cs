@@ -4,7 +4,7 @@
     {
         public const string UILabel = "UIPrefabs";
         public const string PoolsDataLabel = "Pool";
-        public const string SceneName = "Room";
+        public const string RoomSceneName = "Room";
         public const string WinterRoomSceneName = "WinterRoom";
         public const string CurtainSceneName = "Loading";
         public const string InventoryDialog = "InventoryDialog";

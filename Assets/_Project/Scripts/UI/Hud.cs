@@ -7,6 +7,7 @@ using TMPro;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class Hud : MonoBehaviour, ISavedProgress
@@ -16,7 +17,7 @@ public class Hud : MonoBehaviour, ISavedProgress
     [SerializeField] private PointerListener _room;
     [SerializeField] private PointerListener _ads;
     [SerializeField] private TMP_Text _petName;
-    
+    [SerializeField] private TMP_Text _currencyValueText;
     private ISceneLoader _sceneLoader;
     private DialogManager _dialogManager;
     private EventBus _eventBus;
@@ -39,7 +40,7 @@ public class Hud : MonoBehaviour, ISavedProgress
 
     private void OnWalletUpdateSignal(CoinsViewTextUpdateSignal signal)
     {
-        Debug.Log($"Current gold amount: {signal.NewValue}");
+        _currencyValueText.text = signal.NewValue.ToString();
     }
 
     private void OnAdsButtonClick(PointerEventData obj)
@@ -79,6 +80,29 @@ public class Hud : MonoBehaviour, ISavedProgress
     public void LoadProgress(PlayerProgress playerProgress)
     {
         _petName.text = playerProgress.PlayerState.PetName;
+
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        RoomsButtonsSwitch(currentSceneName);
+    }
+
+    private void RoomsButtonsSwitch(string sceneName)
+    {
+        switch (sceneName)
+        {
+            case AssetPaths.WinterRoomSceneName :
+                PointerListenerSetActive(_winterRoom, false);
+                PointerListenerSetActive(_room, true);
+                break;
+            case AssetPaths.RoomSceneName:
+                PointerListenerSetActive(_winterRoom, true);
+                PointerListenerSetActive(_room, false);
+                break;
+        }
+    }
+
+    private void PointerListenerSetActive(Component pointerListener, bool value)
+    {
+        pointerListener.gameObject.SetActive(value);
     }
 
     public void SaveProgress(PlayerProgress persistentPlayerProgress)

@@ -54,7 +54,7 @@ namespace Infrastructure.AssetManagement
         {
             PlayerProgress playerProgress = new();
 
-            playerProgress.PlayerState.SceneName = AssetPaths.SceneName;
+            playerProgress.PlayerState.SceneName = AssetPaths.RoomSceneName;
             playerProgress.PlayerState.CurrentHealth = playerProgress.StaticPlayerData.Health;
             playerProgress.PlayerState.MaxHealth = playerProgress.StaticPlayerData.MaxHealth;
             playerProgress.PlayerState.Dream = playerProgress.StaticPlayerData.Dream;

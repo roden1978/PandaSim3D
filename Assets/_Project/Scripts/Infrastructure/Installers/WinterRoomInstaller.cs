@@ -9,7 +9,7 @@ using UI;
 using UnityEngine;
 using Zenject;
 
-public class RoomInstaller : MonoInstaller
+public class WinterRoomInstaller : MonoInstaller
 {
     private PrefabsStorage _prefabsStorage;
     private ISaveLoadStorage _saveLoadStorage;
@@ -36,10 +36,10 @@ public class RoomInstaller : MonoInstaller
         BindGuiHolder();
         BindDialogManager();
         BindHud();
-        BindInputNameDialog();
-        BindEgg();
+        //BindInputNameDialog();
+        //BindEgg();
         BindPlayer();
-        BindPlate();
+        //BindPlate();
         BindInventory();
         BindInventoryDialog();
         BindShop();
