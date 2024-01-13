@@ -111,7 +111,7 @@ public class WinterRoomInstaller : MonoInstaller
         EnvironmentObjectSpawnData crateData =
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Crate);
         GameObject prefab = _prefabsStorage.Get(typeof(Crate));
-        IPositionAdapter positionAdapter = prefab.GetComponent<IPositionAdapter>();
+        IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = crateData.Position;
 
         Container.Bind<Plate>()
@@ -139,14 +139,11 @@ public class WinterRoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
+        GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
         Vector3 position = _levelStaticData.PlayerSpawnPoint;
         Quaternion rotation = _levelStaticData.PlayerRotation;
-        GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
-        IPositionAdapter positionAdapter = playerPrefab.GetComponent<IPositionAdapter>();
-        IRotationAdapter rotationAdapter = playerPrefab.GetComponent<IRotationAdapter>();
-        positionAdapter.Position = position;
-        rotationAdapter.Rotation = rotation;
-
+        playerPrefab.SetPlayerPosition(position, rotation);
+        
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)
             .WithGameObjectName(nameof(Player))

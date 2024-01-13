@@ -304,11 +304,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7116631347490812057, guid: 9ecba550706e165489e0d88947a8044f,
-        type: 3}
-      propertyPath: Id
-      value: WinterRoom_aaf6afc9-219e-49b1-a2e3-d8f2547ea355
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

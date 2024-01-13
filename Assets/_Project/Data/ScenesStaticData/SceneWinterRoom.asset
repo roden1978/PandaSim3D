@@ -18,7 +18,7 @@ MonoBehaviour:
   EnvironmentObjectsSpawnData:
   - Id: WinterRoom_aaf6afc9-219e-49b1-a2e3-d8f2547ea355
     GameObjectsTypeId: 10
-    Position: {x: 1.02, y: 0, z: 1.41}
+    Position: {x: 1.02, y: 0, z: 0.77}
   - Id: WinterRoom_321854cb-36c9-4af7-a856-e05acc383dee
     GameObjectsTypeId: 9
-    Position: {x: -1.88, y: 0, z: 1.16}
+    Position: {x: -1.88, y: 0, z: 1.84}

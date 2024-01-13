@@ -110,7 +110,7 @@ public class RoomInstaller : MonoInstaller
         EnvironmentObjectSpawnData plateData =
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
         GameObject platePrefab = _prefabsStorage.Get(typeof(Plate));
-        IPositionAdapter positionAdapter = platePrefab.GetComponent<IPositionAdapter>();
+        IPositionAdapter positionAdapter = platePrefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = plateData.Position;
 
         Container.Bind<Plate>()
@@ -138,11 +138,10 @@ public class RoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        //LevelStaticData levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
-        Vector3 position = _levelStaticData.PlayerSpawnPoint;
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
-        IPositionAdapter positionAdapter = playerPrefab.GetComponent<IPositionAdapter>();
-        positionAdapter.Position = position;
+        Vector3 position = _levelStaticData.PlayerSpawnPoint;
+        Quaternion rotation = _levelStaticData.PlayerRotation;
+        playerPrefab.SetPlayerPosition(position, rotation);
 
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)

@@ -323,6 +323,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4037ba57824857f4e94f0211faf451a3, type: 2}
   - {fileID: 11400000, guid: cda987cfdcbfb16459e26551f33cfab7, type: 2}
   - {fileID: 11400000, guid: ce1f6ed8a06801e438928a5ba96fc6b7, type: 2}
+  - {fileID: 11400000, guid: dcd3eeb2b09c91b4da35b2448b1287d7, type: 2}
   _gold: {fileID: 1327352437004467163}
 --- !u!1 &4868040980540176724
 GameObject:
@@ -357,8 +358,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 8.0295}
-  m_SizeDelta: {x: 1000, y: 1500}
+  m_AnchoredPosition: {x: -11.0319, y: -5}
+  m_SizeDelta: {x: 1189.7478, y: 1199.9336}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &7489700673469908600
 MonoBehaviour:
@@ -380,7 +381,7 @@ MonoBehaviour:
   m_ChildAlignment: 4
   m_StartCorner: 0
   m_StartAxis: 1
-  m_CellSize: {x: 200, y: 200}
+  m_CellSize: {x: 400, y: 400}
   m_Spacing: {x: 30, y: 200}
   m_Constraint: 0
   m_ConstraintCount: 2

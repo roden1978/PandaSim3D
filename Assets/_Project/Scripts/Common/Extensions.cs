@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PlayerScripts;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -60,5 +61,13 @@ public static class Extensions
         ReadOnlySpan<char> filename = path.Split("/")[^1].AsSpan();
         int pos = filename.IndexOf(".");
         return pos > -1 ? filename[..pos].ToString() : filename.ToString();
+    }
+
+    public static void SetPlayerPosition(this GameObject player, Vector3 position, Quaternion rotation)
+    {
+        IPositionAdapter positionAdapter = player.GetComponent<IPositionAdapter>();
+        positionAdapter.Position = position;
+        IRotationAdapter rotationAdapter = player.GetComponent<IRotationAdapter>();
+        rotationAdapter.Rotation = rotation;
     }
 }

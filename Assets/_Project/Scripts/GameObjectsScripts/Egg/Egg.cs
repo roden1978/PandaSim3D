@@ -6,7 +6,7 @@ using Zenject;
 public class Egg : MonoBehaviour, ISavedProgress, IPointerClickHandler
 {
     [SerializeField] [Range(1, 5)] private int _touchesCount;
-    private long _reward = 200;
+    private long _reward = 2000;
     private ISaveLoadService _saveLoadService;
     private MeshRenderer _meshRenderer;
     private int _touches;

@@ -47,7 +47,7 @@ PrefabInstance:
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 1.02
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -57,7 +57,7 @@ PrefabInstance:
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.77
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -97,7 +97,7 @@ PrefabInstance:
     - target: {fileID: 8509563331811691496, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Id
-      value: Room_258ae6f6-1588-45ac-b46e-c6b375aceefc
+      value: WinterRoom_aaf6afc9-219e-49b1-a2e3-d8f2547ea355
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

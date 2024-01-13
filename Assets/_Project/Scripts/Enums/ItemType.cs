@@ -7,4 +7,5 @@
     Bao = 4,
     Dango = 5,
     Sushi = 6,
+    Carrot = 7,
 }

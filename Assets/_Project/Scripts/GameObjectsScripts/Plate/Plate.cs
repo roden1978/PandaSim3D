@@ -5,12 +5,14 @@ using Infrastructure.AssetManagement;
 using PlayerScripts;
 using UI;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.EventSystems;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using Zenject;
 
 namespace GameObjectsScripts
 {
-    public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler
+    public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, IStack
     {
         [SerializeField] private Transform _anchorPointTransform;
 
@@ -25,12 +27,14 @@ namespace GameObjectsScripts
         private IAssetProvider _assetProvider;
 
         private Dictionary<string, GameObject> _cachedMeals = new();
+        private IInventory _inventory;
 
         [Inject]
-        public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider)
+        public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory)
         {
             _dialogManager = dialogManager;
             _assetProvider = assetProvider;
+            _inventory = inventory;
         }
 
         public void OnPointerClick(PointerEventData eventData)
@@ -60,6 +64,8 @@ namespace GameObjectsScripts
                 AddToMealCache(meal.Item.Name, meal.gameObject);
                 
                 meal.Construct(this);
+
+                _assetProvider.ReleaseAssetsByLabel(mealName);
             }
             else
             {
@@ -83,5 +89,14 @@ namespace GameObjectsScripts
         {
             return _cachedMeals.TryGetValue(mealName, out GameObject go) ? go : null;
         }
+
+        public void Stack(Meal meal)
+        {
+            _inventory.TryAddItem(this, meal.Item, 1);
+            meal.gameObject.transform.position = _anchorPointTransform.position;
+            meal.gameObject.SetActive(false);
+        }
+
+        
     }
 }
