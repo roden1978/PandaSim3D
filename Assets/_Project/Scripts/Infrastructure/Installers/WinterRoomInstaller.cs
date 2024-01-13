@@ -29,8 +29,7 @@ public class WinterRoomInstaller : MonoInstaller
         _persistenceProgress = persistentProgress;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName);
-        _saveLoadStorage.Clear();
-
+        _saveLoadStorage.ClearGameObjectsType();
     }
 
     public override void InstallBindings()
@@ -140,7 +139,6 @@ public class WinterRoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        //LevelStaticData levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName);
         Vector3 position = _levelStaticData.PlayerSpawnPoint;
         Quaternion rotation = _levelStaticData.PlayerRotation;
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));

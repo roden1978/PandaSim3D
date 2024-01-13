@@ -7,7 +7,8 @@ namespace Services.SaveLoad.PlayerProgress
     {
         public IEnumerable<ISavedProgress> Savers { get; }
         public IEnumerable<ISavedProgressReader> Readers { get; }
-        void Clear();
+        void ClearAll();
+        void ClearGameObjectsType();
         void RegisterInSaveLoadRepositories(GameObject registeredGameObject);
         void RegisterInSaveLoadRepositories(ISavedProgress savedProgress);
     }

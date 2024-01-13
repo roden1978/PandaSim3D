@@ -11,10 +11,15 @@ namespace Services.SaveLoad.PlayerProgress
         public IEnumerable<ISavedProgress> Savers => _savers;
         public IEnumerable<ISavedProgressReader> Readers => _readers;
 
-        public void Clear()
+        public void ClearAll()
         {
             _savers.Clear();
             _readers.Clear();
+        }
+
+        public void ClearGameObjectsType()
+        {
+            _savers.RemoveAll(x => x.GetType().BaseType!.Name == "MonoBehaviour");
         }
 
         public void RegisterInSaveLoadRepositories(GameObject registeredGameObject)

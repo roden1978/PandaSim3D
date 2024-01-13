@@ -20,12 +20,15 @@ public class Hud : MonoBehaviour, ISavedProgress
     private ISceneLoader _sceneLoader;
     private DialogManager _dialogManager;
     private EventBus _eventBus;
+    private ISaveLoadService _saveLoadService;
+
     [Inject]
-    public void Construct(ISceneLoader sceneLoader, DialogManager dialogManager, EventBus eventBus)
+    public void Construct(ISceneLoader sceneLoader, DialogManager dialogManager, EventBus eventBus, ISaveLoadService saveLoadService)
     {
         _sceneLoader = sceneLoader;
         _dialogManager = dialogManager;
         _eventBus = eventBus;
+        _saveLoadService = saveLoadService;
     }
     private void OnEnable()
     {
@@ -49,13 +52,14 @@ public class Hud : MonoBehaviour, ISavedProgress
 
     private void OnRoomButtonClick(PointerEventData obj)
     {
-        _sceneLoader.LoadScene(AssetPaths.RoomSceneName);
-
+        SaveProgress();
+        LoadScene(AssetPaths.RoomSceneName);
     }
 
     private void OnWinterRoomButtonClick(PointerEventData obj)
     {
-        _sceneLoader.LoadScene(AssetPaths.WinterRoomSceneName);
+        SaveProgress();
+        LoadScene(AssetPaths.WinterRoomSceneName);
     }
 
     private void OnShopButtonClick(PointerEventData obj)
@@ -79,8 +83,12 @@ public class Hud : MonoBehaviour, ISavedProgress
 
     public void LoadProgress(PlayerProgress playerProgress)
     {
-        _petName.text = playerProgress.PlayerState.PetName;
+        UpdatePetName(playerProgress.PlayerState.PetName);
+        UpdateHudButtons();
+    }
 
+    private void UpdateHudButtons()
+    {
         string currentSceneName = SceneManager.GetActiveScene().name;
         RoomsButtonsSwitch(currentSceneName);
     }
@@ -108,5 +116,15 @@ public class Hud : MonoBehaviour, ISavedProgress
     public void SaveProgress(PlayerProgress persistentPlayerProgress)
     {
         
+    }
+
+    private void SaveProgress()
+    {
+        _saveLoadService.SaveProgress();
+    }
+
+    private void LoadScene(string sceneName)
+    {
+        _sceneLoader.LoadScene(sceneName);
     }
 }

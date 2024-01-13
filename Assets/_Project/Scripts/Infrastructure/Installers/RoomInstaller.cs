@@ -29,7 +29,7 @@ public class RoomInstaller : MonoInstaller
         _persistenceProgress = persistentProgress;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
-        _saveLoadStorage.Clear();
+        _saveLoadStorage.ClearGameObjectsType();
     }
 
     public override void InstallBindings()
