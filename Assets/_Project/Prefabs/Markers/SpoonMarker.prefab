@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 297220828312169891, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_Name
-      value: EggMarker
+      value: SpoonMarker
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -26,23 +26,23 @@ PrefabInstance:
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.b
-      value: 0
+      value: 0.04915385
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.g
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.r
-      value: 0.96815324
+      value: 0.5754717
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: <EnvironmentObjectStaticData>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 2cf587669333c4b458291f6bbc3aead9,
+      objectReference: {fileID: 11400000, guid: 532272f99c6be7341b31eba7b3a51343,
         type: 2}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -97,7 +97,7 @@ PrefabInstance:
     - target: {fileID: 8509563331811691496, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Id
-      value: Room_ced49912-7373-4172-866f-d9f2a30be524
+      value: Room_258ae6f6-1588-45ac-b46e-c6b375aceefc
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

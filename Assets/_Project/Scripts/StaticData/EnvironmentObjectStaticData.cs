@@ -8,4 +8,7 @@ namespace StaticData
         public GameObject Prefab;
         public GameObjectsTypeId GameObjectsTypeId;
     }
+
+    
+
 }
