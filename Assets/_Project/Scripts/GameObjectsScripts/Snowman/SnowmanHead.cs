@@ -9,5 +9,10 @@ namespace PlayerScripts
         {
             stuff.gameObject.transform.position = _anchorPoint.position;
         }
+        
+        public void UnStack(Stuff stuff)
+        {
+            
+        }
     }
 }

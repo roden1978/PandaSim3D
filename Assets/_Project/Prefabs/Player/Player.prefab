@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _anchorPoint: {fileID: 7114106979410229356}
+  _scale: {x: 3.5, y: 2.6, z: 3}
 --- !u!114 &9180030389314765929
 MonoBehaviour:
   m_ObjectHideFlags: 0

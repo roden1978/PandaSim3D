@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 using Zenject;
 
 namespace PlayerScripts
@@ -21,6 +22,18 @@ namespace PlayerScripts
             stuffTransform.position = _anchorPoint.position;
             stuffTransform.rotation = gameObject.transform.rotation;
             _wallet.AddAmount(CurrencyType.Coins, stuff.Item.Price);
+            
+            DoHatScale(stuffTransform, _scale, 1);
+        }
+
+        private void DoHatScale(Transform hatTransform, Vector3 scale, float duration)
+        {
+            hatTransform.DOScale(scale, duration);
+        }
+        
+        public void UnStack(Stuff stuff)
+        {
+            DoHatScale(stuff.transform, Vector3.one, 1);
         }
     }
 }

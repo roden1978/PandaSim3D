@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GameObjectsScripts;
 using PlayerScripts;
 using UnityEngine;
@@ -18,6 +19,8 @@ public class Stuff : MonoBehaviour, IStuff
     private Vector3 _startPosition;
     private Camera _camera;
     private Plate _plate;
+
+    private IStack[] _stacks;
 
     public void Construct(Plate plate)
     {
@@ -43,8 +46,8 @@ public class Stuff : MonoBehaviour, IStuff
         {
             Debug.Log($"Hit to {raycastHit.collider.gameObject.name}");
 
-            IStack[] stacks = raycastHit.transform.GetComponentsInChildren<IStack>(true);
-            foreach (IStack stack in stacks)
+            _stacks = raycastHit.transform.GetComponentsInChildren<IStack>(true);
+            foreach (IStack stack in _stacks)
             {
                 stack.Stack(this);
             }
@@ -71,11 +74,13 @@ public class Stuff : MonoBehaviour, IStuff
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        //For begin drag effects
+        foreach (IStack stack in _stacks)
+        {
+            stack.UnStack(this);
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        //For end drag effects
     }
 }

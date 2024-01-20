@@ -95,6 +95,10 @@ namespace GameObjectsScripts
             stuff.gameObject.SetActive(false);
         }
 
+        public void UnStack(Stuff stuff)
+        {
+            
+        }
         
     }
 }

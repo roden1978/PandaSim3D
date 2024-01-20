@@ -21,5 +21,10 @@ namespace PlayerScripts
                 stuff.gameObject.SetActive(false);
             }
         }
+        
+        public void UnStack(Stuff stuff)
+        {
+            
+        }
     }
 }
