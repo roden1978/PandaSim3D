@@ -10,15 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: EnvironmentPrefabs
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: EnvironmentPrefabs
   m_Data:
     m_SerializedData: []
-  m_GUID: a027efacf49cda24e9292f17a8dcd076
+  m_GUID: 65d99de01fa31534fb4c14f1beb14c5b
   m_SerializeEntries:
-  - m_GUID: 6c382bc5ed8f640448964e173d6f96f5
-    m_Address: Hat
+  - m_GUID: 399af7dc735734447b11b60d001303bc
+    m_Address: Plate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cfd3f2858842d354b9eda9cd0d57fbb1
+    m_Address: Crate
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f7e5ae4282c824349810f605ba3005e7
+    m_Address: Tray
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -26,5 +36,5 @@ MonoBehaviour:
   m_Settings: {fileID: 11400000, guid: 898818ca557bfe340a85e446da52ca59, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: c3e4badfa1e324248a14b7474b699d8a, type: 2}
-    - {fileID: 11400000, guid: dcae5ffcdec09cf4bb522c04d23190bb, type: 2}
+    - {fileID: 11400000, guid: 4f7461b036eebcd49bf025359bceb19a, type: 2}
+    - {fileID: 11400000, guid: 4c9971cadf1274f468ff9c4b746c7789, type: 2}

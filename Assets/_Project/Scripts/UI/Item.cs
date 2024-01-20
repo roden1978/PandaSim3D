@@ -8,6 +8,7 @@ public class Item: ScriptableObject
     public Sprite Sprite;
     public string Description;
     public int Price;
+    public bool Meal;
     
     private void OnValidate()
     {

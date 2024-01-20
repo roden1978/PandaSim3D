@@ -14,7 +14,9 @@
         public const string PlayerPath = "Player";
         public const string PlatePath = "Plate";
         public const string CratePath = "Crate";
+        public const string TrayPath = "Tray";
         public const string EggPath = "Egg";
+        public const string HatPath = "Hat";
         public const string SnowmanPath = "Snowman";
         public const string SceneStaticDataLabel = "SceneData";
         public const string EnvironmentStaticDataLabel = "EnvironmentData";

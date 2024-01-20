@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98372642e9c74fb799d2d7b0819f0a56, type: 3}
-  m_Name: Sushi
+  m_Name: Hat
   m_EditorClassIdentifier: 
-  Type: 6
-  Name: Sushi
-  Sprite: {fileID: -2075573042, guid: d8dc97a4e2f796d4fb06c055fa8b002f, type: 3}
-  Description: "\u0421\u0443\u0448\u0438"
+  Type: 8
+  Name: Hat
+  Sprite: {fileID: 21300000, guid: d954163f58e264342846d072610715a9, type: 3}
+  Description: "\u0417\u0438\u043C\u043D\u044F\u044F \u0448\u0430\u043F\u043A\u0430"
   Price: 10
-  Meal: 1

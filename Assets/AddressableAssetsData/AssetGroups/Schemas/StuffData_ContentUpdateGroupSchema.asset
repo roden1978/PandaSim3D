@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98372642e9c74fb799d2d7b0819f0a56, type: 3}
-  m_Name: Sushi
+  m_Script: {fileID: 11500000, guid: 5834b5087d578d24c926ce20cd31e6d6, type: 3}
+  m_Name: StuffData_ContentUpdateGroupSchema
   m_EditorClassIdentifier: 
-  Type: 6
-  Name: Sushi
-  Sprite: {fileID: -2075573042, guid: d8dc97a4e2f796d4fb06c055fa8b002f, type: 3}
-  Description: "\u0421\u0443\u0448\u0438"
-  Price: 10
-  Meal: 1
+  m_Group: {fileID: 11400000, guid: f5b89256f1c361c4a80ff7e57cc273e5, type: 2}
+  m_StaticContent: 0

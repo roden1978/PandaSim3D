@@ -33,6 +33,8 @@ public static class Extensions
         return Random.Range(0, 101);
     }
 
+    public static int OneItem => 1;
+
     public static void GenerateEnum(this IEnumerable<string> fields, string enumName,
         string path = "Assets/Scripts/Enums/")
     {

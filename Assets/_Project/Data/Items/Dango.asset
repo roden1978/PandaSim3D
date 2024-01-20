@@ -17,3 +17,4 @@ MonoBehaviour:
   Sprite: {fileID: 538876924, guid: d8dc97a4e2f796d4fb06c055fa8b002f, type: 3}
   Description: "\u0428\u0430\u0448\u043B\u044B\u043A"
   Price: 15
+  Meal: 1

@@ -10,21 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: Default Local Group
+  m_Name: StuffPrefabs
   m_EditorClassIdentifier: 
-  m_GroupName: Default Local Group
+  m_GroupName: Packed Assets
   m_Data:
     m_SerializedData: []
-  m_GUID: a027efacf49cda24e9292f17a8dcd076
-  m_SerializeEntries:
-  - m_GUID: 6c382bc5ed8f640448964e173d6f96f5
-    m_Address: Hat
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_GUID: 951337ddf14fa0e4b832c0bb5fa8b097
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 898818ca557bfe340a85e446da52ca59, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: c3e4badfa1e324248a14b7474b699d8a, type: 2}
-    - {fileID: 11400000, guid: dcae5ffcdec09cf4bb522c04d23190bb, type: 2}
+    - {fileID: 11400000, guid: d0cc621498b2ed7449be6edef54bf805, type: 2}
+    - {fileID: 11400000, guid: 786a7e61fc1e208408137eb7c159fb5f, type: 2}

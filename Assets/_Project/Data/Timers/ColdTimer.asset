@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd8fab49e124696ae1e2c5751979edf, type: 3}
   m_Name: ColdTimer
   m_EditorClassIdentifier: 
-  _icon: {fileID: 21300000, guid: 5751128014596aa45b7a9b438a1f9527, type: 3}
+  _type: 5
   _duration: 1
-  _type: 3

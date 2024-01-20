@@ -8,4 +8,5 @@
     Dango = 5,
     Sushi = 6,
     Carrot = 7,
+    Hat = 8,
 }
