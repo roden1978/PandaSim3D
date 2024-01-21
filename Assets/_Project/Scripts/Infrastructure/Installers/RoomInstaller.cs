@@ -1,5 +1,6 @@
 ﻿using System;
 using GameObjectsScripts;
+using GameObjectsScripts.Timers;
 using Infrastructure.AssetManagement;
 using PlayerScripts;
 using Services.SaveLoad.PlayerProgress;
@@ -18,6 +19,7 @@ public class RoomInstaller : MonoInstaller
     private IPersistentProgress _persistenceProgress;
 
     private Transform _guiHolderTransform;
+    private Transform _hudTransform;
 
     [Inject]
     public void Construct(PrefabsStorage prefabsStorage, ISaveLoadStorage saveLoadStorage,
@@ -41,9 +43,11 @@ public class RoomInstaller : MonoInstaller
         BindEgg();
         BindPlayer();
         BindPlate();
+        BindTray();
         BindInventory();
         BindInventoryDialog();
         BindShop();
+        BindTimersPrincipal();
     }
 
     private void BindShop()
@@ -98,26 +102,39 @@ public class RoomInstaller : MonoInstaller
 
     private void BindHud()
     {
-        Debug.Log($"Instantiate hud start ");
-        GameObject prefab = _prefabsStorage.Get(Type.GetType("Hud")); //almost typeof(Hud)
+        Debug.Log($"Instantiate Hud start ");
+        GameObject prefab = _prefabsStorage.Get(typeof(Hud));
         GameObject hud = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        _hudTransform = hud.transform;
         Container.Bind<Hud>().FromComponentOn(hud).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(hud);
+    }
+    
+    private void BindTimersPrincipal()
+    {
+        Debug.Log($"Instantiate TimersPrincipal start ");
+        GameObject prefab = _prefabsStorage.Get(typeof(TimersPrincipal));
+        GameObject timersPrincipal = Container.InstantiatePrefab(prefab, _hudTransform);
+        Container.BindInterfacesAndSelfTo<TimersPrincipal>().FromComponentOn(timersPrincipal).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(timersPrincipal);
     }
 
     private void BindPlate()
     {
         EnvironmentObjectSpawnData plateData =
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
-        GameObject platePrefab = _prefabsStorage.Get(typeof(Plate));
-        IPositionAdapter positionAdapter = platePrefab.GetComponentInChildren<IPositionAdapter>(true);
+        GameObject prefab = _prefabsStorage.Get(typeof(Plate));
+        IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = plateData.Position;
-
-        Container.Bind<Plate>()
+        GameObject plate = Container.InstantiatePrefab(prefab, _hudTransform);
+        plate.gameObject.name = nameof(Plate);
+        Container.BindInterfacesAndSelfTo<Plate>().FromComponentOn(plate).AsSingle();
+        /*Container.Bind<Plate>()
             .FromComponentInNewPrefab(platePrefab)
             .WithGameObjectName(nameof(Plate))
             .AsSingle()
-            .NonLazy();
+            .NonLazy();*/
+        _saveLoadStorage.RegisterInSaveLoadRepositories(plate);
     }
 
     private void BindEgg()
@@ -146,6 +163,21 @@ public class RoomInstaller : MonoInstaller
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)
             .WithGameObjectName(nameof(Player))
+            .AsSingle()
+            .NonLazy();
+    }
+    
+    private void BindTray()
+    {
+        EnvironmentObjectSpawnData trayData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Tray);
+        GameObject trayPrefab = _prefabsStorage.Get(typeof(Tray));
+        IPositionAdapter positionAdapter = trayPrefab.GetComponentInChildren<IPositionAdapter>(true);
+        positionAdapter.Position = trayData.Position;
+
+        Container.Bind<Tray>()
+            .FromComponentInNewPrefab(trayPrefab)
+            .WithGameObjectName(nameof(Tray))
             .AsSingle()
             .NonLazy();
     }

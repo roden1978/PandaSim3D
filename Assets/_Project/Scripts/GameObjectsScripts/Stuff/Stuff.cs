@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Linq;
 using GameObjectsScripts;
 using PlayerScripts;
 using UnityEngine;
@@ -20,7 +20,7 @@ public class Stuff : MonoBehaviour, IStuff
     private Camera _camera;
     private Plate _plate;
 
-    private IStack[] _stacks;
+    private IStack[] _stacks = new IStack[10];
 
     public void Construct(Plate plate)
     {
@@ -63,7 +63,7 @@ public class Stuff : MonoBehaviour, IStuff
     public void OnDrag(PointerEventData eventData)
     {
         Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
-        Vector3 currentPosition = transform.position;
+        Vector3 currentPosition = new (transform.position.x, transform.position.y, _startPosition.z);
         Vector3 negativeCameraPosition = -_camera.transform.forward;
         float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /
                   Vector3.Dot(screenPointToRay.direction, negativeCameraPosition);
@@ -74,7 +74,7 @@ public class Stuff : MonoBehaviour, IStuff
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        foreach (IStack stack in _stacks)
+        foreach (IStack stack in _stacks.Where(x => x is not null))
         {
             stack.UnStack(this);
         }

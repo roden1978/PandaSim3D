@@ -27,7 +27,6 @@ namespace Infrastructure.AssetManagement
             LoadPrefabs(AssetPaths.UILabel);
             LoadPrefab(typeof(ProgressUpdater), AssetPaths.ProgressUpdater);
 
-            //Methods below can move to another loader
             LoadPrefab(typeof(Plate), AssetPaths.PlatePath);
             LoadPrefab(typeof(Crate), AssetPaths.CratePath);
             LoadPrefab(typeof(Egg), AssetPaths.EggPath);

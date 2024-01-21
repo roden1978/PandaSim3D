@@ -18,12 +18,12 @@ namespace PlayerScripts
         
         public void Stack(Stuff stuff)
         {
-            var stuffTransform = stuff.gameObject.transform; 
+            Transform stuffTransform = stuff.gameObject.transform; 
             stuffTransform.position = _anchorPoint.position;
             stuffTransform.rotation = gameObject.transform.rotation;
             _wallet.AddAmount(CurrencyType.Coins, stuff.Item.Price);
             
-            DoHatScale(stuffTransform, _scale, 1);
+            DoHatScale(stuffTransform, _scale, .5f);
         }
 
         private void DoHatScale(Transform hatTransform, Vector3 scale, float duration)
@@ -33,7 +33,7 @@ namespace PlayerScripts
         
         public void UnStack(Stuff stuff)
         {
-            DoHatScale(stuff.transform, Vector3.one, 1);
+            DoHatScale(stuff.transform, Vector3.one, .5f);
         }
     }
 }

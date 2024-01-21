@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbd8fab49e124696ae1e2c5751979edf, type: 3}
-  m_Name: MoodTimer
+  m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
+  m_Name: SoColdTimer
   m_EditorClassIdentifier: 
-  _icon: {fileID: 120771779, guid: c0805611afdb1fb46b347f62b119f0af, type: 3}
+  _type: 5
   _duration: 1
-  _type: 1
+  _timerPrefab: {fileID: 2802259814680247830, guid: 31225b070a8825445849a43a05fd7951,
+    type: 3}
+  _timerColor: {r: 1, g: 1, b: 1, a: 1}
