@@ -23,6 +23,12 @@ namespace Editor
                             x.EnvironmentObjectStaticData.GameObjectsTypeId, x.transform.position))
                     .ToList();
                 
+                levelData.StuffSpawnData = FindObjectsOfType<StuffSpawnerMarker>()
+                    .Select(x =>
+                        new StuffSpawnData(x.GetComponent<UniqueId>().Id,
+                            x.StuffStaticData.StuffSpecies, x.transform.position))
+                    .ToList();
+                
                 levelData.LevelKey = SceneManager.GetActiveScene().name;
                 Transform playerSpawnPointTransform = FindObjectOfType<PlayerSpawnPoint>().transform; 
                 levelData.PlayerSpawnPoint = playerSpawnPointTransform.position;
@@ -32,6 +38,7 @@ namespace Editor
             if (GUILayout.Button("Clear level data"))
             {
                 levelData.EnvironmentObjectsSpawnData.Clear();
+                levelData.StuffSpawnData.Clear();
             }
 
             EditorUtility.SetDirty(target);

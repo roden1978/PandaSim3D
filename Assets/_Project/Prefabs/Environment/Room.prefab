@@ -297,6 +297,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrayMarker
       objectReference: {fileID: 0}
+    - target: {fileID: 4385435769453619381, guid: cf8fe03b6443b9948bf7bc59c1b741dd,
+        type: 3}
+      propertyPath: Id
+      value: Room_89f8f9cd-35e7-4459-a155-a0709f5a7471
+      objectReference: {fileID: 0}
     - target: {fileID: 4974045377790832093, guid: cf8fe03b6443b9948bf7bc59c1b741dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -346,6 +351,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6418790581146068531, guid: cf8fe03b6443b9948bf7bc59c1b741dd,
+        type: 3}
+      propertyPath: Id
+      value: Room_9eeb21e9-51fe-4a57-88bb-8b6ff44d8d45
+      objectReference: {fileID: 0}
+    - target: {fileID: 7116631347490812057, guid: cf8fe03b6443b9948bf7bc59c1b741dd,
+        type: 3}
+      propertyPath: Id
+      value: Room_5cab49ed-6255-4503-b171-89daed57f29b
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -420,6 +435,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7116631347490812057, guid: aedfc05e931709d448fd35f492a8e8e1,
+        type: 3}
+      propertyPath: Id
+      value: Room_1953dbaf-483a-4517-bbf2-34e4abeeaafc
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -644,7 +664,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2089736615775904709, guid: fa4d4bbd002412749a6fc3ca75d9d99a, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa4d4bbd002412749a6fc3ca75d9d99a, type: 3}
@@ -822,7 +843,8 @@ PrefabInstance:
       value: Room_689cc479-2d5a-4df9-8efd-3ecb8fcc53f7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5675726140438128462, guid: da3b840fbfaa129429cffd0223c91991, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: da3b840fbfaa129429cffd0223c91991, type: 3}

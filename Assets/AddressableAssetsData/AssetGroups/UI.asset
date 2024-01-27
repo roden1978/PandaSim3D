@@ -23,6 +23,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - UIPrefabs
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 051ebd848343dd645a9fbbf1c3b8c317
+    m_Address: MoodIndicatorView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 898818ca557bfe340a85e446da52ca59, type: 2}
   m_SchemaSet:

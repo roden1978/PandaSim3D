@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameObjectsScripts;
-using Infrastructure.AssetManagement;
+using TriInspector;
 using UI;
 using UI.Dialogs.Inventory;
 using UnityEngine;
@@ -23,6 +22,11 @@ public class InventoryDialog : Dialog, ISlotChanger
     [SerializeField] private RectTransform _slotHolder;
     [SerializeField] private UIInventorySlot _uiInventorySlot;
     [SerializeField] private UIDescriptionHolder _uiDescriptionHolder;
+    
+    [Header("Debug")] 
+    [ReadOnly]
+    [SerializeField] private List<DebugItemData> _debugList;
+    
     private IInventory _inventory;
     private ISaveLoadService _saveLoadService;
     private Plate _plate;
@@ -54,6 +58,12 @@ public class InventoryDialog : Dialog, ISlotChanger
                     uiInventorySlot.UIItem.ValueText.text = $"x{slot.ItemAmount}";
                     uiInventorySlot.UIItem.ItemType = slot.InventoryItem.Type;
                     uiInventorySlot.UIItem.gameObject.SetActive(true);
+                    
+                    _debugList.Add(new DebugItemData
+                    {
+                        Name = slot.InventoryItem.Type.ToString(),
+                        Value = slot.ItemAmount,
+                    });
                 }
             }
         }
@@ -210,4 +220,12 @@ public class InventoryDialog : Dialog, ISlotChanger
         _dropButton.Click -= OnUseButtonClick;
         _useButton.Click -= OnUseButtonClick;
     }
+
+    [Serializable]
+    public class DebugItemData
+    {
+        public string Name;
+        public int Value;
+    }
 }
+

@@ -36,15 +36,6 @@ namespace UI
                 return component;
             }
 
-            /*T go = GetPrefabByType<T>();
-            if (go == null)
-            {
-                Debug.LogError("Show window - object not found");
-                 return null;
-            }
-
-            return Object.Instantiate(go, _guiHolder.transform);*/
-
             return null;
         }
 

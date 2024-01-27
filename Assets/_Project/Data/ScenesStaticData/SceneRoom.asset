@@ -14,11 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LevelKey: Room
   PlayerSpawnPoint: {x: 0, y: 0, z: 0}
-  PlayerRotation: {x: 0, y: 0, z: 0, w: 0}
+  PlayerRotation: {x: -0, y: -0, z: -0, w: 1}
   EnvironmentObjectsSpawnData:
-  - Id: Room_314440e2-d25a-4f8c-8f58-af8da4c920aa
+  - Id: Room_ced49912-7373-4172-866f-d9f2a30be524
     GameObjectsTypeId: 8
     Position: {x: 0, y: 0, z: 0}
-  - Id: Room_258ae6f6-1588-45ac-b46e-c6b375aceefc
+  - Id: Room_689cc479-2d5a-4df9-8efd-3ecb8fcc53f7
     GameObjectsTypeId: 3
     Position: {x: -1.81, y: 0, z: -2.63}
+  - Id: Room_bf17c86f-ea48-4144-9b8c-f46e41295256
+    GameObjectsTypeId: 11
+    Position: {x: -2.86, y: 0.1, z: 2.15}
+  - Id: Room_bab94439-f6c8-4632-b862-05f313e842d0
+    GameObjectsTypeId: 6
+    Position: {x: -3.6699998, y: 0.92, z: 2.15}
+  - Id: Room_93cb2a9a-66c0-4210-b88c-7b4f1226176a
+    GameObjectsTypeId: 4
+    Position: {x: -2.86, y: 0, z: 2.15}
+  StuffSpawnData:
+  - Id: Room_738b187f-e97c-49ca-8830-5a82eb419ccf
+    StuffSpecies: 4
+    Position: {x: -1.81, y: 0.104, z: -2.63}
+  - Id: Room_2877e53d-6b8a-4791-99fa-d391c14fa662
+    StuffSpecies: 3
+    Position: {x: 0, y: 2, z: 0}

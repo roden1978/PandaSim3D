@@ -21,5 +21,7 @@
         public const string SceneStaticDataLabel = "SceneData";
         public const string EnvironmentStaticDataLabel = "EnvironmentData";
         public const string PlateSpawnerPath = "PlateSpawner";
+        public const string PoopPath = "Poop";
+        public const string MoodIndicatorView = "MoodIndicatorView";
     }
 }

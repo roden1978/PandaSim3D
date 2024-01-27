@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameObjectsScripts.Timers
@@ -26,11 +25,5 @@ namespace GameObjectsScripts.Timers
         {
             _indicator.fillAmount = value;
         }
-        
-        /*private void Update()
-        {
-            if(_timer.Active)
-                UpdateIndicator(_timer.IndicatorValue);
-        }*/
     }
 }

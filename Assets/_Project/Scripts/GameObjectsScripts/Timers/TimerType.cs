@@ -8,5 +8,6 @@
         Sleep = 3,
         Poop = 4,
         Cold = 5,
+        Fun = 6,
     }
 }

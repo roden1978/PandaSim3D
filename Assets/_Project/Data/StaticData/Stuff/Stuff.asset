@@ -9,11 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
-  m_Name: SoMoodTimer
+  m_Script: {fileID: 11500000, guid: 50272165512145f4afd3191e1652ca7b, type: 3}
+  m_Name: Stuff
   m_EditorClassIdentifier: 
-  _type: 1
-  _duration: 1
-  _timerPrefab: {fileID: 2802259814680247830, guid: 1150672ca3d1ecd4dba36dc8b0d385ee,
-    type: 3}
-  _timerColor: {r: 1, g: 1, b: 1, a: 1}
+  StuffSpecies: 4

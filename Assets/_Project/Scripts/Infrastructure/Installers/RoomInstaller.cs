@@ -1,7 +1,4 @@
-﻿using System;
-using GameObjectsScripts;
-using GameObjectsScripts.Timers;
-using Infrastructure.AssetManagement;
+﻿using Infrastructure.AssetManagement;
 using PlayerScripts;
 using Services.SaveLoad.PlayerProgress;
 using Services.StaticData;
@@ -39,15 +36,38 @@ public class RoomInstaller : MonoInstaller
         BindGuiHolder();
         BindDialogManager();
         BindHud();
+        BindTimersPrincipal();
         BindInputNameDialog();
         BindEgg();
         BindPlayer();
-        BindPlate();
-        BindTray();
         BindInventory();
+        BindPlate();
         BindInventoryDialog();
         BindShop();
-        BindTimersPrincipal();
+        BindPoop();
+        BindTray();
+    }
+
+    private void BindGuiHolder()
+    {
+        Debug.Log($"Instantiate GuiHolder start");
+        GameObject prefab = _prefabsStorage.Get(typeof(GuiHolder));
+        GameObject guiHolder = Container.InstantiatePrefab(prefab);
+        _guiHolderTransform = guiHolder.transform;
+
+        Container.Bind<GuiHolder>().FromComponentOn(guiHolder).AsSingle();
+    }
+    private void BindPoop()
+    {
+        EnvironmentObjectSpawnData poopData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Poop);
+        GameObject prefab = _prefabsStorage.Get(typeof(Poop));
+        IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
+        positionAdapter.Position = poopData.Position;
+        GameObject poop = Container.InstantiatePrefab(prefab);
+        poop.gameObject.name = nameof(Poop);
+        Container.BindInterfacesAndSelfTo<Poop>().FromComponentOn(poop).AsSingle();
+        //_saveLoadStorage.RegisterInSaveLoadRepositories(poop);
     }
 
     private void BindShop()
@@ -90,15 +110,7 @@ public class RoomInstaller : MonoInstaller
         Container.Bind<DialogManager>().AsSingle();
     }
 
-    private void BindGuiHolder()
-    {
-        Debug.Log($"Instantiate GuiHolder start");
-        GameObject prefab = _prefabsStorage.Get(typeof(GuiHolder));
-        GameObject guiHolder = Container.InstantiatePrefab(prefab);
-        _guiHolderTransform = guiHolder.transform;
-
-        Container.Bind<GuiHolder>().FromComponentOn(guiHolder).AsSingle();
-    }
+   
 
     private void BindHud()
     {
@@ -126,14 +138,9 @@ public class RoomInstaller : MonoInstaller
         GameObject prefab = _prefabsStorage.Get(typeof(Plate));
         IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = plateData.Position;
-        GameObject plate = Container.InstantiatePrefab(prefab, _hudTransform);
+        GameObject plate = Container.InstantiatePrefab(prefab);
         plate.gameObject.name = nameof(Plate);
         Container.BindInterfacesAndSelfTo<Plate>().FromComponentOn(plate).AsSingle();
-        /*Container.Bind<Plate>()
-            .FromComponentInNewPrefab(platePrefab)
-            .WithGameObjectName(nameof(Plate))
-            .AsSingle()
-            .NonLazy();*/
         _saveLoadStorage.RegisterInSaveLoadRepositories(plate);
     }
 
@@ -158,7 +165,7 @@ public class RoomInstaller : MonoInstaller
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
         Vector3 position = _levelStaticData.PlayerSpawnPoint;
         Quaternion rotation = _levelStaticData.PlayerRotation;
-        playerPrefab.SetPlayerPosition(position, rotation);
+        playerPrefab.SetPositionAdapterValue(position, rotation);
 
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)
@@ -171,14 +178,9 @@ public class RoomInstaller : MonoInstaller
     {
         EnvironmentObjectSpawnData trayData =
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Tray);
-        GameObject trayPrefab = _prefabsStorage.Get(typeof(Tray));
-        IPositionAdapter positionAdapter = trayPrefab.GetComponentInChildren<IPositionAdapter>(true);
-        positionAdapter.Position = trayData.Position;
-
-        Container.Bind<Tray>()
-            .FromComponentInNewPrefab(trayPrefab)
-            .WithGameObjectName(nameof(Tray))
-            .AsSingle()
-            .NonLazy();
+        GameObject prefab = _prefabsStorage.Get(typeof(Tray));
+        GameObject tray = Container.InstantiatePrefab(prefab, trayData.Position, Quaternion.identity, null);
+        Container.BindInterfacesAndSelfTo<Tray>().FromComponentOn(tray).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(tray);
     }
 }

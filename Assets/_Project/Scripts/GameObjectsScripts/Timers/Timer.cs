@@ -7,22 +7,26 @@ namespace GameObjectsScripts.Timers
     {
         public bool Active => _active;
         public float IndicatorValue => _indicatorValue;
-
+        public TimerType TimerType => _type;
         public event Action<float> UpdateTimerView;
+        public event Action EndTimer;
+        public event Action RestartTimer;
 
-        private readonly int _duration;
+        private float _duration;
         private TimerType _type;
         private bool _active;
         private float _currentTime;
         private float _updateTime;
-        private int _startTime;
-        private int _endTime;
+        private float _startTime;
+        private float _endTime;
         private float _indicatorValue;
+        private bool _increaseTimer;
 
-        public Timer(int duration, TimerType type)
+        public Timer(float duration, TimerType type)
         {
             _duration = duration * TimeUtils.OneMinute;
             _currentTime = _duration;
+            _type = type;
         }
 
         public void Initialize()
@@ -43,6 +47,9 @@ namespace GameObjectsScripts.Timers
 
         public void Tick()
         {
+            if (_increaseTimer)
+                IncreaseTimer();
+            
             if (false == _active) return;
 
             if (_currentTime > 0)
@@ -55,6 +62,7 @@ namespace GameObjectsScripts.Timers
                 Reset();
                 Stop();
                 UpdateTimerView?.Invoke(Single.Epsilon);
+                EndTimer?.Invoke();
             }
 
             _indicatorValue = Convert.ToSingle(_currentTime / _duration);
@@ -63,23 +71,65 @@ namespace GameObjectsScripts.Timers
                 UpdateTimerView?.Invoke(_indicatorValue);
                 _updateTime = 0;
             }
+
+            
             //Debug.Log($"Update time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");
         }
 
         private void Reset()
         {
             _currentTime = 0;
+            _indicatorValue = 0;
         }
 
-        public void Restart()
+        private void Restart()
         {
             _currentTime = _duration;
             Start();
+            RestartTimer?.Invoke();
         }
 
         public async void Synchronize()
         {
         }
+
+        private void IncreaseTimer()
+        {
+            if (_indicatorValue < 1)
+            {
+                _indicatorValue += Time.unscaledDeltaTime;
+                UpdateTimerView?.Invoke(_indicatorValue);
+            }
+            else
+            {
+                _indicatorValue = 1;
+                _increaseTimer = false;
+                Restart();
+            }
+
+            Debug.Log(
+                $"Update time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");
+        }
+
+        public void IncreaseSetActive(bool value)
+        {
+            _increaseTimer = value;
+        }
+
+        public void UpdateTimerState(TimerData timerData)
+        {
+            _type = timerData.Type;
+            _duration = timerData.Duration;
+            _startTime = timerData.StartTimerTimeInSeconds;
+            _endTime = timerData.EndTimerTimeInSeconds;
+            _currentTime = timerData.CurrentTime;
+            _updateTime = timerData.UpdateTime;
+            _indicatorValue = timerData.IndicatorValue;
+            _active = timerData.Active;
+            
+            UpdateTimerView?.Invoke(_indicatorValue);
+        }
+
 
         public TimerData SaveState()
         {

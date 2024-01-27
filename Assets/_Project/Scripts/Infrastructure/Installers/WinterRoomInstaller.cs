@@ -37,8 +37,6 @@ public class WinterRoomInstaller : MonoInstaller
         BindGuiHolder();
         BindDialogManager();
         BindHud();
-        //BindInputNameDialog();
-        //BindEgg();
         BindPlayer();
         BindCrateAkaBindPlate();
         BindInventory();
@@ -51,21 +49,6 @@ public class WinterRoomInstaller : MonoInstaller
     {
         GameObject shopDialog = _prefabsStorage.Get(typeof(ShopDialog));
         Container.InstantiatePrefab(shopDialog, _guiHolderTransform);
-    }
-
-    private void BindInputNameDialog()
-    {
-        GameObject prefab = _prefabsStorage.Get(typeof(InputNameDialog));
-
-        if (false == _persistenceProgress.PlayerProgress.PlayerState.FirstStartGame)
-        {
-            _prefabsStorage.Unregister(prefab);
-            return;
-        }
-
-        GameObject inventoryNameDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
-        Container.Bind<InputNameDialog>().FromComponentOn(inventoryNameDialog).AsSingle();
-        _saveLoadStorage.RegisterInSaveLoadRepositories(inventoryNameDialog);
     }
 
     private void BindInventory()
@@ -121,40 +104,24 @@ public class WinterRoomInstaller : MonoInstaller
             .NonLazy();
     }
 
-    private void BindEgg()
-    {
-        GameObject eggPrefab = _prefabsStorage.Get(typeof(Egg));
-        
-        if (false == _persistenceProgress.PlayerProgress.PlayerState.FirstStartGame)
-        {
-            _prefabsStorage.Unregister(eggPrefab);
-            return;
-        }
-
-        EnvironmentObjectSpawnData eggSpawnData =
-            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Egg);
-        GameObject egg = Container.InstantiatePrefab(eggPrefab, eggSpawnData.Position, Quaternion.identity, null);
-        _saveLoadStorage.RegisterInSaveLoadRepositories(egg);
-    }
-
     private void BindPlayer()
     {
         GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
         Vector3 position = _levelStaticData.PlayerSpawnPoint;
         Quaternion rotation = _levelStaticData.PlayerRotation;
-        playerPrefab.SetPlayerPosition(position, rotation);
-        
+        playerPrefab.SetPositionAdapterValue(position, rotation);
+
         Container.Bind<Player>()
             .FromComponentInNewPrefab(playerPrefab)
             .WithGameObjectName(nameof(Player))
             .AsSingle()
             .NonLazy();
     }
-    
+
     private void BindSnowman()
     {
         Debug.Log($"Instantiate snowman start ");
-        GameObject prefab = _prefabsStorage.Get(typeof(Snowman)); 
+        GameObject prefab = _prefabsStorage.Get(typeof(Snowman));
         EnvironmentObjectSpawnData snowmanSpawnData =
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Snowman);
         GameObject snowman = Container.InstantiatePrefab(prefab, snowmanSpawnData.Position, Quaternion.identity, null);

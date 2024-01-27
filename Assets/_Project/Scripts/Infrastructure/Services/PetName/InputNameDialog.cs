@@ -18,13 +18,15 @@ public class InputNameDialog : Dialog, ISavedProgress
     private IPersistentProgress _persistentProgress;
     private ISaveLoadService _saveLoadService;
     private Hud _hud;
+    private TimersPrincipal _timerPrincipal;
 
     [Inject]
-    public void Construct(IPersistentProgress persistentProgress, ISaveLoadService saveLoadService, Hud hud)
+    public void Construct(IPersistentProgress persistentProgress, ISaveLoadService saveLoadService, Hud hud, TimersPrincipal timersPrincipal)
     {
         _persistentProgress = persistentProgress;
         _saveLoadService = saveLoadService;
         _hud = hud;
+        _timerPrincipal = timersPrincipal;
     }
 
     private void Start()
@@ -64,6 +66,8 @@ public class InputNameDialog : Dialog, ISavedProgress
 
     private void OnClickContinueButton(PointerEventData eventData)
     {
+        _timerPrincipal.AddTimersView();
+        _timerPrincipal.StartTimers();
         _saveLoadService.SaveProgress();
         Hide();
     }

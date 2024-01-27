@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using UnityEngine;
+using Zenject;
 
 public class ProgressUpdaterInstaller : MonoInstaller
 {
@@ -15,6 +16,7 @@ public class ProgressUpdaterInstaller : MonoInstaller
     }
     private void BindProgressUpdater()
     {
-        Container.InstantiatePrefab(_prefabsStorage.Get(typeof(ProgressUpdater)));
+        GameObject progressUpdater = Container.InstantiatePrefab(_prefabsStorage.Get(typeof(ProgressUpdater)));
+        //Container.BindInterfacesTo<ProgressUpdater>().FromComponentOn(progressUpdater).AsSingle();
     }
 }

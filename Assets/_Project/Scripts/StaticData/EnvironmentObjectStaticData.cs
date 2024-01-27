@@ -9,6 +9,5 @@ namespace StaticData
         public GameObjectsTypeId GameObjectsTypeId;
     }
 
-    
-
+   
 }

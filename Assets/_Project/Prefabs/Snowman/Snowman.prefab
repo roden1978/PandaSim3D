@@ -228,6 +228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _anchorPoint: {fileID: 92580642263430657}
+  DecorType: 0
 --- !u!1 &2482336196971773697
 GameObject:
   m_ObjectHideFlags: 0
@@ -868,3 +869,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af695427bde4d8fb9ec74d526180f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _snowmanHead: {fileID: 0}

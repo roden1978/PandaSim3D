@@ -52,7 +52,7 @@ public class Stuff : MonoBehaviour, IStuff
                 stack.Stack(this);
             }
 
-            _plate.RemoveMeal();
+            _plate.UnStack(this);
         }
         else
         {

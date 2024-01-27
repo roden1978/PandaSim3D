@@ -73,7 +73,7 @@ public class SaveLoadService : ISaveLoadService
     {
         string dataPath = GetFilePath(folderName, filename);
         
-        Debug.Log($"Load player progress path {dataPath}");
+        Debug.Log($"Save player progress path {dataPath}");
         
         if (!Directory.Exists(Path.GetDirectoryName(dataPath)))
             Directory.CreateDirectory(Path.GetDirectoryName(dataPath) ?? string.Empty);

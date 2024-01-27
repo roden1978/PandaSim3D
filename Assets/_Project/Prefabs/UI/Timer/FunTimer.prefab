@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 692645394995065244, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
       propertyPath: m_Name
-      value: MoodTimer
+      value: FunTimer
       objectReference: {fileID: 0}
     - target: {fileID: 1182443187029035972, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
@@ -142,7 +142,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 120771779, guid: c0805611afdb1fb46b347f62b119f0af,
+      objectReference: {fileID: 21300000, guid: 4cf8714a1351cfc4586a4ac51a9ea2e7,
         type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

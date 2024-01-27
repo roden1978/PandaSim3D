@@ -5,9 +5,9 @@ using GameObjectsScripts.Timers;
 public class TimerData
 {
     public TimerType Type;
-    public int Duration;
-    public int StartTimerTimeInSeconds;
-    public int EndTimerTimeInSeconds;
+    public float Duration;
+    public float StartTimerTimeInSeconds;
+    public float EndTimerTimeInSeconds;
     public float CurrentTime;
     public float UpdateTime;
     public float IndicatorValue;

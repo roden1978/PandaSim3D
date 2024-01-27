@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using GameObjectsScripts;
+using GameObjectsScripts.Timers;
 using Infrastructure.PickableObjectSpawners;
 using PlayerScripts;
 using UnityEngine;
@@ -34,6 +35,7 @@ namespace Infrastructure.AssetManagement
             LoadPrefab(typeof(Snowman), AssetPaths.SnowmanPath);
             LoadPrefab(typeof(Hat), AssetPaths.HatPath);
             LoadPrefab(typeof(Tray), AssetPaths.TrayPath);
+            LoadPrefab(typeof(Poop), AssetPaths.PoopPath);
         }
 
 

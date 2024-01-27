@@ -32,7 +32,7 @@ public static class Extensions
     {
         return Random.Range(0, 101);
     }
-
+    
     public static int OneItem => 1;
 
     public static void GenerateEnum(this IEnumerable<string> fields, string enumName,
@@ -65,7 +65,7 @@ public static class Extensions
         return pos > -1 ? filename[..pos].ToString() : filename.ToString();
     }
 
-    public static void SetPlayerPosition(this GameObject player, Vector3 position, Quaternion rotation)
+    public static void SetPositionAdapterValue(this GameObject player, Vector3 position, Quaternion rotation)
     {
         IPositionAdapter positionAdapter = player.GetComponent<IPositionAdapter>();
         positionAdapter.Position = position;

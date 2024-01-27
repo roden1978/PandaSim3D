@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9009522805927261094}
+  - component: {fileID: -9159560660079389974}
+  - component: {fileID: 5282772245757460485}
   m_Layer: 6
   m_Name: Poop
   m_TagString: Untagged
@@ -25,13 +27,47 @@ Transform:
   m_GameObject: {fileID: 4872327067082250507}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2.86, y: 0.1, z: 2.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8334949394477142890}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-9159560660079389974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4872327067082250507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b06adb42eb935d459a72422b7f3cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poopView: {fileID: 5563796962586579669}
+--- !u!65 &5282772245757460485
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4872327067082250507}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5051532, y: 0.40724152, z: 0.5}
+  m_Center: {x: 0.0025765896, y: 0.18, z: 0}
 --- !u!1 &5563796962586579669
 GameObject:
   m_ObjectHideFlags: 0

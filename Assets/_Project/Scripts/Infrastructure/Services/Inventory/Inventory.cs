@@ -21,7 +21,7 @@ public class Inventory : IInitializable, IInventory
     private readonly IAssetProvider _assetProvider;
     private readonly List<Slot> _slots;
     private List<InventoryItemData> _progressInventoryData = new();
-    List<InventoryItemData> _items = new();
+    private readonly List<InventoryItemData> _items = new();
 
     public Inventory(IAssetProvider assetProvider)
     {
@@ -137,12 +137,4 @@ public class Inventory : IInitializable, IInventory
 
         persistentPlayerProgress.InventoryItemsData = new InventoryItemsData(_items);
     }
-}
-
-public class Slot
-{
-    public int Id;
-    public bool IsEmpty => InventoryItem is null;
-    public int ItemAmount;
-    public Item InventoryItem;
 }

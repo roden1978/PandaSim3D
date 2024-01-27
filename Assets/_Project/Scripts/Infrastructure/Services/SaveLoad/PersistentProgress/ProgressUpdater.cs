@@ -2,7 +2,7 @@
 using UnityEngine;
 using Zenject;
 
-public class ProgressUpdater : MonoBehaviour
+public class ProgressUpdater : MonoBehaviour// ,IInitializable
 {
     private const float Delay = 3;
     private ISaveLoadStorage _saveLoadStorage;
@@ -14,7 +14,8 @@ public class ProgressUpdater : MonoBehaviour
         _saveLoadStorage = saveLoadStorage;
         _persistentProgress = persistentProgress;
     }
-    private void Start()
+
+    private void Start()//public void Initialize()
     {
         foreach (ISavedProgress progressWriter in _saveLoadStorage.Savers)
         {

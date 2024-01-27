@@ -18,12 +18,14 @@ public class PlayerProgress
         InventoryItemsData = new InventoryItemsData(new List<InventoryItemData>());
         WalletsData = new WalletsData(new Dictionary<int, long>());
         TimersData = new TimersData(new List<TimerData>());
+        RoomsData = new RoomsData(new List<RoomState>());
     }
 }
 
+[Serializable]
 public class RoomsData
 {
-    public List<RoomState> Rooms;
+    public List<RoomState> Rooms = new();
 
     public RoomsData(List<RoomState> roomsData)
     {
@@ -36,19 +38,23 @@ public class RoomsData
     }
 }
 
+
+[Serializable]
 public class RoomState
 {
     public string Name;
-    public FoodData FoodData;
+    public MealData MealData;
     public bool Poop;
     public SnowmanDecor SnowmanDecor;
 }
 
-public class FoodData
+[Serializable]
+public class MealData
 {
     public ItemType Type;
 }
 
+[Serializable]
 public class SnowmanDecor
 {
     public ItemType Type;

@@ -2,7 +2,7 @@
 
 namespace PlayerScripts
 {
-    public class SnowmanHead : MonoBehaviour, IStack
+    public class SnowmanHead : MonoBehaviour, IStack, ISavedProgress
     {
         [SerializeField] private Transform _anchorPoint;
         public ItemType DecorType;
@@ -19,5 +19,14 @@ namespace PlayerScripts
         }
         
         //TODO: Implement spawn decor after state loading
+        public void LoadProgress(PlayerProgress playerProgress)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void SaveProgress(PlayerProgress persistentPlayerProgress)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
