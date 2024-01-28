@@ -34,7 +34,7 @@ namespace Infrastructure.AssetManagement
             LoadPrefab(typeof(Player), AssetPaths.PlayerPath);
             LoadPrefab(typeof(Snowman), AssetPaths.SnowmanPath);
             LoadPrefab(typeof(Hat), AssetPaths.HatPath);
-            LoadPrefab(typeof(Tray), AssetPaths.TrayPath);
+            LoadPrefab(typeof(TrayView), AssetPaths.TrayPath);
             LoadPrefab(typeof(Poop), AssetPaths.PoopPath);
         }
 

@@ -46,6 +46,7 @@ public class RoomInstaller : MonoInstaller
         BindShop();
         BindPoop();
         BindTray();
+        BindTrayView();
     }
 
     private void BindGuiHolder()
@@ -176,11 +177,17 @@ public class RoomInstaller : MonoInstaller
     
     private void BindTray()
     {
-        EnvironmentObjectSpawnData trayData =
-            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Tray);
-        GameObject prefab = _prefabsStorage.Get(typeof(Tray));
-        GameObject tray = Container.InstantiatePrefab(prefab, trayData.Position, Quaternion.identity, null);
-        Container.BindInterfacesAndSelfTo<Tray>().FromComponentOn(tray).AsSingle();
+        Container.BindInterfacesAndSelfTo<Tray>().AsSingle();
+        Tray tray = Container.Resolve<Tray>();
         _saveLoadStorage.RegisterInSaveLoadRepositories(tray);
+    }
+    private void BindTrayView()
+    {
+        EnvironmentObjectSpawnData trayData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.TrayView);
+        GameObject prefab = _prefabsStorage.Get(typeof(TrayView));
+        GameObject tray = Container.InstantiatePrefab(prefab, trayData.Position, Quaternion.identity, null);
+        Container.BindInterfacesAndSelfTo<TrayView>().FromComponentOn(tray).AsSingle();
+        //_saveLoadStorage.RegisterInSaveLoadRepositories(tray);
     }
 }

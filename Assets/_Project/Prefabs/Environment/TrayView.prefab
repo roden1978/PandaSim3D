@@ -100,7 +100,7 @@ PrefabInstance:
     - target: {fileID: 4872327067082250507, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
       propertyPath: m_Name
-      value: Tray
+      value: TrayView
       objectReference: {fileID: 0}
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
@@ -167,7 +167,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4872327067082250507, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6118683154926411128}
+      addedObject: {fileID: 1256068155758651706}
   m_SourcePrefab: {fileID: 100100000, guid: 7af5d2812c9f27e489a8c50d1b3b20c9, type: 3}
 --- !u!1 &290931172060566004 stripped
 GameObject:
@@ -175,7 +175,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 5157857403239614719}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6118683154926411128
+--- !u!114 &1256068155758651706
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

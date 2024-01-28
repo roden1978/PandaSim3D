@@ -45,6 +45,7 @@ public class WinterRoomInstaller : MonoInstaller
         BindInventoryDialog();
         BindShop();
         BindSnowman();
+        BindTray();
     }
 
     private void BindShop()
@@ -143,5 +144,12 @@ public class WinterRoomInstaller : MonoInstaller
         GameObject timersPrincipal = Container.InstantiatePrefab(prefab, _hudTransform);
         Container.BindInterfacesAndSelfTo<TimersPrincipal>().FromComponentOn(timersPrincipal).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(timersPrincipal);
+    }
+    
+    private void BindTray()
+    {
+        Container.BindInterfacesAndSelfTo<Tray>().AsSingle();
+        Tray tray = Container.Resolve<Tray>();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(tray);
     }
 }

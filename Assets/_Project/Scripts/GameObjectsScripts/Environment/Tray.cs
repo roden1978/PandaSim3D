@@ -1,23 +1,21 @@
-﻿using System.Linq;
-using GameObjectsScripts;
+﻿using System;
+using System.Linq;
 using GameObjectsScripts.Timers;
-using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class Tray : MonoBehaviour, ISavedProgress, IInitializable
+public class Tray : ISavedProgress, IInitializable
 {
-    private TimersPrincipal _timerPrincipal;
-    private IShowable _poop;
+    public event Action ShowPoop;
+    public event Action HidePoop;
+    private readonly TimersPrincipal _timersPrincipal;
+    private readonly ISaveLoadService _saveLoadService;
     private Timer _timer;
-    private ISaveLoadService _saveLoadService;
     private bool _isFull;
 
-    [Inject]
-    public void Construct(TimersPrincipal timersPrincipal, IShowable poop, ISaveLoadService saveLoadService)
+    public Tray(TimersPrincipal timersPrincipal, ISaveLoadService saveLoadService)
     {
-        _timerPrincipal = timersPrincipal;
-        _poop = poop;
+        _timersPrincipal = timersPrincipal;
         _saveLoadService = saveLoadService;
     }
 
@@ -25,7 +23,7 @@ public class Tray : MonoBehaviour, ISavedProgress, IInitializable
     {
         if (playerProgress.PlayerState.FirstStartGame)
         {
-            _poop.Hide();
+            HidePoop?.Invoke();
             FillTray(false);
         }
         
@@ -35,12 +33,12 @@ public class Tray : MonoBehaviour, ISavedProgress, IInitializable
         {
             if (room.Poop)
             {
-                _poop.Show();
+                ShowPoop?.Invoke();
                 FillTray(true);
             }
             else
             {
-                _poop.Hide();
+                HidePoop?.Invoke();
                 FillTray(false);
             }
         }
@@ -48,9 +46,8 @@ public class Tray : MonoBehaviour, ISavedProgress, IInitializable
 
     public void SaveProgress(PlayerProgress playerProgress)
     {
-        string currentRoomName = SceneManager.GetActiveScene().name;
         RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == currentRoomName);
+            x.Name == "Room");
         if (room is not null)
             room.Poop = _isFull;
         else
@@ -62,26 +59,26 @@ public class Tray : MonoBehaviour, ISavedProgress, IInitializable
 
     public void Initialize()
     {
-        _timer = _timerPrincipal.GetTimerByType(TimerType.Poop);
+        _timer = _timersPrincipal.GetTimerByType(TimerType.Poop);
         _timer.EndTimer += OnEndTimer;
         _timer.RestartTimer += OnRestartTimer;
     }
 
     private void OnRestartTimer()
     {
-        _poop.Hide();
+        HidePoop?.Invoke();
         FillTray(false);
         _saveLoadService.SaveProgress();
     }
 
     private void OnEndTimer()
     {
-        _poop.Show();
+        ShowPoop?.Invoke();
         FillTray(true);
         _saveLoadService.SaveProgress();
     }
 
-    private void OnDisable()
+    public void Dispose()
     {
         _timer.EndTimer -= OnEndTimer;
         _timer.RestartTimer -= OnRestartTimer;

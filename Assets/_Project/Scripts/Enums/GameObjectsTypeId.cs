@@ -6,7 +6,7 @@
         Room = 1,
         Light = 2,
         Plate = 3,
-        Tray = 4,
+        TrayView = 4,
         Carpet = 5,
         Spoon = 6,
         Player = 7,
