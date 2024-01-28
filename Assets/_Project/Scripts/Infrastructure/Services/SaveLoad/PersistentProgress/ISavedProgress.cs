@@ -1,4 +1,4 @@
 ﻿public interface ISavedProgress : ISavedProgressReader
 {
-    public void SaveProgress(PlayerProgress persistentPlayerProgress);
+    public void SaveProgress(PlayerProgress playerProgress);
 }

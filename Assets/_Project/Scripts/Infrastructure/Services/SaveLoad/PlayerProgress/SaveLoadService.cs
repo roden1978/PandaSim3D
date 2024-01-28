@@ -63,6 +63,7 @@ public class SaveLoadService : ISaveLoadService
             await using FileStream reader = new (dataPath, FileMode.Open);
             byte[] result = new byte[reader.Length];
             await reader.ReadAsync(result, 0, (int)reader.Length);
+            //reader.Close();
             return Encoding.UTF8.GetString(result, 0, result.Length);
         }
 
@@ -84,6 +85,7 @@ public class SaveLoadService : ISaveLoadService
         }
         await using FileStream fs = new(dataPath, FileMode.Create, FileAccess.Write);
         await fs.WriteAsync(Encoding.UTF8.GetBytes(data), 0, data.Length);
+        //fs.Close();
     }
 
     private string GetFilePath(string folderName, string fileName)

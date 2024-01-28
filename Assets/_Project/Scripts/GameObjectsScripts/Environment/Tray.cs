@@ -46,15 +46,15 @@ public class Tray : MonoBehaviour, ISavedProgress, IInitializable
         }
     }
 
-    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
         string currentRoomName = SceneManager.GetActiveScene().name;
-        RoomState room = persistentPlayerProgress.RoomsData.Rooms.FirstOrDefault(x =>
+        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
             x.Name == currentRoomName);
         if (room is not null)
             room.Poop = _isFull;
         else
-            persistentPlayerProgress.RoomsData.Rooms.Add(new RoomState
+            playerProgress.RoomsData.Rooms.Add(new RoomState
             {
                 Poop = _isFull
             });

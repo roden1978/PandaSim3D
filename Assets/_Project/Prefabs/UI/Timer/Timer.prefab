@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4117941137439057688}
   - component: {fileID: 439658964563468577}
   - component: {fileID: 3307755549147841612}
-  - component: {fileID: 4122389761009054706}
+  - component: {fileID: 2116681407238333581}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -60,7 +60,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &4122389761009054706
+--- !u!114 &2116681407238333581
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -69,7 +69,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 692645394995065244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6bd3ec9b4894324a3fb8eb075dde976, type: 3}
+  m_Script: {fileID: 11500000, guid: 0065e18388384cc3b958a31228d46370, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _indicator: {fileID: 5732822114281820276}

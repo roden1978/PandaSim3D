@@ -113,9 +113,9 @@ public class Hud : MonoBehaviour, ISavedProgress
         pointerListener.gameObject.SetActive(value);
     }
 
-    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
-        
+        //Debug.Log("Break Point");
     }
 
     private void SaveProgress()

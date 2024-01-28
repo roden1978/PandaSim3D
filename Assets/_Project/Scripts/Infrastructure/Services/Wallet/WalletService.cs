@@ -75,9 +75,9 @@ public class WalletService : IWalletService, IInitializable
         }
     }
 
-    public void SaveProgress(PlayerProgress progress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
-        progress.WalletsData = new WalletsData(_wallets);
+        playerProgress.WalletsData = new WalletsData(_wallets);
     }
 
     private void ClearWallets()

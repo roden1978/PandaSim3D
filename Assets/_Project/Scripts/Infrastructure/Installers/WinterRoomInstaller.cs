@@ -18,6 +18,7 @@ public class WinterRoomInstaller : MonoInstaller
     private IPersistentProgress _persistenceProgress;
 
     private Transform _guiHolderTransform;
+    private Transform _hudTransform;
 
     [Inject]
     public void Construct(PrefabsStorage prefabsStorage, ISaveLoadStorage saveLoadStorage,
@@ -37,9 +38,10 @@ public class WinterRoomInstaller : MonoInstaller
         BindGuiHolder();
         BindDialogManager();
         BindHud();
+        BindTimersPrincipal();
         BindPlayer();
-        BindCrateAkaBindPlate();
         BindInventory();
+        BindCrate();
         BindInventoryDialog();
         BindShop();
         BindSnowman();
@@ -85,23 +87,29 @@ public class WinterRoomInstaller : MonoInstaller
         Debug.Log($"Instantiate hud start ");
         GameObject prefab = _prefabsStorage.Get(Type.GetType("Hud")); //almost typeof(Hud)
         GameObject hud = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        _hudTransform = hud.transform;
         Container.Bind<Hud>().FromComponentOn(hud).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(hud);
     }
 
-    private void BindCrateAkaBindPlate()
+    private void BindCrate()
     {
         EnvironmentObjectSpawnData crateData =
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Crate);
         GameObject prefab = _prefabsStorage.Get(typeof(Crate));
         IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = crateData.Position;
-
+        GameObject crate = Container.InstantiatePrefab(prefab);
+        crate.gameObject.name = nameof(Crate);
+        Container.BindInterfacesAndSelfTo<Plate>().FromComponentOn(crate).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(crate);
+        /*
         Container.Bind<Plate>()
             .FromComponentInNewPrefab(prefab)
             .WithGameObjectName("Crate")
             .AsSingle()
             .NonLazy();
+            */
     }
 
     private void BindPlayer()
@@ -126,5 +134,14 @@ public class WinterRoomInstaller : MonoInstaller
             _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Snowman);
         GameObject snowman = Container.InstantiatePrefab(prefab, snowmanSpawnData.Position, Quaternion.identity, null);
         _saveLoadStorage.RegisterInSaveLoadRepositories(snowman);
+    }
+
+    private void BindTimersPrincipal()
+    {
+        Debug.Log($"Instantiate TimersPrincipal start ");
+        GameObject prefab = _prefabsStorage.Get(typeof(TimersPrincipal));
+        GameObject timersPrincipal = Container.InstantiatePrefab(prefab, _hudTransform);
+        Container.BindInterfacesAndSelfTo<TimersPrincipal>().FromComponentOn(timersPrincipal).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(timersPrincipal);
     }
 }

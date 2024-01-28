@@ -18,13 +18,13 @@ public class Stuff : MonoBehaviour, IStuff
     private Vector3 _mousePosition;
     private Vector3 _startPosition;
     private Camera _camera;
-    private Plate _plate;
+    private IStack _stack;
 
     private IStack[] _stacks = new IStack[10];
 
-    public void Construct(Plate plate)
+    public void Construct(IStack stack)
     {
-        _plate = plate;
+        _stack = stack;
     }
 
     private void Start()
@@ -52,7 +52,7 @@ public class Stuff : MonoBehaviour, IStuff
                 stack.Stack(this);
             }
 
-            _plate.UnStack(this);
+            _stack.UnStack(this);
         }
         else
         {

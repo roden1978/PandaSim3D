@@ -120,7 +120,7 @@ public class Inventory : IInitializable, IInventory
         _progressInventoryData = playerProgress.InventoryItemsData.InventoryData.ToList();
     }
 
-    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
         _items.Clear();
         
@@ -135,6 +135,6 @@ public class Inventory : IInitializable, IInventory
                     Amount = slot.ItemAmount
                 }));
 
-        persistentPlayerProgress.InventoryItemsData = new InventoryItemsData(_items);
+        playerProgress.InventoryItemsData = new InventoryItemsData(_items);
     }
 }

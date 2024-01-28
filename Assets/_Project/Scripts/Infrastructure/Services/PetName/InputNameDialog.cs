@@ -84,7 +84,7 @@ public class InputNameDialog : Dialog, ISavedProgress
         
     }
 
-    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
         _persistentProgress.PlayerProgress.PlayerState.FirstStartGame = false;
         _persistentProgress.PlayerProgress.PlayerState.PetName = _inputField.text;

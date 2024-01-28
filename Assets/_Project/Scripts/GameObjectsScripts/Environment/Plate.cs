@@ -64,7 +64,7 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
         }
     }
 
-    private async Task InstantiateMeal(string mealName)
+    private async UniTask<Stuff> InstantiateMeal(string mealName)
     {
         UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(mealName);
 
@@ -80,6 +80,7 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
         stuff.Construct(this);
 
         _assetProvider.ReleaseAssetsByLabel(mealName);
+        return stuff;
     }
 
     private void AddToMealCache(string mealName, GameObject meal)
@@ -120,19 +121,19 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
             if(melaType.Equals(ItemType.None)) return;
             _itemType = melaType;
             string mealName = Enum.GetName(typeof(ItemType), (int)melaType);
-            await InstantiateMeal(mealName);
+            Stuff stuff = await InstantiateMeal(mealName);
         }
     }
 
-    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
         string currentRoomName = SceneManager.GetActiveScene().name;
-        RoomState room = persistentPlayerProgress.RoomsData.Rooms.FirstOrDefault(x =>
+        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
             x.Name == currentRoomName);
         if (room is not null)
             room.MealData.Type = _itemType;
         else
-            persistentPlayerProgress.RoomsData.Rooms.Add(new RoomState
+            playerProgress.RoomsData.Rooms.Add(new RoomState
             {
                 MealData = new MealData
                 {

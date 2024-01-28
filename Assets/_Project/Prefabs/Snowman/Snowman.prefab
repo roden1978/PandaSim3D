@@ -869,4 +869,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6af695427bde4d8fb9ec74d526180f5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _snowmanHead: {fileID: 0}
+  _snowmanHead: {fileID: 3506122980379922388}

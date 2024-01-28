@@ -104,12 +104,12 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         }
     }
 
-    public void SaveProgress(PlayerProgress persistentPlayerProgress)
+    public void SaveProgress(PlayerProgress playerProgress)
     {
-        persistentPlayerProgress.TimersData.Timers.Clear();
+        playerProgress.TimersData.Timers.Clear();
         foreach (Timer timer in _timerSet)
         {
-            persistentPlayerProgress.TimersData.Timers.Add(timer.SaveState());
+            playerProgress.TimersData.Timers.Add(timer.SaveState());
         }
     }
 }
