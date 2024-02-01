@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagement;
+using StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -22,8 +23,15 @@ namespace PlayerScripts
         }
         public void Stack(Stuff stuff)
         {
-            stuff.gameObject.transform.position = _anchorPoint.position;
-            _type = stuff.Item.Type;
+            if (stuff.Item.StuffSpecies == StuffSpecies.Decor)
+            {
+                stuff.gameObject.transform.position = _anchorPoint.position;
+                _type = stuff.Item.Type;
+            }
+            else
+            {
+                stuff.transform.position = stuff.StartPosition;
+            }
         }
         
         public void UnStack(Stuff stuff)

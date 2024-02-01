@@ -8,11 +8,13 @@ namespace GameObjectsScripts.Timers
         public bool Active => _active;
         public float IndicatorValue => _indicatorValue;
         public TimerType TimerType => _type;
+        public (float decrease, float increase) MoodValues => _moodValues;
         public event Action<float> UpdateTimerView;
-        public event Action EndTimer;
-        public event Action RestartTimer;
-
+        public event Action<Timer> EndTimer;
+        public event Action<Timer> RestartTimer;
+        
         private float _duration;
+        private readonly (float decrease, float increase) _moodValues;
         private TimerType _type;
         private bool _active;
         private float _currentTime;
@@ -22,10 +24,11 @@ namespace GameObjectsScripts.Timers
         private float _indicatorValue;
         private bool _increaseTimer;
 
-        public Timer(float duration, TimerType type)
+        public Timer(float duration, Tuple<float, float> moodValues, TimerType type)
         {
             _duration = duration * TimeUtils.OneMinute;
             _currentTime = _duration;
+            _moodValues = (moodValues.Item1, moodValues.Item2);
             _type = type;
         }
 
@@ -62,7 +65,7 @@ namespace GameObjectsScripts.Timers
                 Reset();
                 Stop();
                 UpdateTimerView?.Invoke(Single.Epsilon);
-                EndTimer?.Invoke();
+                EndTimer?.Invoke(this);
             }
 
             _indicatorValue = Convert.ToSingle(_currentTime / _duration);
@@ -86,7 +89,7 @@ namespace GameObjectsScripts.Timers
         {
             _currentTime = _duration;
             Start();
-            RestartTimer?.Invoke();
+            RestartTimer?.Invoke(this);
         }
 
         public async void Synchronize()

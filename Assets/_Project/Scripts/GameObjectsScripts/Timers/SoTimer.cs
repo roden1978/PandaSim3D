@@ -10,11 +10,13 @@ namespace GameObjectsScripts.Timers
         [SerializeField] private GameObject _timerPrefab;
         [SerializeField] private Color _timerColor = Color.white;
         [SerializeField] private float _moodIncrease;
+        [SerializeField] [Range(0, .2f)] private float _moodDecrease;
 
         public TimerType Type => _type;
         public float Duration => _duration;
         public GameObject TimerPrefab => _timerPrefab;
         public Color TimeColor => _timerColor;
         public float MoodIncrease => _moodIncrease;
+        public float MoodDecrease => _moodDecrease;
     }
 }

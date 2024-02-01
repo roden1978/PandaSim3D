@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UI;
 using System.Collections.Generic;
 using CustomEventBus.Signals;
+using StaticData;
 using TMPro;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -53,13 +54,19 @@ public class ShopDialog : Dialog
 
     private void OnBuyItem(BuyItemSignal signal)
     {
-        if (_walletService.TrySpend(CurrencyType.Coins, signal.Item.Price))
-        {
-            _inventory.TryAddItem(this, signal.Item, signal.Value);
-            _eventBus.Invoke(new UpdateInventoryView());
-            SaveProgress();
-            Debug.Log($"Was spend {signal.Item.Price}");
-        }
+        if (false == CheckEquipment(signal.Item))
+            if (_walletService.TrySpend(CurrencyType.Coins, signal.Item.Price))
+            {
+                _inventory.TryAddItem(this, signal.Item, signal.Value);
+                //_eventBus.Invoke(new UpdateInventoryView());
+                SaveProgress();
+                Debug.Log($"Was spend {signal.Item.Price}");
+            }
+    }
+
+    private bool CheckEquipment(Item item)
+    {
+        return item.StuffSpecies == StuffSpecies.Cloths && _inventory.HasItem(item.Type);
     }
 
     private void SaveProgress()

@@ -68,7 +68,6 @@ public class RoomInstaller : MonoInstaller
         GameObject poop = Container.InstantiatePrefab(prefab);
         poop.gameObject.name = nameof(Poop);
         Container.BindInterfacesAndSelfTo<Poop>().FromComponentOn(poop).AsSingle();
-        //_saveLoadStorage.RegisterInSaveLoadRepositories(poop);
     }
 
     private void BindShop()
@@ -95,23 +94,19 @@ public class RoomInstaller : MonoInstaller
     private void BindInventory()
     {
         Container.BindInterfacesAndSelfTo<Inventory>().AsSingle();
-        Inventory inventory = Container.Resolve<Inventory>();
-        _saveLoadStorage.RegisterInSaveLoadRepositories(inventory);
     }
 
     private void BindInventoryDialog()
     {
         GameObject prefab = _prefabsStorage.Get(typeof(InventoryDialog));
         GameObject inventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
-        Container.Bind<InventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
+        Container.BindInterfacesAndSelfTo<InventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
     }
 
     private void BindDialogManager()
     {
         Container.Bind<DialogManager>().AsSingle();
     }
-
-   
 
     private void BindHud()
     {
@@ -178,8 +173,6 @@ public class RoomInstaller : MonoInstaller
     private void BindTray()
     {
         Container.BindInterfacesAndSelfTo<Tray>().AsSingle();
-        Tray tray = Container.Resolve<Tray>();
-        _saveLoadStorage.RegisterInSaveLoadRepositories(tray);
     }
     private void BindTrayView()
     {
@@ -188,6 +181,5 @@ public class RoomInstaller : MonoInstaller
         GameObject prefab = _prefabsStorage.Get(typeof(TrayView));
         GameObject tray = Container.InstantiatePrefab(prefab, trayData.Position, Quaternion.identity, null);
         Container.BindInterfacesAndSelfTo<TrayView>().FromComponentOn(tray).AsSingle();
-        //_saveLoadStorage.RegisterInSaveLoadRepositories(tray);
     }
 }

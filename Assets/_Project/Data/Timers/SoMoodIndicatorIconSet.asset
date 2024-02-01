@@ -9,12 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98372642e9c74fb799d2d7b0819f0a56, type: 3}
-  m_Name: Carrot
+  m_Script: {fileID: 11500000, guid: 1c5a6f34667b4c1babc1456ef9a5b02c, type: 3}
+  m_Name: SoMoodIndicatorIconSet
   m_EditorClassIdentifier: 
-  Type: 7
-  Name: Carrot
-  Sprite: {fileID: -789967310, guid: d8dc97a4e2f796d4fb06c055fa8b002f, type: 3}
-  Description: "\u041C\u043E\u0440\u043A\u043E\u0432\u043A\u0430"
-  Price: 10
-  StuffSpecies: 1
+  _soSprites: []

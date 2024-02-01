@@ -13,7 +13,7 @@ public class Stuff : MonoBehaviour, IStuff
 {
     [SerializeField] private Item _item;
     public Item Item => _item;
-
+    public Vector3 StartPosition => _startPosition;
     private const int LayerMask = 1 << 8 | 1 << 6;
     private Vector3 _mousePosition;
     private Vector3 _startPosition;

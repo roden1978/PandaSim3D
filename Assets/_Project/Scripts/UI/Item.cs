@@ -1,3 +1,4 @@
+using StaticData;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Items/Item", fileName = "New Item", order = 51)]
@@ -8,7 +9,7 @@ public class Item: ScriptableObject
     public Sprite Sprite;
     public string Description;
     public int Price;
-    public bool Meal;
+    public StuffSpecies StuffSpecies;
     
     private void OnValidate()
     {

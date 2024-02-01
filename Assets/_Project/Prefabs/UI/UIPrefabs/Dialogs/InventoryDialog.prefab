@@ -54,6 +54,7 @@ MonoBehaviour:
   _uiInventorySlot: {fileID: 2493806517808975240, guid: d30e223dcdc67df4695a49606e09b490,
     type: 3}
   _uiDescriptionHolder: {fileID: 941375590418509373}
+  _debugList: []
 --- !u!1 &237700211122316855
 GameObject:
   m_ObjectHideFlags: 0
@@ -186,10 +187,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1038283307635472191}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 140.153, y: 3.2039948}
+  m_SizeDelta: {x: -335.962, y: -83.298}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6888598457703642477
 CanvasRenderer:
@@ -282,7 +283,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -268.18796, y: -96.31067, z: -591.19885, w: -97.79236}
+  m_margin: {x: 9.717224, y: 7.498413, z: 1.9761353, w: -0.71569824}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1012,7 +1013,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Put in a plate
+  m_text: USE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

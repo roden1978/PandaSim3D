@@ -24,20 +24,32 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     [Inject]
     private void Construct(ISaveLoadService saveLoadService) //private void InitializeTimers()
     {
-        _moodIndicator = new MoodIndicator();
         _saveLoadService = saveLoadService;
 
+        foreach (SoTimer soTimer in _set.SoTimers)
+        {
+            Timer timer = new(soTimer.Duration, new Tuple<float, float>(soTimer.MoodDecrease,soTimer.MoodIncrease) , soTimer.Type);
+            _timerSet.AddTimer(timer);
+            _debugTimers.Add(timer.TimerType.ToString());
+        }
+        _moodIndicator = new MoodIndicator(_timerSet);
+    }
+
+    private void OnEndAnyTimer()
+    {
+    }
+
+    public void Initialize()
+    {
+        _moodIndicator.Initialize();
+        
+        /*Debug.Log("Init Timers");
         foreach (SoTimer soTimer in _set.SoTimers)
         {
             Timer timer = new(soTimer.Duration, soTimer.Type);
             _timerSet.AddTimer(timer);
             _debugTimers.Add(timer.TimerType.ToString());
-        }
-    }
-
-    public void Initialize()
-    {
-        //InitializeTimers();
+        }*/
     }
 
     public void StartTimers()
@@ -46,7 +58,6 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         {
             //Watch this for cold timer!!!!!
             if (timer.TimerType == TimerType.Cold) continue;
-
             timer.Start();
         }
     }
@@ -66,9 +77,12 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     public void AddTimersView()
     {
-        MoodIndicatorView moodIndicatorView = Instantiate(_moodIndicatorView, _moodIndicatorParent);
-        moodIndicatorView.Construct(_moodIndicator);
+        InstantiateMoodIndicatorView();
+        InstantiateTimersViews();
+    }
 
+    private void InstantiateTimersViews()
+    {
         foreach (Timer timer in _timerSet)
         {
             SoTimer soTimer = _set.SoTimers.FirstOrDefault(x => x.Type == timer.TimerType);
@@ -80,6 +94,13 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
                 timerView.Construct(timer, soTimer.TimeColor);
             }
         }
+    }
+
+    private void InstantiateMoodIndicatorView()
+    {
+        MoodIndicatorView moodIndicatorView = Instantiate(_moodIndicatorView, _moodIndicatorParent);
+        moodIndicatorView.Construct(_moodIndicator);
+        moodIndicatorView.Initialize();
     }
 
     public void LoadProgress(PlayerProgress playerProgress)

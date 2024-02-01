@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using StaticData;
+using UnityEngine;
 using Zenject;
 
 namespace PlayerScripts
@@ -14,10 +15,11 @@ namespace PlayerScripts
         }
         public void Stack(Stuff stuff)
         {
-            if(stuff.Item.Meal)
+            if(stuff.Item.StuffSpecies == StuffSpecies.Meal)
             {
                 Debug.Log($"The pet ate the {stuff.Item.Name}");
                 _wallet.AddAmount(CurrencyType.Coins, stuff.Item.Price);
+                stuff.gameObject.transform.position = stuff.StartPosition;
                 stuff.gameObject.SetActive(false);
             }
         }

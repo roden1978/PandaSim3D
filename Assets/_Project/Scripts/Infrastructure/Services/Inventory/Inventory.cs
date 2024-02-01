@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagement;
@@ -10,8 +11,10 @@ public interface IInventory : ISavedProgress
 {
     bool TryAddItem(object sender, Item item, int amount);
     bool TryGetSlotById(int id, out Slot slot);
+    bool HasSlotById(int id);
     IEnumerable<Slot> GetAllSlots();
     bool RemoveItem(int id);
+    bool HasItem(ItemType type);
     int Capacity { get; }
 }
 
@@ -20,7 +23,6 @@ public class Inventory : IInitializable, IInventory
     public int Capacity { get; }
     private readonly IAssetProvider _assetProvider;
     private readonly List<Slot> _slots;
-    private List<InventoryItemData> _progressInventoryData = new();
     private readonly List<InventoryItemData> _items = new();
 
     public Inventory(IAssetProvider assetProvider)
@@ -30,25 +32,13 @@ public class Inventory : IInitializable, IInventory
         _slots = new List<Slot>(Capacity);
     }
 
-    public async void Initialize()
+    public void Initialize()
     {
         for (int i = 0; i < Capacity; i++)
         {
             _slots.Add(new Slot { Id = i });
         }
 
-        foreach (InventoryItemData item in _progressInventoryData)
-        {
-            Item inventoryItem = await LoadInventoryItem(item.Name + "Data");
-            if (inventoryItem is null) return;
-            
-            if (TryGetSlotById(item.SlotId, out Slot slot))
-            {
-                slot.ItemAmount = item.Amount;
-                slot.InventoryItem = inventoryItem;
-            }
-        }
-        
         Debug.Log($"SLots count {_slots.Count}");
     }
 
@@ -84,9 +74,26 @@ public class Inventory : IInitializable, IInventory
 
     public bool TryGetSlotById(int id, out Slot slot)
     {
+        if (id == Int32.MaxValue)
+        {
+            slot = default;
+            return false;
+        }
         slot = _slots.FirstOrDefault(x => x.Id == id);
         return slot is not null;
     }
+    
+    public bool HasSlotById(int id)
+    {
+        return _slots.FirstOrDefault(x => x.Id == id) is not null;
+    }
+
+    public bool HasItem(ItemType type)
+    {
+        var slot = _slots.Where(x => x.IsEmpty == false).FirstOrDefault(x => x.InventoryItem.Type == type);
+        return slot is not null;
+    }
+
 
     public IEnumerable<Slot> GetAllSlots()
     {
@@ -107,7 +114,6 @@ public class Inventory : IInitializable, IInventory
         return false;
     }
 
-    
 
     private void ClearSlot(Slot slot)
     {
@@ -115,15 +121,27 @@ public class Inventory : IInitializable, IInventory
         slot.InventoryItem = null;
     }
 
-    public void LoadProgress(PlayerProgress playerProgress)
+    public async void LoadProgress(PlayerProgress playerProgress)
     {
-        _progressInventoryData = playerProgress.InventoryItemsData.InventoryData.ToList();
+        var progressInventoryData = playerProgress.InventoryItemsData.InventoryData.ToList();
+
+        foreach (InventoryItemData item in progressInventoryData)
+        {
+            Item inventoryItem = await LoadInventoryItem(item.Name + "Data");
+            if (inventoryItem is null) return;
+
+            if (TryGetSlotById(item.SlotId, out Slot slot))
+            {
+                slot.ItemAmount = item.Amount;
+                slot.InventoryItem = inventoryItem;
+            }
+        }
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
     {
         _items.Clear();
-        
+
         _slots.Where(slot => slot.ItemAmount > 0)
             .ToList()
             .ForEach(slot => _items

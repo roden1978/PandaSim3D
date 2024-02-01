@@ -64,14 +64,14 @@ public class Tray : ISavedProgress, IInitializable
         _timer.RestartTimer += OnRestartTimer;
     }
 
-    private void OnRestartTimer()
+    private void OnRestartTimer(Timer timer)
     {
         HidePoop?.Invoke();
         FillTray(false);
         _saveLoadService.SaveProgress();
     }
 
-    private void OnEndTimer()
+    private void OnEndTimer(Timer timer)
     {
         ShowPoop?.Invoke();
         FillTray(true);

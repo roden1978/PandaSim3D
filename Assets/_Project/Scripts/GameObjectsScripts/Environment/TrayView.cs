@@ -1,19 +1,20 @@
 ﻿using GameObjectsScripts;
+using Services.SaveLoad.PlayerProgress;
 using UnityEngine;
 using Zenject;
 
-public class TrayView : MonoBehaviour
+public class TrayView : MonoBehaviour, IInitializable
 {
     private Tray _tray;
     private IShowable _poop;
+    private ISaveLoadStorage _saveLoadStorage;
 
     [Inject]
-    public void Construct(Tray tray, IShowable poop)
+    public void Construct(Tray tray, IShowable poop, ISaveLoadStorage saveLoadStorage)
     {
         _tray = tray;
         _poop = poop;
-        _tray.ShowPoop += OnShowPoop;
-        _tray.HidePoop += OnHidePoop;
+        _saveLoadStorage = saveLoadStorage;
     }
 
     private void OnDisable()
@@ -31,5 +32,12 @@ public class TrayView : MonoBehaviour
     private void OnHidePoop()
     {
         _poop.Hide();
+    }
+
+    public void Initialize()
+    {
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_tray);
+        _tray.ShowPoop += OnShowPoop;
+        _tray.HidePoop += OnHidePoop;
     }
 }

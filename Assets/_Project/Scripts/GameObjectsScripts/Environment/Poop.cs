@@ -5,9 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShowable, IPositionAdapter
+public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShowable, IPositionAdapter, IInitializable
 {
-    [SerializeField] private GameObject _poopView;
     private TimersPrincipal _timersPrincipal;
     private Timer _timer;
 
@@ -42,8 +41,11 @@ public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShow
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("Pointer down");
-        _timer ??= _timersPrincipal.GetTimerByType(TimerType.Poop);
         _timer.IncreaseSetActive(true);
     }
-    
+
+    public void Initialize()
+    {
+        _timer ??= _timersPrincipal.GetTimerByType(TimerType.Poop);
+    }
 }
