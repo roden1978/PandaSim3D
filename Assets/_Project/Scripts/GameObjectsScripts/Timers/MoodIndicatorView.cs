@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using Services.SaveLoad.PlayerProgress;
+using UnityEngine;
 using UnityEngine.UI;
-using Zenject;
 
 public class MoodIndicatorView : MonoBehaviour
 {
@@ -10,16 +10,19 @@ public class MoodIndicatorView : MonoBehaviour
     
     private readonly Color[] _colors = { new(1, 0, 0), new(1, .3f, 0), Color.yellow, Color.green };
     private MoodIndicator _moodIndicator;
+    private ISaveLoadStorage _saveLoadStorage;
 
-    public void Construct(MoodIndicator moodIndicator)
+    public void Construct(MoodIndicator moodIndicator, ISaveLoadStorage saveLoadStorage)
     {
         _moodIndicator = moodIndicator;
+        _saveLoadStorage = saveLoadStorage;
         _indicator.onValueChanged.AddListener(SetColour);
+        _moodIndicator.UpdateIndicatorValue += OnUpdateIndicatorView;
     }
     public void Initialize()
     {
         SetColour(1); //TODO: Change after indicator state loading
-        _moodIndicator.UpdateIndicatorValue += OnUpdateIndicatorView;
+        
     }
 
     private void OnDisable()

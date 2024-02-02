@@ -8,13 +8,14 @@ namespace GameObjectsScripts.Timers
         public bool Active => _active;
         public float IndicatorValue => _indicatorValue;
         public TimerType TimerType => _type;
-        public (float decrease, float increase) MoodValues => _moodValues;
+        public float Decrease => _decrease;
+
         public event Action<float> UpdateTimerView;
         public event Action<Timer> EndTimer;
-        public event Action<Timer> RestartTimer;
+        public event Action<Timer, float> RestartTimer;
         
+        private readonly float _decrease;
         private float _duration;
-        private readonly (float decrease, float increase) _moodValues;
         private TimerType _type;
         private bool _active;
         private float _currentTime;
@@ -23,12 +24,13 @@ namespace GameObjectsScripts.Timers
         private float _endTime;
         private float _indicatorValue;
         private bool _increaseTimer;
+        private float _reward;
 
-        public Timer(float duration, Tuple<float, float> moodValues, TimerType type)
+        public Timer(float duration, float decreaseValue, TimerType type)
         {
             _duration = duration * TimeUtils.OneMinute;
             _currentTime = _duration;
-            _moodValues = (moodValues.Item1, moodValues.Item2);
+            _decrease = decreaseValue;
             _type = type;
         }
 
@@ -85,11 +87,17 @@ namespace GameObjectsScripts.Timers
             _indicatorValue = 0;
         }
 
-        private void Restart()
+        public void Restart()
         {
             _currentTime = _duration;
+            _indicatorValue = 1;
             Start();
-            RestartTimer?.Invoke(this);
+            RestartTimer?.Invoke(this, _reward);
+        }
+
+        public void SetReward(float value)
+        {
+            _reward = value;
         }
 
         public async void Synchronize()
@@ -105,9 +113,9 @@ namespace GameObjectsScripts.Timers
             }
             else
             {
-                _indicatorValue = 1;
-                _increaseTimer = false;
-                Restart();
+                //_indicatorValue = 1;
+                IncreaseSetActive(false);
+                //Restart();
             }
 
             Debug.Log(

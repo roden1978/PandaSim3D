@@ -7,6 +7,7 @@ using Zenject;
 
 public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShowable, IPositionAdapter, IInitializable
 {
+    [SerializeField] [Range(0, .2f)]private float _cleanReward;
     private TimersPrincipal _timersPrincipal;
     private Timer _timer;
 
@@ -36,6 +37,11 @@ public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShow
     {
         if(_timer.IndicatorValue < 1)
             _timer.IncreaseSetActive(false);
+        else
+        {
+            _timer.SetReward(_cleanReward);
+            _timer.Restart();
+        }
     }
 
     public void OnPointerDown(PointerEventData eventData)

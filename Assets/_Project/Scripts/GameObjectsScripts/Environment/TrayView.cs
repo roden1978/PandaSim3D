@@ -15,6 +15,10 @@ public class TrayView : MonoBehaviour, IInitializable
         _tray = tray;
         _poop = poop;
         _saveLoadStorage = saveLoadStorage;
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_tray);
+        
+        _tray.ShowPoop += OnShowPoop;
+        _tray.HidePoop += OnHidePoop;
     }
 
     private void OnDisable()
@@ -36,8 +40,6 @@ public class TrayView : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        _saveLoadStorage.RegisterInSaveLoadRepositories(_tray);
-        _tray.ShowPoop += OnShowPoop;
-        _tray.HidePoop += OnHidePoop;
+        
     }
 }

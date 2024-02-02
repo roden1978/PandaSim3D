@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using GameObjectsScripts.Timers;
+using Services.SaveLoad.PlayerProgress;
 using TriInspector;
 using UnityEngine;
 using Zenject;
@@ -18,38 +18,29 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     private readonly TimerSet _timerSet = new();
     private MoodIndicator _moodIndicator;
+    private ISaveLoadStorage _saveLoadStorage;
     private ISaveLoadService _saveLoadService;
 
 
     [Inject]
-    private void Construct(ISaveLoadService saveLoadService) //private void InitializeTimers()
+    private void Construct(ISaveLoadStorage saveLoadStorage, ISaveLoadService saveLoadService)
     {
-        _saveLoadService = saveLoadService;
+        _saveLoadStorage = saveLoadStorage;
 
         foreach (SoTimer soTimer in _set.SoTimers)
         {
-            Timer timer = new(soTimer.Duration, new Tuple<float, float>(soTimer.MoodDecrease,soTimer.MoodIncrease) , soTimer.Type);
+            Timer timer = new(soTimer.Duration, soTimer.MoodDecrease, soTimer.Type);
             _timerSet.AddTimer(timer);
             _debugTimers.Add(timer.TimerType.ToString());
         }
-        _moodIndicator = new MoodIndicator(_timerSet);
-    }
 
-    private void OnEndAnyTimer()
-    {
+        _moodIndicator = new MoodIndicator(_timerSet, saveLoadService);
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
     }
 
     public void Initialize()
     {
         _moodIndicator.Initialize();
-        
-        /*Debug.Log("Init Timers");
-        foreach (SoTimer soTimer in _set.SoTimers)
-        {
-            Timer timer = new(soTimer.Duration, soTimer.Type);
-            _timerSet.AddTimer(timer);
-            _debugTimers.Add(timer.TimerType.ToString());
-        }*/
     }
 
     public void StartTimers()
@@ -99,7 +90,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private void InstantiateMoodIndicatorView()
     {
         MoodIndicatorView moodIndicatorView = Instantiate(_moodIndicatorView, _moodIndicatorParent);
-        moodIndicatorView.Construct(_moodIndicator);
+        moodIndicatorView.Construct(_moodIndicator, _saveLoadStorage);
         moodIndicatorView.Initialize();
     }
 
@@ -114,7 +105,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         foreach (Timer timer in _timerSet)
         {
-            TimerData timerData = playerProgress.TimersData.Timers.FirstOrDefault(x => x.Type == timer.TimerType);
+            TimerData timerData = playerProgress.TimersData.Timers
+                .FirstOrDefault(x => x.Type == timer.TimerType);
 
             if (timerData is null) continue;
 

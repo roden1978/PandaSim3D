@@ -64,7 +64,7 @@ public class Tray : ISavedProgress, IInitializable
         _timer.RestartTimer += OnRestartTimer;
     }
 
-    private void OnRestartTimer(Timer timer)
+    private void OnRestartTimer(Timer timer, float reward)
     {
         HidePoop?.Invoke();
         FillTray(false);

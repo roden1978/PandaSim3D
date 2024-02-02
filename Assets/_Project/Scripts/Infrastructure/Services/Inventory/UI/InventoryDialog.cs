@@ -53,24 +53,6 @@ public class InventoryDialog : Dialog, ISlotChanger
             UIInventorySlot uiInventorySlot = Instantiate(_uiInventorySlot, _slotHolder);
             uiInventorySlot.Construct(this, i);
             _uiSlots.Add(uiInventorySlot);
-
-            /*if (_inventory.TryGetSlotById(i, out Slot slot))
-            {
-                if (!slot.IsEmpty)
-                {
-                    uiInventorySlot.UIItem.Icon.sprite = slot.InventoryItem.Sprite;
-                    uiInventorySlot.UIItem.ValueText.text = $"x{slot.ItemAmount}";
-                    uiInventorySlot.UIItem.ItemType = slot.InventoryItem.Type;
-                    uiInventorySlot.UIItem.InventorySlotId = slot.Id;
-                    uiInventorySlot.UIItem.gameObject.SetActive(true);
-
-                    _debugList.Add(new DebugItemData
-                    {
-                        Name = slot.InventoryItem.Type.ToString(),
-                        Value = slot.ItemAmount,
-                    });
-                }
-            }*/
             _saveLoadStorage.RegisterInSaveLoadRepositories(_inventory);
         }
     }
