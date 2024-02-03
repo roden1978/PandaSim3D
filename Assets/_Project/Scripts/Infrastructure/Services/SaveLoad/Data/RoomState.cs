@@ -11,6 +11,7 @@ public class RoomState
 
     public string Name;
     public MealData MealData;
+    public ClothsData ClothsData;
     public bool Poop;
     public SnowmanDecor SnowmanDecor;
 }

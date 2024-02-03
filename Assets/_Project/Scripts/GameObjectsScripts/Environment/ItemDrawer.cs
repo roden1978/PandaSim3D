@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagement;
 using PlayerScripts;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using Zenject;
 
-
-public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, IStack, ISavedProgress
+public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClickHandler, IStack
 {
     [SerializeField] private Transform _anchorPointTransform;
 
@@ -21,6 +18,9 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
         set => transform.position = value;
     }
 
+    protected DialogManager DialogManager => _dialogManager;
+    protected ItemType ItemType { get=>_itemType; set =>_itemType = value; }
+    
     private DialogManager _dialogManager;
     private ItemType _itemType = ItemType.None;
     private IAssetProvider _assetProvider;
@@ -40,21 +40,18 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (_itemType != ItemType.None) return;
-
-        Debug.Log("Click on plate");
-        MealInventoryDialog dialog = _dialogManager.ShowDialog<MealInventoryDialog>();
-        dialog.UpdateInventoryView();
+        ShowDialog();
     }
-
-    public async void InstantiateMeal(ItemType type)
+    protected abstract void ShowDialog();
+    
+    public async void InstantiateItemByType(ItemType type)
     {
         _itemType = type;
         string mealName = Enum.GetName(typeof(ItemType), (int)type);
 
         if (GetMealFromCache(mealName) is null)
         {
-            await InstantiateMeal(mealName);
+            await InstantiateItem(mealName);
         }
         else
         {
@@ -63,7 +60,7 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
         }
     }
 
-    private async UniTask<Stuff> InstantiateMeal(string mealName)
+    protected async UniTask<Stuff> InstantiateItem(string mealName)
     {
         UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(mealName);
 
@@ -104,41 +101,5 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
     {
         _itemType = ItemType.None;
         _saveLoadService.SaveProgress();
-    }
-
-    public async void LoadProgress(PlayerProgress playerProgress)
-    {
-        //TODO: Implement plate data loading and spawn food on plate
-        string currentRoomName = SceneManager.GetActiveScene().name;
-        RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == currentRoomName);
-        
-        if (roomState is not null)
-        {
-            ItemType melaType = roomState.MealData.Type; 
-        
-            if(melaType.Equals(ItemType.None)) return;
-            _itemType = melaType;
-            string mealName = Enum.GetName(typeof(ItemType), (int)melaType);
-            Stuff stuff = await InstantiateMeal(mealName);
-        }
-    }
-
-    public void SaveProgress(PlayerProgress playerProgress)
-    {
-        string currentRoomName = SceneManager.GetActiveScene().name;
-        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == currentRoomName);
-        if (room is not null)
-            room.MealData.Type = _itemType;
-        else
-            playerProgress.RoomsData.Rooms.Add(new RoomState
-            {
-                MealData = new MealData
-                {
-                    Type = _itemType
-                },
-                Name = currentRoomName
-            });
     }
 }

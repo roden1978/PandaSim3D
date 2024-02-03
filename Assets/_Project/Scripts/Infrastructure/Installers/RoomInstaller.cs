@@ -41,8 +41,10 @@ public class RoomInstaller : MonoInstaller
         BindEgg();
         BindPlayer();
         BindInventory();
-        BindPlate();
+        BindMealDrawer();
         BindMealInventoryDialog();
+        BindClothsDrawer();
+        BindClothsInventoryDialog();
         BindShop();
         BindPoop();
         BindTray();
@@ -102,6 +104,13 @@ public class RoomInstaller : MonoInstaller
         GameObject mealInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
         Container.BindInterfacesAndSelfTo<MealInventoryDialog>().FromComponentOn(mealInventoryDialog).AsSingle();
     }
+    
+    private void BindClothsInventoryDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(ClothsInventoryDialog));
+        GameObject clothsInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<ClothsInventoryDialog>().FromComponentOn(clothsInventoryDialog).AsSingle();
+    }
 
     private void BindDialogManager()
     {
@@ -127,17 +136,30 @@ public class RoomInstaller : MonoInstaller
         _saveLoadStorage.RegisterInSaveLoadRepositories(timersPrincipal);
     }
 
-    private void BindPlate()
+    private void BindMealDrawer()
     {
         EnvironmentObjectSpawnData plateData =
-            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Plate);
-        GameObject prefab = _prefabsStorage.Get(typeof(Plate));
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.MealDrawer);
+        GameObject prefab = _prefabsStorage.Get(typeof(MealDrawer));
         IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = plateData.Position;
-        GameObject plate = Container.InstantiatePrefab(prefab);
-        plate.gameObject.name = nameof(Plate);
-        Container.BindInterfacesAndSelfTo<Plate>().FromComponentOn(plate).AsSingle();
-        _saveLoadStorage.RegisterInSaveLoadRepositories(plate);
+        GameObject mealDrawer = Container.InstantiatePrefab(prefab);
+        mealDrawer.gameObject.name = nameof(MealDrawer);
+        Container.BindInterfacesAndSelfTo<MealDrawer>().FromComponentOn(mealDrawer).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(mealDrawer);
+    }
+    
+    private void BindClothsDrawer()
+    {
+        EnvironmentObjectSpawnData clothsDrawerData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.ClothsDrawer);
+        GameObject prefab = _prefabsStorage.Get(typeof(ClothsDrawer));
+        IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
+        positionAdapter.Position = clothsDrawerData.Position;
+        GameObject clothsDrawer = Container.InstantiatePrefab(prefab);
+        clothsDrawer.gameObject.name = nameof(ClothsDrawer);
+        Container.BindInterfacesAndSelfTo<ClothsDrawer>().FromComponentOn(clothsDrawer).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(clothsDrawer);
     }
 
     private void BindEgg()

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 856414493488473488}
-  - component: {fileID: 4527175558792722939}
   m_Layer: 0
   m_Name: InventoryDialog
   m_TagString: Untagged
@@ -32,26 +31,3 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4527175558792722939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174265787192707489}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d6729db948649af8391af447344a987, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _canvas: {fileID: 0}
-  _closeButton: {fileID: 0}
-  _useButton: {fileID: 0}
-  _useButtonCanvasGroup: {fileID: 0}
-  _dropButton: {fileID: 0}
-  _slotHolder: {fileID: 0}
-  _uiInventorySlot: {fileID: 2493806517808975240, guid: d30e223dcdc67df4695a49606e09b490,
-    type: 3}
-  _uiDescriptionHolder: {fileID: 0}
-  _inventoryTitle: {fileID: 0}
-  _debugList: []

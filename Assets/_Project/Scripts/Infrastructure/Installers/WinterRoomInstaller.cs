@@ -102,7 +102,7 @@ public class WinterRoomInstaller : MonoInstaller
         positionAdapter.Position = crateData.Position;
         GameObject crate = Container.InstantiatePrefab(prefab);
         crate.gameObject.name = nameof(Crate);
-        Container.BindInterfacesAndSelfTo<Plate>().FromComponentOn(crate).AsSingle();
+        Container.BindInterfacesAndSelfTo<MealDrawer>().FromComponentOn(crate).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(crate);
         /*
         Container.Bind<Plate>()

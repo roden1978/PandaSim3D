@@ -2,15 +2,15 @@
 using System.Linq;
 using StaticData;
 
-public class MealInventoryDialog : InventoryDialog
+public class ClothsInventoryDialog : InventoryDialog
 {
-    private const string InventoryTitle = "Meal";
+    private const string InventoryTitle = "Cloths";
     protected override void UpdateAllSlots()
     {
         UpdateDebugList();
         ClearUiSlots();
         IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false)
-            .Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Meal);
+            .Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Cloths);
         int i = 0;
         foreach (Slot slot in slots)
         {

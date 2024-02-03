@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Services.SaveLoad.PlayerProgress;
 using TMPro;
+using TriInspector;
 using UI;
 using UI.Dialogs.Inventory;
 using UnityEngine;
@@ -20,12 +21,14 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     [SerializeField] private UIDescriptionHolder _uiDescriptionHolder;
     [SerializeField] protected TMP_Text _inventoryTitle;
     
+    [Header("Debug")] [ReadOnly] [SerializeField]
+    private List<DebugItemData> _debugList;
     
     protected IInventory Inventory;
     protected List<UIInventorySlot> UISlots;
     
     private ISaveLoadService _saveLoadService;
-    private Plate _plate;
+    private MealDrawer _mealDrawer;
     private int _currentSlotId = int.MaxValue;
 
     private UIInventorySlot _selectedSlot;
@@ -34,12 +37,12 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     protected abstract void SetInventoryTitle();
 
     [Inject]
-    public void Construct(IInventory inventory, ISaveLoadService saveLoadService, Plate plate,
+    public void Construct(IInventory inventory, ISaveLoadService saveLoadService, MealDrawer mealDrawer,
         ISaveLoadStorage saveLoadStorage)
     {
         Inventory = inventory;
         _saveLoadService = saveLoadService;
-        _plate = plate;
+        _mealDrawer = mealDrawer;
         _saveLoadStorage = saveLoadStorage;
         Debug.Log($"Inventory {Inventory}, SaveLoad {_saveLoadService}");
         UISlots = new List<UIInventorySlot>(Inventory.Capacity);
@@ -90,7 +93,7 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     private void InstantiateMeal()
     {
         if (TryGetActiveSlot(out UIInventorySlot uiSlot))
-            _plate.InstantiateMeal(uiSlot.UIItem.ItemType);
+            _mealDrawer.InstantiateItemByType(uiSlot.UIItem.ItemType);
         else
             Debug.Log("No active slots");
     }
@@ -192,6 +195,26 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     {
         uiSlot = UISlots.FirstOrDefault(x => x.IsActive);
         return uiSlot is not null;
+    }
+    
+    protected void UpdateDebugList()
+    {
+        IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false);
+        foreach (Slot slot in slots)
+        {
+            _debugList.Add(new DebugItemData
+            {
+                Name = slot.InventoryItem.Type.ToString(),
+                Value = slot.ItemAmount,
+            });
+        }
+    }
+
+    [Serializable]
+    public class DebugItemData
+    {
+        public string Name;
+        public int Value;
     }
 
     private void OnDisable()

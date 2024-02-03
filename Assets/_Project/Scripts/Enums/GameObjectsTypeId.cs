@@ -5,7 +5,7 @@
         Couch = 0,
         Room = 1,
         Light = 2,
-        Plate = 3,
+        MealDrawer = 3,
         TrayView = 4,
         Carpet = 5,
         Spoon = 6,
