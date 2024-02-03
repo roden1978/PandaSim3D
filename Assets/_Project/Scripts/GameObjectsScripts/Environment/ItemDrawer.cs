@@ -10,7 +10,7 @@ using Zenject;
 
 public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClickHandler, IStack
 {
-    [SerializeField] private Transform _anchorPointTransform;
+    
 
     public Vector3 Position
     {
@@ -18,19 +18,26 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         set => transform.position = value;
     }
 
+    protected Transform AnchorPointTransform;
     protected DialogManager DialogManager => _dialogManager;
-    protected ItemType ItemType { get=>_itemType; set =>_itemType = value; }
-    
+
+    protected ItemType ItemType = ItemType.None;
+    /*{
+        get => _itemType;
+        set => _itemType = value;
+    }*/
+
     private DialogManager _dialogManager;
-    private ItemType _itemType = ItemType.None;
+    //private ItemType _itemType = ItemType.None;
     private IAssetProvider _assetProvider;
 
-    private readonly Dictionary<string, GameObject> _cachedMeals = new();
+    private readonly Dictionary<string, GameObject> _cachedItems = new();
     private IInventory _inventory;
     private ISaveLoadService _saveLoadService;
 
     [Inject]
-    public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory, ISaveLoadService saveLoadService)
+    public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory,
+        ISaveLoadService saveLoadService)
     {
         _dialogManager = dialogManager;
         _assetProvider = assetProvider;
@@ -42,64 +49,65 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     {
         ShowDialog();
     }
+
     protected abstract void ShowDialog();
-    
+
     public async void InstantiateItemByType(ItemType type)
     {
-        _itemType = type;
-        string mealName = Enum.GetName(typeof(ItemType), (int)type);
+        ItemType = type;
+        string itemName = Enum.GetName(typeof(ItemType), (int)type);
 
-        if (GetMealFromCache(mealName) is null)
+        if (GetItemFromCache(itemName) is null)
         {
-            await InstantiateItem(mealName);
+            await InstantiateItem(itemName);
         }
         else
         {
-            GameObject go = GetMealFromCache(mealName);
-            go.SetActive(true);
+            GameObject item = GetItemFromCache(itemName);
+            item.SetActive(true);
         }
     }
 
-    protected async UniTask<Stuff> InstantiateItem(string mealName)
+    protected async UniTask<Stuff> InstantiateItem(string itemName)
     {
-        UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(mealName);
+        UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(itemName);
 
         await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
         GameObject prefab = await result;
 
-        Stuff stuff = Instantiate(prefab, _anchorPointTransform.position, Quaternion.identity,
-                _anchorPointTransform)
+        Stuff stuff = Instantiate(prefab, AnchorPointTransform.position, Quaternion.identity,
+                AnchorPointTransform)
             .GetComponent<Stuff>();
 
         AddToMealCache(stuff.Item.Name, stuff.gameObject);
 
         stuff.Construct(this);
 
-        _assetProvider.ReleaseAssetsByLabel(mealName);
+        _assetProvider.ReleaseAssetsByLabel(itemName);
         return stuff;
     }
 
-    private void AddToMealCache(string mealName, GameObject meal)
+    private void AddToMealCache(string itemName, GameObject item)
     {
-        _cachedMeals.TryAdd(mealName, meal);
+        _cachedItems.TryAdd(itemName, item);
     }
 
-    private GameObject GetMealFromCache(string mealName)
+    private GameObject GetItemFromCache(string itemName)
     {
-        return _cachedMeals.TryGetValue(mealName, out GameObject go) ? go : null;
+        return _cachedItems.TryGetValue(itemName, out GameObject item) ? item : null;
     }
 
     public void Stack(Stuff stuff)
     {
         _inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
-        stuff.gameObject.transform.position = _anchorPointTransform.position;
+        stuff.gameObject.transform.position = AnchorPointTransform.position;
         stuff.gameObject.SetActive(false);
         UnStack(stuff);
     }
 
     public void UnStack(Stuff stuff)
     {
-        _itemType = ItemType.None;
+        ItemType = ItemType.None;
         _saveLoadService.SaveProgress();
     }
 }

@@ -2,9 +2,11 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Zenject;
 
-public class MealDrawer : ItemDrawer, ISavedProgress
+public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
 {
+    [SerializeField] private Transform _anchorPointTransform;
     protected override void ShowDialog()
     {
         if (ItemType != ItemType.None) return;
@@ -36,7 +38,14 @@ public class MealDrawer : ItemDrawer, ISavedProgress
         RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
             x.Name == currentRoomName);
         if (room is not null)
+        {
+            room.MealData ??= new MealData
+            {
+                Type = ItemType,
+            };
+
             room.MealData.Type = ItemType;
+        }
         else
             playerProgress.RoomsData.Rooms.Add(new RoomState
             {
@@ -46,5 +55,10 @@ public class MealDrawer : ItemDrawer, ISavedProgress
                 },
                 Name = currentRoomName
             });
+    }
+
+    public void Initialize()
+    {
+        AnchorPointTransform = _anchorPointTransform;
     }
 }

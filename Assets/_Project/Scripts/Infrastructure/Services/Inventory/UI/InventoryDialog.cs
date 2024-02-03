@@ -8,7 +8,6 @@ using UI;
 using UI.Dialogs.Inventory;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Zenject;
 
 public abstract class InventoryDialog : Dialog, ISlotChanger
 {
@@ -16,8 +15,8 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     [SerializeField] private PointerListener _useButton;
     [SerializeField] private CanvasGroup _useButtonCanvasGroup;
     [SerializeField] private PointerListener _dropButton;
-    [SerializeField] private RectTransform _slotHolder;
-    [SerializeField] private UIInventorySlot _uiInventorySlot;
+    [SerializeField] protected RectTransform _slotHolder;
+    [SerializeField] protected UIInventorySlot _uiInventorySlot;
     [SerializeField] private UIDescriptionHolder _uiDescriptionHolder;
     [SerializeField] protected TMP_Text _inventoryTitle;
     
@@ -26,37 +25,14 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     
     protected IInventory Inventory;
     protected List<UIInventorySlot> UISlots;
-    
-    private ISaveLoadService _saveLoadService;
-    private MealDrawer _mealDrawer;
+
+    protected ISaveLoadService SaveLoadService;
+    protected ItemDrawer ItemDrawer;
     private int _currentSlotId = int.MaxValue;
 
     private UIInventorySlot _selectedSlot;
-    private ISaveLoadStorage _saveLoadStorage;
+    protected ISaveLoadStorage SaveLoadStorage;
     protected abstract void UpdateAllSlots();
-    protected abstract void SetInventoryTitle();
-
-    [Inject]
-    public void Construct(IInventory inventory, ISaveLoadService saveLoadService, MealDrawer mealDrawer,
-        ISaveLoadStorage saveLoadStorage)
-    {
-        Inventory = inventory;
-        _saveLoadService = saveLoadService;
-        _mealDrawer = mealDrawer;
-        _saveLoadStorage = saveLoadStorage;
-        Debug.Log($"Inventory {Inventory}, SaveLoad {_saveLoadService}");
-        UISlots = new List<UIInventorySlot>(Inventory.Capacity);
-
-        for (int i = 0; i < Inventory.Capacity; i++)
-        {
-            UIInventorySlot uiInventorySlot = Instantiate(_uiInventorySlot, _slotHolder);
-            uiInventorySlot.Construct(this, i);
-            UISlots.Add(uiInventorySlot);
-            _saveLoadStorage.RegisterInSaveLoadRepositories(Inventory);
-        }
-        
-        SetInventoryTitle();
-    }
 
     private void OnEnable()
     {
@@ -77,7 +53,7 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
 
         if (slotId == int.MaxValue) return;
 
-        InstantiateMeal();
+        InstantiateItem();
 
         if (Inventory.RemoveItem(UISlots[slotId].UIItem.InventorySlotId))
         {
@@ -90,10 +66,10 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
         }
     }
 
-    private void InstantiateMeal()
+    private void InstantiateItem()
     {
         if (TryGetActiveSlot(out UIInventorySlot uiSlot))
-            _mealDrawer.InstantiateItemByType(uiSlot.UIItem.ItemType);
+            ItemDrawer.InstantiateItemByType(uiSlot.UIItem.ItemType);
         else
             Debug.Log("No active slots");
     }
@@ -101,7 +77,7 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
 
     private void SaveProgress()
     {
-        _saveLoadService.SaveProgress();
+        SaveLoadService.SaveProgress();
     }
 
     private void OnCloseButtonClick(PointerEventData data)
