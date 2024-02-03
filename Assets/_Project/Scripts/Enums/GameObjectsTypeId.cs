@@ -14,5 +14,7 @@
         Snowman = 9,
         Crate = 10,
         Poop = 11,
+        ClothsDrawer = 12,
+        Plant = 13,
     }
 }

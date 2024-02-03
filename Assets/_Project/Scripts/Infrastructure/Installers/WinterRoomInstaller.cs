@@ -63,9 +63,9 @@ public class WinterRoomInstaller : MonoInstaller
 
     private void BindInventoryDialog()
     {
-        GameObject prefab = _prefabsStorage.Get(typeof(InventoryDialog));
+        GameObject prefab = _prefabsStorage.Get(typeof(MealInventoryDialog));
         GameObject inventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
-        Container.Bind<InventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
+        Container.Bind<MealInventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
     }
 
     private void BindDialogManager()

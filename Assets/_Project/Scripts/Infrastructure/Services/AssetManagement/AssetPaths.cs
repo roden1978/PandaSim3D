@@ -7,12 +7,14 @@
         public const string RoomSceneName = "Room";
         public const string WinterRoomSceneName = "WinterRoom";
         public const string CurtainSceneName = "Loading";
-        public const string InventoryDialog = "InventoryDialog";
+        public const string MealInventoryDialog = "MealInventoryDialog";
         public const string ShopDialog = "ShopDialog";
         public const string InputNameDialog = "InputNameDialog";
         public const string ProgressUpdater = "ProgressUpdater";
         public const string PlayerPath = "Player";
         public const string PlatePath = "Plate";
+        public const string CarpetPath = "Carpet";
+        public const string ClothsDrawerPath = "ClothsDrawer";
         public const string CratePath = "Crate";
         public const string TrayPath = "TrayView";
         public const string EggPath = "Egg";

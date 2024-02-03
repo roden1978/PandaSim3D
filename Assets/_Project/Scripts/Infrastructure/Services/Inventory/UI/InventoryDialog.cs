@@ -2,20 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using Services.SaveLoad.PlayerProgress;
-using StaticData;
-using TriInspector;
+using TMPro;
 using UI;
 using UI.Dialogs.Inventory;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public interface ISlotChanger
-{
-    void ChangeActiveSlot(int id);
-}
-
-public class InventoryDialog : Dialog, ISlotChanger
+public abstract class InventoryDialog : Dialog, ISlotChanger
 {
     [SerializeField] private PointerListener _closeButton;
     [SerializeField] private PointerListener _useButton;
@@ -24,37 +18,41 @@ public class InventoryDialog : Dialog, ISlotChanger
     [SerializeField] private RectTransform _slotHolder;
     [SerializeField] private UIInventorySlot _uiInventorySlot;
     [SerializeField] private UIDescriptionHolder _uiDescriptionHolder;
-
-    [Header("Debug")] [ReadOnly] [SerializeField]
-    private List<DebugItemData> _debugList;
-
-    private IInventory _inventory;
+    [SerializeField] protected TMP_Text _inventoryTitle;
+    
+    
+    protected IInventory Inventory;
+    protected List<UIInventorySlot> UISlots;
+    
     private ISaveLoadService _saveLoadService;
     private Plate _plate;
-    private List<UIInventorySlot> _uiSlots;
     private int _currentSlotId = int.MaxValue;
 
     private UIInventorySlot _selectedSlot;
     private ISaveLoadStorage _saveLoadStorage;
+    protected abstract void UpdateAllSlots();
+    protected abstract void SetInventoryTitle();
 
     [Inject]
     public void Construct(IInventory inventory, ISaveLoadService saveLoadService, Plate plate,
         ISaveLoadStorage saveLoadStorage)
     {
-        _inventory = inventory;
+        Inventory = inventory;
         _saveLoadService = saveLoadService;
         _plate = plate;
         _saveLoadStorage = saveLoadStorage;
-        Debug.Log($"Inventory {_inventory}, SaveLoad {_saveLoadService}");
-        _uiSlots = new List<UIInventorySlot>(_inventory.Capacity);
+        Debug.Log($"Inventory {Inventory}, SaveLoad {_saveLoadService}");
+        UISlots = new List<UIInventorySlot>(Inventory.Capacity);
 
-        for (int i = 0; i < _inventory.Capacity; i++)
+        for (int i = 0; i < Inventory.Capacity; i++)
         {
             UIInventorySlot uiInventorySlot = Instantiate(_uiInventorySlot, _slotHolder);
             uiInventorySlot.Construct(this, i);
-            _uiSlots.Add(uiInventorySlot);
-            _saveLoadStorage.RegisterInSaveLoadRepositories(_inventory);
+            UISlots.Add(uiInventorySlot);
+            _saveLoadStorage.RegisterInSaveLoadRepositories(Inventory);
         }
+        
+        SetInventoryTitle();
     }
 
     private void OnEnable()
@@ -68,37 +66,7 @@ public class InventoryDialog : Dialog, ISlotChanger
     {
         UpdateAllSlots();
     }
-
-    private void UpdateAllSlots()
-    {
-        UpdateDebugList();
-        ClearUiSlots();
-        IEnumerable<Slot> slots = _inventory.GetAllSlots().Where(x => x.IsEmpty == false)
-            .Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Meal);
-        int i = 0;
-        foreach (Slot slot in slots)
-        {
-            _uiSlots[i].UIItem.gameObject.SetActive(true);
-            _uiSlots[i].UIItem.ValueText.text = $"x{slot.ItemAmount}";
-            _uiSlots[i].UIItem.Icon.sprite = slot.InventoryItem.Sprite;
-            _uiSlots[i].UIItem.ItemType = slot.InventoryItem.Type;
-            _uiSlots[i].UIItem.InventorySlotId = slot.Id;
-            i++;
-        }
-    }
-
-    private void UpdateDebugList()
-    {
-        IEnumerable<Slot> slots = _inventory.GetAllSlots().Where(x => x.IsEmpty == false);
-        foreach (Slot slot in slots)
-        {
-            _debugList.Add(new DebugItemData
-            {
-                Name = slot.InventoryItem.Type.ToString(),
-                Value = slot.ItemAmount,
-            });
-        }
-    }
+    
 
     private void OnUseButtonClick(PointerEventData data)
     {
@@ -108,7 +76,7 @@ public class InventoryDialog : Dialog, ISlotChanger
 
         InstantiateMeal();
 
-        if (_inventory.RemoveItem(_uiSlots[slotId].UIItem.InventorySlotId))
+        if (Inventory.RemoveItem(UISlots[slotId].UIItem.InventorySlotId))
         {
             UpdateUiSlot(slotId);
             UpdateDescription(slotId);
@@ -141,23 +109,23 @@ public class InventoryDialog : Dialog, ISlotChanger
 
     private void UpdateUiSlot(int slotId)
     {
-        if (_inventory.TryGetSlotById(slotId, out Slot slot))
+        if (Inventory.TryGetSlotById(slotId, out Slot slot))
         {
             if (slot.IsEmpty)
             {
-                _uiSlots[slotId].UIItem.gameObject.SetActive(false);
-                _uiSlots[slotId].ActivateFrame(false);
+                UISlots[slotId].UIItem.gameObject.SetActive(false);
+                UISlots[slotId].ActivateFrame(false);
                 return;
             }
 
-            _uiSlots[slotId].UIItem.ValueText.text = $"x{slot.ItemAmount}";
-            _uiSlots[slotId].UIItem.Icon.sprite = slot.InventoryItem.Sprite;
+            UISlots[slotId].UIItem.ValueText.text = $"x{slot.ItemAmount}";
+            UISlots[slotId].UIItem.Icon.sprite = slot.InventoryItem.Sprite;
         }
     }
 
-    private void ClearUiSlots()
+    protected void ClearUiSlots()
     {
-        foreach (UIInventorySlot uiSlot in _uiSlots)
+        foreach (UIInventorySlot uiSlot in UISlots)
         {
             uiSlot.UIItem.ValueText.text = string.Empty;
             uiSlot.UIItem.Icon.sprite = null;
@@ -178,17 +146,17 @@ public class InventoryDialog : Dialog, ISlotChanger
 
     public void ChangeActiveSlot(int id)
     {
-        if (_inventory.HasSlotById(_uiSlots[id].UIItem.InventorySlotId))
+        if (Inventory.HasSlotById(UISlots[id].UIItem.InventorySlotId))
         {
             if (_currentSlotId != int.MaxValue)
             {
                 UpdateUseButtonCanvasGroup(.5f, false, false);
-                _uiSlots[_currentSlotId].ActivateFrame(false);
-                _uiSlots[_currentSlotId].IsActive = false;
+                UISlots[_currentSlotId].ActivateFrame(false);
+                UISlots[_currentSlotId].IsActive = false;
             }
 
-            _uiSlots[id].ActivateFrame(true);
-            _uiSlots[id].IsActive = true;
+            UISlots[id].ActivateFrame(true);
+            UISlots[id].IsActive = true;
             UpdateUseButtonCanvasGroup(1f, true, true);
 
             _currentSlotId = id;
@@ -199,7 +167,7 @@ public class InventoryDialog : Dialog, ISlotChanger
 
     private void UpdateDescription(int id)
     {
-        if (_inventory.TryGetSlotById(_uiSlots[id].UIItem.InventorySlotId, out Slot slot))
+        if (Inventory.TryGetSlotById(UISlots[id].UIItem.InventorySlotId, out Slot slot))
         {
             if (slot.IsEmpty)
             {
@@ -216,13 +184,13 @@ public class InventoryDialog : Dialog, ISlotChanger
 
     private int GetActiveSlotId()
     {
-        UIInventorySlot uiSlot = _uiSlots.FirstOrDefault(x => x.IsActive);
+        UIInventorySlot uiSlot = UISlots.FirstOrDefault(x => x.IsActive);
         return uiSlot == null ? int.MaxValue : uiSlot.Id;
     }
 
     private bool TryGetActiveSlot(out UIInventorySlot uiSlot)
     {
-        uiSlot = _uiSlots.FirstOrDefault(x => x.IsActive);
+        uiSlot = UISlots.FirstOrDefault(x => x.IsActive);
         return uiSlot is not null;
     }
 
@@ -232,12 +200,4 @@ public class InventoryDialog : Dialog, ISlotChanger
         _dropButton.Click -= OnUseButtonClick;
         _useButton.Click -= OnUseButtonClick;
     }
-
-    [Serializable]
-    public class DebugItemData
-    {
-        public string Name;
-        public int Value;
-    }
-
 }

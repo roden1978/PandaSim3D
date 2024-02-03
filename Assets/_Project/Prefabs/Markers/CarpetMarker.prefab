@@ -20,18 +20,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
+      propertyPath: Color.a
+      value: 0.89411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
+        type: 3}
       propertyPath: Color.b
-      value: 0.52171814
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.g
-      value: 1
+      value: 0.12967932
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.r
-      value: 0.504717
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -42,17 +47,17 @@ PrefabInstance:
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 2.11
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.032
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -2.56
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -92,7 +97,7 @@ PrefabInstance:
     - target: {fileID: 8509563331811691496, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Id
-      value: TestScene_96a50dc8-536c-4381-8395-fdf8573a99a5
+      value: Room_603b884c-be9c-4bef-9b48-761ce460ced8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

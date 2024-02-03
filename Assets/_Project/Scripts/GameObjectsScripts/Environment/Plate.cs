@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagement;
 using PlayerScripts;
@@ -44,7 +43,7 @@ public class Plate : MonoBehaviour, IPositionAdapter, IPointerClickHandler, ISta
         if (_itemType != ItemType.None) return;
 
         Debug.Log("Click on plate");
-        InventoryDialog dialog = _dialogManager.ShowDialog<InventoryDialog>();
+        MealInventoryDialog dialog = _dialogManager.ShowDialog<MealInventoryDialog>();
         dialog.UpdateInventoryView();
     }
 

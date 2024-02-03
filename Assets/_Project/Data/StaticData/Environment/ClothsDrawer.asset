@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
-  m_Name: SoMealTimer
+  m_Script: {fileID: 11500000, guid: 148ef7e31a5860e419bff045c2d75837, type: 3}
+  m_Name: ClothsDrawer
   m_EditorClassIdentifier: 
-  _type: 2
-  _duration: 1
-  _timerPrefab: {fileID: 2802259814680247830, guid: 55b3f2207ed414a43b2d5585fda4e833,
-    type: 3}
-  _timerColor: {r: 0, g: 1, b: 0.125, a: 1}
-  _moodDecrease: 0.2
+  Prefab: {fileID: 290931172060566004, guid: 5e167408785a8884289683cd6d3e32fb, type: 3}
+  GameObjectsTypeId: 12

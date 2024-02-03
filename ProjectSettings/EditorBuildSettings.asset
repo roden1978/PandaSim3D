@@ -6,16 +6,16 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Project/Scenes/Loading.unity
+    path: Assets/_Project/_Scenes/Loading.unity
     guid: b02388af80ee8ef46946df74eb1c1f48
   - enabled: 1
-    path: Assets/_Project/Scenes/WinterRoom.unity
+    path: Assets/_Project/_Scenes/WinterRoom.unity
     guid: b10590360caa8c845b695bc4576ebb1a
   - enabled: 1
-    path: Assets/_Project/Scenes/Bootstrap.unity
+    path: Assets/_Project/_Scenes/Bootstrap.unity
     guid: 4df3a18feb51b1949b54ef9c789a15da
   - enabled: 1
-    path: Assets/_Project/Scenes/Room.unity
+    path: Assets/_Project/_Scenes/Room.unity
     guid: 4aea1fbf922d13043a5b6c1771412d4a
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 63a5df62a72a11846aea79882d6769da,

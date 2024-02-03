@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 297220828312169891, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_Name
-      value: SpoonMarker
+      value: PlantMarker
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -26,23 +26,23 @@ PrefabInstance:
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.b
-      value: 0.04915385
+      value: 0.029613204
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.g
-      value: 0
+      value: 0.33962262
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Color.r
-      value: 0.5754717
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: <EnvironmentObjectStaticData>k__BackingField
       value: 
-      objectReference: {fileID: 11400000, guid: 6790efa6f751c6c4db98a16087e94d10,
+      objectReference: {fileID: 11400000, guid: 030814f110a2c0a4f8954a3c8dfeeec2,
         type: 2}
     - target: {fileID: 5898602429560084140, guid: 379d01be16918964dae9b770d402b561,
         type: 3}

@@ -20,7 +20,7 @@ namespace UI
         private readonly Dictionary<Type, string> PrefabsDictionary = new()
         {
             { typeof(ShopDialog), AssetPaths.ShopDialog },
-            { typeof(InventoryDialog), AssetPaths.InventoryDialog },
+            { typeof(MealInventoryDialog), AssetPaths.MealInventoryDialog },
             { typeof(InputNameDialog), AssetPaths.InputNameDialog },
         };
 

@@ -42,7 +42,7 @@ public class RoomInstaller : MonoInstaller
         BindPlayer();
         BindInventory();
         BindPlate();
-        BindInventoryDialog();
+        BindMealInventoryDialog();
         BindShop();
         BindPoop();
         BindTray();
@@ -96,11 +96,11 @@ public class RoomInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<Inventory>().AsSingle();
     }
 
-    private void BindInventoryDialog()
+    private void BindMealInventoryDialog()
     {
-        GameObject prefab = _prefabsStorage.Get(typeof(InventoryDialog));
-        GameObject inventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
-        Container.BindInterfacesAndSelfTo<InventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
+        GameObject prefab = _prefabsStorage.Get(typeof(MealInventoryDialog));
+        GameObject mealInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<MealInventoryDialog>().FromComponentOn(mealInventoryDialog).AsSingle();
     }
 
     private void BindDialogManager()
