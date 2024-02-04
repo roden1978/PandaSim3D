@@ -10,19 +10,17 @@ public class MoodIndicatorView : MonoBehaviour
     
     private readonly Color[] _colors = { new(1, 0, 0), new(1, .3f, 0), Color.yellow, Color.green };
     private MoodIndicator _moodIndicator;
-    private ISaveLoadStorage _saveLoadStorage;
 
     public void Construct(MoodIndicator moodIndicator, ISaveLoadStorage saveLoadStorage)
     {
         _moodIndicator = moodIndicator;
-        _saveLoadStorage = saveLoadStorage;
         _indicator.onValueChanged.AddListener(SetColour);
         _moodIndicator.UpdateIndicatorValue += OnUpdateIndicatorView;
+        saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
     }
     public void Initialize()
     {
-        SetColour(1); //TODO: Change after indicator state loading
-        
+        //SetColour(1); //TODO: Change after indicator state loading
     }
 
     private void OnDisable()
@@ -33,6 +31,7 @@ public class MoodIndicatorView : MonoBehaviour
 
     private void OnUpdateIndicatorView(float value)
     {
+        Debug.Log($"Update mood indicator value {value}");
         _indicator.value = value;
         SetColour(value);
     }

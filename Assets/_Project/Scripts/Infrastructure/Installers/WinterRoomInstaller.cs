@@ -30,7 +30,8 @@ public class WinterRoomInstaller : MonoInstaller
         _persistenceProgress = persistentProgress;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName);
-        _saveLoadStorage.ClearGameObjectsType();
+        _saveLoadStorage.ClearAll();
+        //_saveLoadStorage.ClearGameObjectsType();
     }
 
     public override void InstallBindings()
@@ -41,8 +42,8 @@ public class WinterRoomInstaller : MonoInstaller
         BindTimersPrincipal();
         BindPlayer();
         BindInventory();
-        BindCrate();
-        BindInventoryDialog();
+        BindBackpackDrawer();
+        BindBackpackInventoryDialog();
         BindShop();
         BindSnowman();
         BindTray();
@@ -61,11 +62,11 @@ public class WinterRoomInstaller : MonoInstaller
         _saveLoadStorage.RegisterInSaveLoadRepositories(inventory);
     }
 
-    private void BindInventoryDialog()
+    private void BindBackpackInventoryDialog()
     {
-        GameObject prefab = _prefabsStorage.Get(typeof(MealInventoryDialog));
-        GameObject inventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
-        Container.Bind<MealInventoryDialog>().FromComponentOn(inventoryDialog).AsSingle();
+        GameObject prefab = _prefabsStorage.Get(typeof(BackpackInventoryDialog));
+        GameObject backPackInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.Bind<BackpackInventoryDialog>().FromComponentOn(backPackInventoryDialog).AsSingle();
     }
 
     private void BindDialogManager()
@@ -93,24 +94,17 @@ public class WinterRoomInstaller : MonoInstaller
         _saveLoadStorage.RegisterInSaveLoadRepositories(hud);
     }
 
-    private void BindCrate()
+    private void BindBackpackDrawer()
     {
-        EnvironmentObjectSpawnData crateData =
-            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Crate);
-        GameObject prefab = _prefabsStorage.Get(typeof(Crate));
+        EnvironmentObjectSpawnData backpackData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.BackpackDrawer);
+        GameObject prefab = _prefabsStorage.Get(typeof(BackpackDrawer));
         IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
-        positionAdapter.Position = crateData.Position;
-        GameObject crate = Container.InstantiatePrefab(prefab);
-        crate.gameObject.name = nameof(Crate);
-        Container.BindInterfacesAndSelfTo<MealDrawer>().FromComponentOn(crate).AsSingle();
-        _saveLoadStorage.RegisterInSaveLoadRepositories(crate);
-        /*
-        Container.Bind<Plate>()
-            .FromComponentInNewPrefab(prefab)
-            .WithGameObjectName("Crate")
-            .AsSingle()
-            .NonLazy();
-            */
+        positionAdapter.Position = backpackData.Position;
+        GameObject backpack = Container.InstantiatePrefab(prefab);
+        backpack.gameObject.name = nameof(BackpackDrawer);
+        Container.BindInterfacesAndSelfTo<BackpackDrawer>().FromComponentOn(backpack).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(backpack);
     }
 
     private void BindPlayer()

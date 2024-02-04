@@ -136,17 +136,17 @@ PrefabInstance:
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.526
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.032
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.604
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
@@ -194,7 +194,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2456406459913242037}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4872327067082250507, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2321325583303517456}
   m_SourcePrefab: {fileID: 100100000, guid: 7af5d2812c9f27e489a8c50d1b3b20c9, type: 3}
 --- !u!4 &6107826650085535142 stripped
 Transform:
@@ -208,3 +212,21 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2839778680747196108}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7274738421314922439 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4872327067082250507, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
+    type: 3}
+  m_PrefabInstance: {fileID: 2839778680747196108}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2321325583303517456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7274738421314922439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d5fb1f74f982ef42be19ec55c63aeb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

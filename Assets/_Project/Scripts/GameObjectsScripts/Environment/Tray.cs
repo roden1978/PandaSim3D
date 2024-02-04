@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using GameObjectsScripts.Timers;
+using Infrastructure.AssetManagement;
 using UnityEngine.SceneManagement;
 using Zenject;
 
@@ -26,20 +27,23 @@ public class Tray : ISavedProgress, IInitializable
             HidePoop?.Invoke();
             FillTray(false);
         }
-        
+
         string sceneName = SceneManager.GetActiveScene().name;
-        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x => x.Name == sceneName);
-        if (room is not null)
+        if (sceneName == AssetPaths.RoomSceneName)
         {
-            if (room.Poop)
+            RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x => x.Name == AssetPaths.RoomSceneName);
+            if (room is not null)
             {
-                ShowPoop?.Invoke();
-                FillTray(true);
-            }
-            else
-            {
-                HidePoop?.Invoke();
-                FillTray(false);
+                if (room.Poop)
+                {
+                    ShowPoop?.Invoke();
+                    FillTray(true);
+                }
+                else
+                {
+                    HidePoop?.Invoke();
+                    FillTray(false);
+                }
             }
         }
     }
@@ -47,13 +51,14 @@ public class Tray : ISavedProgress, IInitializable
     public void SaveProgress(PlayerProgress playerProgress)
     {
         RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == "Room");
+            x.Name == AssetPaths.RoomSceneName);
         if (room is not null)
             room.Poop = _isFull;
         else
             playerProgress.RoomsData.Rooms.Add(new RoomState
             {
-                Poop = _isFull
+                Poop = _isFull,
+                Name = AssetPaths.RoomSceneName
             });
     }
 

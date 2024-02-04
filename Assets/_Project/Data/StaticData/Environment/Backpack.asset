@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 148ef7e31a5860e419bff045c2d75837, type: 3}
-  m_Name: Crate
+  m_Name: Backpack
   m_EditorClassIdentifier: 
   Prefab: {fileID: 290931172060566004, guid: cfd3f2858842d354b9eda9cd0d57fbb1, type: 3}
-  GameObjectsTypeId: 10
+  GameObjectsTypeId: 14

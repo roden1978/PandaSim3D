@@ -1,5 +1,4 @@
 using System.Linq;
-using GameObjectsScripts;
 using PlayerScripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,6 +19,8 @@ public class Stuff : MonoBehaviour, IStuff
     private Camera _camera;
     private IStack _stack;
 
+    private bool _isCanDrag;
+
     private IStack[] _stacks = new IStack[10];
 
     public void Construct(IStack stack)
@@ -33,8 +34,14 @@ public class Stuff : MonoBehaviour, IStuff
         _startPosition = transform.position;
     }
 
+    public void SetCanDrag(bool value)
+    {
+        _isCanDrag = value;
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
+        
     }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -62,18 +69,22 @@ public class Stuff : MonoBehaviour, IStuff
 
     public void OnDrag(PointerEventData eventData)
     {
-        Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
-        Vector3 currentPosition = new (transform.position.x, transform.position.y, _startPosition.z);
-        Vector3 negativeCameraPosition = -_camera.transform.forward;
-        float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /
-                  Vector3.Dot(screenPointToRay.direction, negativeCameraPosition);
-        Vector3 position = screenPointToRay.origin + screenPointToRay.direction * t;
+        if(_isCanDrag)
+        {
+            Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
+            Vector3 currentPosition = new(transform.position.x, transform.position.y, _startPosition.z);
+            Vector3 negativeCameraPosition = -_camera.transform.forward;
+            float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /
+                      Vector3.Dot(screenPointToRay.direction, negativeCameraPosition);
+            Vector3 position = screenPointToRay.origin + screenPointToRay.direction * t;
 
-        transform.position = position;
+            transform.position = position;
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        SetCanDrag(true);
         foreach (IStack stack in _stacks.Where(x => x is not null))
         {
             stack.UnStack(this);

@@ -36,17 +36,12 @@ namespace PlayerScripts
             }
         }
 
-        /*private TweenCallback DoHatScale(Transform hatTransform, Vector3 scale, float duration)
-        {
-            TweenerCore<Vector3, Vector3, VectorOptions> result = hatTransform.DOScale(scale, duration);
-            return result.onComplete = Callback;
-        }*/
-
         private void Callback()
         {
             _inventory.TryAddItem(this, _stuff.Item, Extensions.OneItem);
             _stuff.gameObject.transform.position = _stuff.StartPosition;
-            _stuff.gameObject.SetActive(false);
+            //_stuff.gameObject.SetActive(false);
+            _stuff.SetCanDrag(false);
             _stuff = null;
         }
 

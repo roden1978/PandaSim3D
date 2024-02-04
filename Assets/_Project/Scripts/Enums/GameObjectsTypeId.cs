@@ -16,5 +16,6 @@
         Poop = 11,
         ClothsDrawer = 12,
         Plant = 13,
+        BackpackDrawer = 14,
     }
 }

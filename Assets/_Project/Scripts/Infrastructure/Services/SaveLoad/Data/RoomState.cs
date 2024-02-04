@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class RoomState
@@ -10,7 +11,7 @@ public class RoomState
     }
 
     public string Name;
-    public MealData MealData;
+    public ItemData ItemData;
     public ClothsData ClothsData;
     public bool Poop;
     public SnowmanDecor SnowmanDecor;

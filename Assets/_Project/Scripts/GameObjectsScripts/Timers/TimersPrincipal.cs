@@ -36,6 +36,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
         _moodIndicator = new MoodIndicator(_timerSet, saveLoadService);
         _saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
+        InstantiateMoodIndicatorView();
     }
 
     public void Initialize()
@@ -68,7 +69,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     public void AddTimersView()
     {
-        InstantiateMoodIndicatorView();
+        //InstantiateMoodIndicatorView();
         InstantiateTimersViews();
     }
 
@@ -91,7 +92,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         MoodIndicatorView moodIndicatorView = Instantiate(_moodIndicatorView, _moodIndicatorParent);
         moodIndicatorView.Construct(_moodIndicator, _saveLoadStorage);
-        moodIndicatorView.Initialize();
+        //moodIndicatorView.Initialize();
     }
 
     public void LoadProgress(PlayerProgress playerProgress)

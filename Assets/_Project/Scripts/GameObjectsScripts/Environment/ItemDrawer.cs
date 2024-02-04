@@ -10,8 +10,6 @@ using Zenject;
 
 public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClickHandler, IStack
 {
-    
-
     public Vector3 Position
     {
         get => transform.position;
@@ -20,18 +18,10 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
 
     protected Transform AnchorPointTransform;
     protected DialogManager DialogManager => _dialogManager;
-
     protected ItemType ItemType = ItemType.None;
-    /*{
-        get => _itemType;
-        set => _itemType = value;
-    }*/
-
-    private DialogManager _dialogManager;
-    //private ItemType _itemType = ItemType.None;
-    private IAssetProvider _assetProvider;
-
     private readonly Dictionary<string, GameObject> _cachedItems = new();
+    private DialogManager _dialogManager;
+    private IAssetProvider _assetProvider;
     private IInventory _inventory;
     private ISaveLoadService _saveLoadService;
 

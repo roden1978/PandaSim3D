@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 297220828312169891, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: m_Name
-      value: CrateMarker
+      value: BackpackMarker
       objectReference: {fileID: 0}
     - target: {fileID: 3336346114501704834, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
@@ -97,7 +97,7 @@ PrefabInstance:
     - target: {fileID: 8509563331811691496, guid: 379d01be16918964dae9b770d402b561,
         type: 3}
       propertyPath: Id
-      value: WinterRoom_3cc9071f-f5e1-45bc-a650-03342ee147b9
+      value: WinterRoom_376c8be2-9ade-4dab-9fd6-e37a433f4dc5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -125,7 +125,7 @@ PrefabInstance:
     - target: {fileID: -5576264664340696066, guid: 3df2ae2271eb94846a02f3c05001faff,
         type: 3}
       propertyPath: Size
-      value: 0.453
+      value: 0.191
       objectReference: {fileID: 0}
     - target: {fileID: -5576264664340696066, guid: 3df2ae2271eb94846a02f3c05001faff,
         type: 3}
@@ -140,17 +140,17 @@ PrefabInstance:
     - target: {fileID: 5898602429560084140, guid: 3df2ae2271eb94846a02f3c05001faff,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.49399996
+      value: -0.004
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 3df2ae2271eb94846a02f3c05001faff,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.814
+      value: 0.841
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 3df2ae2271eb94846a02f3c05001faff,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.409
+      value: -0.144
       objectReference: {fileID: 0}
     - target: {fileID: 5898602429560084140, guid: 3df2ae2271eb94846a02f3c05001faff,
         type: 3}
@@ -186,6 +186,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8509563331811691496, guid: 3df2ae2271eb94846a02f3c05001faff,
+        type: 3}
+      propertyPath: Id
+      value: WinterRoom_ed44530a-815c-4c03-aa60-23ad1fc37992
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

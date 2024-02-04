@@ -29,7 +29,7 @@ namespace Infrastructure.AssetManagement
             LoadPrefab(typeof(ProgressUpdater), AssetPaths.ProgressUpdater);
 
             LoadPrefab(typeof(MealDrawer), AssetPaths.MealDrawerPath);
-            LoadPrefab(typeof(Crate), AssetPaths.CratePath);
+            LoadPrefab(typeof(BackpackDrawer), AssetPaths.BackpackPath);
             LoadPrefab(typeof(Egg), AssetPaths.EggPath);
             LoadPrefab(typeof(Player), AssetPaths.PlayerPath);
             LoadPrefab(typeof(Snowman), AssetPaths.SnowmanPath);
@@ -37,6 +37,7 @@ namespace Infrastructure.AssetManagement
             LoadPrefab(typeof(TrayView), AssetPaths.TrayPath);
             LoadPrefab(typeof(Poop), AssetPaths.PoopPath);
             LoadPrefab(typeof(ClothsDrawer), AssetPaths.ClothsDrawerPath);
+            LoadPrefab(typeof(Carpet), AssetPaths.CarpetPath);
         }
 
 

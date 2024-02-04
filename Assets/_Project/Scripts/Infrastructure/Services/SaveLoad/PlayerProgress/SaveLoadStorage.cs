@@ -27,14 +27,21 @@ namespace Services.SaveLoad.PlayerProgress
             foreach (ISavedProgress savedProgress in registeredGameObject
                          .GetComponentsInChildren<ISavedProgress>())
             {
+                if (Has(savedProgress)) continue;
                 Debug.Log($"Saved progress go {savedProgress}");
                 AddProgressWriter(savedProgress);
                 AddProgressReader(savedProgress);
             }
         }
 
+        private bool Has(ISavedProgress savedObject)
+        {
+            return _savers.Contains(savedObject);
+        }
+
         public void RegisterInSaveLoadRepositories(ISavedProgress savedProgress)
         {
+            if (Has(savedProgress)) return;
             Debug.Log($"Saved progress {savedProgress}");
             AddProgressWriter(savedProgress);
             AddProgressReader(savedProgress);

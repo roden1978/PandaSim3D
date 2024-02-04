@@ -16,7 +16,7 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     [SerializeField] private CanvasGroup _useButtonCanvasGroup;
     [SerializeField] private PointerListener _dropButton;
     [SerializeField] protected RectTransform _slotHolder;
-    [SerializeField] protected UIInventorySlot _uiInventorySlot;
+    [SerializeField][PropertyTooltip("Ui inventory slot prefab")] protected UIInventorySlot _uiInventorySlot;
     [SerializeField] private UIDescriptionHolder _uiDescriptionHolder;
     [SerializeField] protected TMP_Text _inventoryTitle;
     

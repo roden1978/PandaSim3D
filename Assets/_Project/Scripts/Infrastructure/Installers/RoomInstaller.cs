@@ -28,7 +28,8 @@ public class RoomInstaller : MonoInstaller
         _persistenceProgress = persistentProgress;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
-        _saveLoadStorage.ClearGameObjectsType();
+        _saveLoadStorage.ClearAll();
+        //_saveLoadStorage.ClearGameObjectsType();
     }
 
     public override void InstallBindings()
@@ -49,6 +50,7 @@ public class RoomInstaller : MonoInstaller
         BindPoop();
         BindTray();
         BindTrayView();
+        BindCarpet();
     }
 
     private void BindGuiHolder()
@@ -60,6 +62,7 @@ public class RoomInstaller : MonoInstaller
 
         Container.Bind<GuiHolder>().FromComponentOn(guiHolder).AsSingle();
     }
+
     private void BindPoop()
     {
         EnvironmentObjectSpawnData poopData =
@@ -104,7 +107,7 @@ public class RoomInstaller : MonoInstaller
         GameObject mealInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
         Container.BindInterfacesAndSelfTo<MealInventoryDialog>().FromComponentOn(mealInventoryDialog).AsSingle();
     }
-    
+
     private void BindClothsInventoryDialog()
     {
         GameObject prefab = _prefabsStorage.Get(typeof(ClothsInventoryDialog));
@@ -126,7 +129,7 @@ public class RoomInstaller : MonoInstaller
         Container.Bind<Hud>().FromComponentOn(hud).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(hud);
     }
-    
+
     private void BindTimersPrincipal()
     {
         Debug.Log($"Instantiate TimersPrincipal start ");
@@ -148,7 +151,7 @@ public class RoomInstaller : MonoInstaller
         Container.BindInterfacesAndSelfTo<MealDrawer>().FromComponentOn(mealDrawer).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(mealDrawer);
     }
-    
+
     private void BindClothsDrawer()
     {
         EnvironmentObjectSpawnData clothsDrawerData =
@@ -165,7 +168,7 @@ public class RoomInstaller : MonoInstaller
     private void BindEgg()
     {
         GameObject eggPrefab = _prefabsStorage.Get(typeof(Egg));
-        
+
         if (false == _persistenceProgress.PlayerProgress.PlayerState.FirstStartGame)
         {
             _prefabsStorage.Unregister(eggPrefab);
@@ -191,11 +194,12 @@ public class RoomInstaller : MonoInstaller
             .AsSingle()
             .NonLazy();
     }
-    
+
     private void BindTray()
     {
         Container.BindInterfacesAndSelfTo<Tray>().AsSingle();
     }
+
     private void BindTrayView()
     {
         EnvironmentObjectSpawnData trayData =
@@ -203,5 +207,18 @@ public class RoomInstaller : MonoInstaller
         GameObject prefab = _prefabsStorage.Get(typeof(TrayView));
         GameObject tray = Container.InstantiatePrefab(prefab, trayData.Position, Quaternion.identity, null);
         Container.BindInterfacesAndSelfTo<TrayView>().FromComponentOn(tray).AsSingle();
+    }
+
+    private void BindCarpet()
+    {
+        EnvironmentObjectSpawnData carpetData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Carpet);
+        GameObject prefab = _prefabsStorage.Get(typeof(Carpet));
+        IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
+        positionAdapter.Position = carpetData.Position;
+        GameObject carpet = Container.InstantiatePrefab(prefab);
+        carpet.gameObject.name = nameof(Carpet);
+        Container.BindInterfacesAndSelfTo<Carpet>().FromComponentOn(carpet).AsSingle();
+        //_saveLoadStorage.RegisterInSaveLoadRepositories(carpet);
     }
 }

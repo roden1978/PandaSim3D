@@ -1,7 +1,7 @@
 ﻿using System;
 
 [Serializable]
-public class MealData
+public class ItemData
 {
     public ItemType Type;
 }

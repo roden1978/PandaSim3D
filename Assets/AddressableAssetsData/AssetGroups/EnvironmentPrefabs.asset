@@ -18,12 +18,12 @@ MonoBehaviour:
   m_GUID: 65d99de01fa31534fb4c14f1beb14c5b
   m_SerializeEntries:
   - m_GUID: 399af7dc735734447b11b60d001303bc
-    m_Address: Plate
+    m_Address: MealDrawer
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cfd3f2858842d354b9eda9cd0d57fbb1
-    m_Address: Crate
+    m_Address: BackpackDrawer
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

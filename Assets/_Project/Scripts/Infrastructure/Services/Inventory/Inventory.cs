@@ -44,7 +44,9 @@ public class Inventory : IInitializable, IInventory
 
     private async UniTask<Item> LoadInventoryItem(string itemName)
     {
-        return await _assetProvider.LoadAsync<ScriptableObject>(itemName) as Item;
+        ScriptableObject result = await _assetProvider.LoadAsync<ScriptableObject>(itemName); 
+        _assetProvider.ReleaseAssetsByLabel(itemName);
+        return result as Item;
     }
 
     public bool TryAddItem(object sender, Item item, int amount)
@@ -124,7 +126,8 @@ public class Inventory : IInitializable, IInventory
     public async void LoadProgress(PlayerProgress playerProgress)
     {
         var progressInventoryData = playerProgress.InventoryItemsData.InventoryData.ToList();
-
+            Debug.Log($"Inventory item loaded {string.Join(", ",progressInventoryData.Select(x => x.Name))}");
+        
         foreach (InventoryItemData item in progressInventoryData)
         {
             Item inventoryItem = await LoadInventoryItem(item.Name + "Data");
@@ -136,6 +139,7 @@ public class Inventory : IInitializable, IInventory
                 slot.InventoryItem = inventoryItem;
             }
         }
+        Debug.Log("Stop");
     }
 
     public void SaveProgress(PlayerProgress playerProgress)

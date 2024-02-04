@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
+public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
 {
     [SerializeField] private Transform _anchorPointTransform;
     protected override void ShowDialog()
@@ -12,7 +12,7 @@ public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
         if (ItemType != ItemType.None) return;
 
         Debug.Log("Click on plate");
-        MealInventoryDialog dialog = DialogManager.ShowDialog<MealInventoryDialog>();
+        BackpackInventoryDialog dialog = DialogManager.ShowDialog<BackpackInventoryDialog>();
         dialog.UpdateInventoryView();
     }
     public async void LoadProgress(PlayerProgress playerProgress)
@@ -60,6 +60,6 @@ public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
 
     public void Initialize()
     {
-        //AnchorPointTransform = _anchorPointTransform;
+        
     }
 }

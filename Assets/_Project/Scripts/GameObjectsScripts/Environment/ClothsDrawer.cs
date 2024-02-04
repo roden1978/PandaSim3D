@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Linq;
+using Infrastructure.AssetManagement;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
 
-public class ClothsDrawer : ItemDrawer, ISavedProgress, IInitializable
+public class ClothsDrawer : ItemDrawer, ISavedProgress//, IInitializable
 {
     [SerializeField] private Transform _anchorPointTransform;
     protected override void ShowDialog()
@@ -18,48 +19,55 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress, IInitializable
     
     public async void LoadProgress(PlayerProgress playerProgress)
     {
+        AnchorPointTransform = _anchorPointTransform;
         string currentRoomName = SceneManager.GetActiveScene().name;
-        RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == currentRoomName);
-        
-        if (roomState is not null)
+        if(currentRoomName == AssetPaths.RoomSceneName)
         {
-            ItemType clothsType = roomState.ClothsData.Type; 
-        
-            if(clothsType.Equals(ItemType.None)) return;
-            ItemType = clothsType;
-            string clothName = Enum.GetName(typeof(ItemType), (int)clothsType);
-            Stuff stuff = await InstantiateItem(clothName);
+            RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
+                x.Name == currentRoomName);
+
+            if (roomState is not null)
+            {
+                ItemType clothsType = roomState.ClothsData.Type;
+
+                if (clothsType.Equals(ItemType.None)) return;
+                ItemType = clothsType;
+                string clothName = Enum.GetName(typeof(ItemType), (int)clothsType);
+                Stuff stuff = await InstantiateItem(clothName);
+            }
         }
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
     {
         string currentRoomName = SceneManager.GetActiveScene().name;
-        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == currentRoomName);
-        if (room is not null)
+        if(currentRoomName == AssetPaths.RoomSceneName)
         {
-            room.ClothsData ??= new ClothsData
+            RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
+                x.Name == currentRoomName);
+            if (room is not null)
             {
-                Type = ItemType,
-            };
-
-            room.ClothsData.Type = ItemType;
-        }
-        else
-            playerProgress.RoomsData.Rooms.Add(new RoomState
-            {
-                ClothsData = new ClothsData
+                room.ClothsData ??= new ClothsData
                 {
-                    Type = ItemType
-                },
-                Name = currentRoomName
-            });
+                    Type = ItemType,
+                };
+
+                room.ClothsData.Type = ItemType;
+            }
+            else
+                playerProgress.RoomsData.Rooms.Add(new RoomState
+                {
+                    ClothsData = new ClothsData
+                    {
+                        Type = ItemType
+                    },
+                    Name = currentRoomName
+                });
+        }
     }
 
-    public void Initialize()
+    /*public void Initialize()
     {
-        AnchorPointTransform = _anchorPointTransform;
-    }
+        //AnchorPointTransform = _anchorPointTransform;
+    }*/
 }
