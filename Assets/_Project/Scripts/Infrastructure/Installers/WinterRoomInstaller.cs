@@ -40,8 +40,8 @@ public class WinterRoomInstaller : MonoInstaller
         BindDialogManager();
         BindHud();
         BindTimersPrincipal();
-        BindPlayer();
         BindInventory();
+        BindPlayer();
         BindBackpackDrawer();
         BindBackpackInventoryDialog();
         BindShop();
@@ -109,16 +109,14 @@ public class WinterRoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
+        GameObject prefab = _prefabsStorage.Get(typeof(Player));
         Vector3 position = _levelStaticData.PlayerSpawnPoint;
         Quaternion rotation = _levelStaticData.PlayerRotation;
-        playerPrefab.SetPositionAdapterValue(position, rotation);
-
-        Container.Bind<Player>()
-            .FromComponentInNewPrefab(playerPrefab)
-            .WithGameObjectName(nameof(Player))
-            .AsSingle()
-            .NonLazy();
+        
+        GameObject player = Container.InstantiatePrefab(prefab, position, rotation, null);
+        player.name = nameof(Player);
+        Container.BindInterfacesAndSelfTo<Player>().FromComponentOn(player).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(player);
     }
 
     private void BindSnowman()

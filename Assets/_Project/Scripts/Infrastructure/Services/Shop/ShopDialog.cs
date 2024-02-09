@@ -22,15 +22,17 @@ public class ShopDialog : Dialog
     private IEventBus _eventBus;
     private IInventory _inventory;
     private ISaveLoadService _saveLoadService;
+    private IPersistentProgress _persistentProgress;
 
     [Inject]
     public void Construct(IWalletService walletService, IInventory inventory, IEventBus eventBus,
-        ISaveLoadService saveLoadService)
+        ISaveLoadService saveLoadService, IPersistentProgress persistentProgress)
     {
         _walletService = walletService;
         _eventBus = eventBus;
         _inventory = inventory;
         _saveLoadService = saveLoadService;
+        _persistentProgress = persistentProgress;
 
         foreach (Item item in _items)
         {
@@ -54,11 +56,10 @@ public class ShopDialog : Dialog
 
     private void OnBuyItem(BuyItemSignal signal)
     {
-        if (false == CheckEquipment(signal.Item))
+        if (CheckEquipment(signal.Item))
             if (_walletService.TrySpend(CurrencyType.Coins, signal.Item.Price))
             {
                 _inventory.TryAddItem(this, signal.Item, signal.Value);
-                //_eventBus.Invoke(new UpdateInventoryView());
                 SaveProgress();
                 Debug.Log($"Was spend {signal.Item.Price}");
             }
@@ -66,7 +67,16 @@ public class ShopDialog : Dialog
 
     private bool CheckEquipment(Item item)
     {
-        return item.StuffSpecies == StuffSpecies.Cloths && _inventory.HasItem(item.Type);
+        if (item.StuffSpecies is StuffSpecies.Meal or StuffSpecies.Decor) return true;
+
+        var a = item.StuffSpecies == StuffSpecies.Cloths;
+        var b = _inventory.HasItem(item.Type);
+        if (a && !b)
+        {
+            return _persistentProgress.PlayerProgress.PlayerState.PlayerDecor.Type == ItemType.None;
+        }
+
+        return false;
     }
 
     private void SaveProgress()

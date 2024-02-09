@@ -30,6 +30,7 @@ public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
             ItemType = mealType;
             string mealName = Enum.GetName(typeof(ItemType), (int)mealType);
             Stuff stuff = await InstantiateItem(mealName);
+            stuff.AddLastStack(this);
         }
     }
 
@@ -57,7 +58,22 @@ public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
                 Name = currentRoomName
             });
     }
+    
+    public override void Stack(Stuff stuff)
+    {
+        Inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
+        stuff.StartPosition = stuff.Position = AnchorPointTransform.position;
+        stuff.LastStack.UnStack();
+        stuff.AddLastStack(this);
+        SaveLoadService.SaveProgress();
+        Destroy(stuff.gameObject);
+    }
 
+    public override void UnStack()
+    {
+        ItemType = ItemType.None;
+    }
+    
     public void Initialize()
     {
         

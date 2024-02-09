@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Data;
 using PlayerScripts;
 using UnityEditor;
 using UnityEngine;
@@ -28,11 +29,26 @@ public static class Extensions
         return texture;
     }
 
+    public static Vector3 Vector3DataToVector3(this Vector3Data vector3Data)
+    {
+        return new Vector3(vector3Data.X, vector3Data.Y, vector3Data.Z);
+    }
+
+    public static Vector3Data Vector3ToVector3Data(this Vector3 vector3)
+    {
+        return new Vector3Data(vector3.x, vector3.y, vector3.z);
+    }
+
     public static int Random100()
     {
         return Random.Range(0, 101);
     }
-    
+
+    public static float DivideBy100ToFloat(int value)
+    {
+        return Convert.ToSingle(value) / 100;
+    }
+
     public static int OneItem => 1;
 
     public static void GenerateEnum(this IEnumerable<string> fields, string enumName,

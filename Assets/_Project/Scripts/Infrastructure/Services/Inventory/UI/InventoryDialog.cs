@@ -16,13 +16,16 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     [SerializeField] private CanvasGroup _useButtonCanvasGroup;
     [SerializeField] private PointerListener _dropButton;
     [SerializeField] protected RectTransform _slotHolder;
-    [SerializeField][PropertyTooltip("Ui inventory slot prefab")] protected UIInventorySlot _uiInventorySlot;
+
+    [SerializeField] [PropertyTooltip("Ui inventory slot prefab")]
+    protected UIInventorySlot _uiInventorySlot;
+
     [SerializeField] private UIDescriptionHolder _uiDescriptionHolder;
     [SerializeField] protected TMP_Text _inventoryTitle;
-    
+
     [Header("Debug")] [ReadOnly] [SerializeField]
     private List<DebugItemData> _debugList;
-    
+
     protected IInventory Inventory;
     protected List<UIInventorySlot> UISlots;
 
@@ -45,15 +48,15 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
     {
         UpdateAllSlots();
     }
-    
+
 
     private void OnUseButtonClick(PointerEventData data)
     {
-        int slotId = GetActiveSlotId();
+        int slotId = TryGetActiveSlotId(out UIInventorySlot uiInventorySlot);
 
         if (slotId == int.MaxValue) return;
 
-        InstantiateItem();
+        InstantiateItem(uiInventorySlot);
 
         if (Inventory.RemoveItem(UISlots[slotId].UIItem.InventorySlotId))
         {
@@ -66,12 +69,9 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
         }
     }
 
-    private void InstantiateItem()
+    private void InstantiateItem(UIInventorySlot uiSlot)
     {
-        if (TryGetActiveSlot(out UIInventorySlot uiSlot))
-            ItemDrawer.InstantiateItemByType(uiSlot.UIItem.ItemType);
-        else
-            Debug.Log("No active slots");
+        ItemDrawer.InstantiateItemByType(uiSlot.UIItem.ItemType);
     }
 
 
@@ -161,10 +161,10 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
         }
     }
 
-    private int GetActiveSlotId()
+    private int TryGetActiveSlotId(out UIInventorySlot uiInventorySlot)
     {
-        UIInventorySlot uiSlot = UISlots.FirstOrDefault(x => x.IsActive);
-        return uiSlot == null ? int.MaxValue : uiSlot.Id;
+        uiInventorySlot = UISlots.FirstOrDefault(x => x.IsActive);
+        return uiInventorySlot == null ? int.MaxValue : uiInventorySlot.Id;
     }
 
     private bool TryGetActiveSlot(out UIInventorySlot uiSlot)
@@ -172,7 +172,7 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
         uiSlot = UISlots.FirstOrDefault(x => x.IsActive);
         return uiSlot is not null;
     }
-    
+
     protected void UpdateDebugList()
     {
         IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false);

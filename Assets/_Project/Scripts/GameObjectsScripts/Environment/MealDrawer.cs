@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -30,6 +31,7 @@ public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
             ItemType = mealType;
             string mealName = Enum.GetName(typeof(ItemType), (int)mealType);
             Stuff stuff = await InstantiateItem(mealName);
+            stuff.AddLastStack(this);
         }
     }
 
@@ -56,6 +58,28 @@ public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
                 },
                 Name = currentRoomName
             });
+    }
+    
+    public override void Stack(Stuff stuff)
+    {
+        if(stuff.Item.StuffSpecies == StuffSpecies.Meal)
+        {
+            Inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
+            stuff.Position = AnchorPointTransform.position;
+            //stuff.gameObject.SetActive(false);
+            UnStack();
+            Destroy(stuff.gameObject);
+        }
+        else
+        {
+            stuff.Position = stuff.StartPosition;
+        }
+    }
+
+    public override void UnStack()
+    {
+        ItemType = ItemType.None;
+        SaveLoadService.SaveProgress();
     }
 
     public void Initialize()

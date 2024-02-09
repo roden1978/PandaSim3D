@@ -3,5 +3,5 @@
 [Serializable]
 public class ClothsData
 {
-    public ItemType Type;
+    public ItemType Type = ItemType.None;
 }

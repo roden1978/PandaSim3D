@@ -7,6 +7,7 @@ namespace GameObjectsScripts.Timers
     {
         public bool Active => _active;
         public float IndicatorValue => _indicatorValue;
+        public float PassedTime => 1 - _indicatorValue;
         public TimerType TimerType => _type;
         public float Decrease => _decrease;
 

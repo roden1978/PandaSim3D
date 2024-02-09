@@ -1,23 +1,31 @@
 ﻿using System;
+using Data;
 
 [Serializable]
 public class PlayerState
 {
     public string SceneName;
-    public int CurrentHealth;
-    public int MaxHealth;
-    public float Mood;
-    public float Meal;
-    public float Toilet;
-    public float Dream;
     public bool FirstStartGame;
     public string PetName;
+    public PlayerDecor PlayerDecor;
 
     public PlayerState()
     {
         FirstStartGame = true;
         PetName = string.Empty;
+        PlayerDecor = new PlayerDecor(ItemType.None, new Vector3Data());
     }
+}
 
-    public void ResetHP() => CurrentHealth = MaxHealth;
+[Serializable]
+public class PlayerDecor
+{
+    public ItemType Type;
+    public Vector3Data StartPosition;
+
+    public PlayerDecor(ItemType type, Vector3Data startPosition)
+    {
+        Type = type;
+        StartPosition = startPosition;
+    }
 }

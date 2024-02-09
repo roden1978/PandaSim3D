@@ -20,7 +20,6 @@
         public const string BackpackPath = "BackpackDrawer";
         public const string TrayPath = "TrayView";
         public const string EggPath = "Egg";
-        public const string HatPath = "Hat";
         public const string SnowmanPath = "Snowman";
         public const string SceneStaticDataLabel = "SceneData";
         public const string EnvironmentStaticDataLabel = "EnvironmentData";

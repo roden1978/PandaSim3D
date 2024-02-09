@@ -3,6 +3,6 @@
     public interface IStack
     {
         void Stack(Stuff stuff);
-        void UnStack(Stuff stuff);
+        void UnStack();
     }
 }

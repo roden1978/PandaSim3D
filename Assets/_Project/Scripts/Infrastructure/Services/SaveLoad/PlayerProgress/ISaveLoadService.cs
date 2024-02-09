@@ -3,7 +3,7 @@
 public interface ISaveLoadService
 {
     void SaveProgress();
-    UniTask<PlayerProgress> LoadProgress();
+    PlayerProgress LoadProgress();
     public void SaveSettings();
-    UniTask<Settings> LoadSettings();
+    Settings LoadSettings();
 }

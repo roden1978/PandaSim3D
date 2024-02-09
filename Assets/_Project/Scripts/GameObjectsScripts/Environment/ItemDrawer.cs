@@ -19,11 +19,11 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     protected Transform AnchorPointTransform;
     protected DialogManager DialogManager => _dialogManager;
     protected ItemType ItemType = ItemType.None;
-    private readonly Dictionary<string, GameObject> _cachedItems = new();
+    private readonly Dictionary<string, Stuff> _cachedItems = new();
     private DialogManager _dialogManager;
     private IAssetProvider _assetProvider;
-    private IInventory _inventory;
-    private ISaveLoadService _saveLoadService;
+    protected IInventory Inventory;
+    protected ISaveLoadService SaveLoadService;
 
     [Inject]
     public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory,
@@ -31,8 +31,8 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     {
         _dialogManager = dialogManager;
         _assetProvider = assetProvider;
-        _inventory = inventory;
-        _saveLoadService = saveLoadService;
+        Inventory = inventory;
+        SaveLoadService = saveLoadService;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -47,57 +47,50 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         ItemType = type;
         string itemName = Enum.GetName(typeof(ItemType), (int)type);
 
-        if (GetItemFromCache(itemName) is null)
-        {
-            await InstantiateItem(itemName);
-        }
-        else
-        {
-            GameObject item = GetItemFromCache(itemName);
-            item.SetActive(true);
-        }
+        Stuff stuff = await InstantiateItem(itemName);
+        
+        stuff.StartPosition = AnchorPointTransform.position;
+        stuff.AddLastStack(this);
+
+        stuff.Construct(this);
     }
 
     protected async UniTask<Stuff> InstantiateItem(string itemName)
     {
-        UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(itemName);
+        Stuff stuff;
+        if (TryGetItemFromCache(itemName, out Stuff cached))
+        {
+            stuff = Instantiate(cached, AnchorPointTransform.position, Quaternion.identity,
+                AnchorPointTransform).GetComponent<Stuff>();
+        }
+        else
+        {
+            UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(itemName);
 
-        await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
-        GameObject prefab = await result;
-
-        Stuff stuff = Instantiate(prefab, AnchorPointTransform.position, Quaternion.identity,
-                AnchorPointTransform)
-            .GetComponent<Stuff>();
-
-        AddToMealCache(stuff.Item.Name, stuff.gameObject);
-
-        stuff.Construct(this);
-
+            await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
+            GameObject prefab = await result;
+            AddToItemCache(prefab.name, prefab.GetComponent<Stuff>());
+            stuff = Instantiate(prefab, AnchorPointTransform.position, Quaternion.identity,
+                AnchorPointTransform).GetComponent<Stuff>();
+        }
+        
         _assetProvider.ReleaseAssetsByLabel(itemName);
         return stuff;
     }
 
-    private void AddToMealCache(string itemName, GameObject item)
+    private bool AddToItemCache(string itemName, Stuff item)
     {
-        _cachedItems.TryAdd(itemName, item);
+        return _cachedItems.TryAdd(itemName, item);
+        //Debug.Log($"Add stuff to cache result: {result}");
     }
 
-    private GameObject GetItemFromCache(string itemName)
+    private bool TryGetItemFromCache(string itemName, out Stuff item)
     {
-        return _cachedItems.TryGetValue(itemName, out GameObject item) ? item : null;
+        return _cachedItems.TryGetValue(itemName, out item);
     }
 
-    public void Stack(Stuff stuff)
-    {
-        _inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
-        stuff.gameObject.transform.position = AnchorPointTransform.position;
-        stuff.gameObject.SetActive(false);
-        UnStack(stuff);
-    }
+    public abstract void Stack(Stuff stuff);
 
-    public void UnStack(Stuff stuff)
-    {
-        ItemType = ItemType.None;
-        _saveLoadService.SaveProgress();
-    }
+    public abstract void UnStack();
+
 }

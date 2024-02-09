@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using Infrastructure.AssetManagement;
+using StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Zenject;
 
-public class ClothsDrawer : ItemDrawer, ISavedProgress//, IInitializable
+public class ClothsDrawer : ItemDrawer, ISavedProgress
 {
     [SerializeField] private Transform _anchorPointTransform;
     protected override void ShowDialog()
@@ -34,6 +34,7 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress//, IInitializable
                 ItemType = clothsType;
                 string clothName = Enum.GetName(typeof(ItemType), (int)clothsType);
                 Stuff stuff = await InstantiateItem(clothName);
+                stuff.AddLastStack(this);
             }
         }
     }
@@ -53,6 +54,7 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress//, IInitializable
                 };
 
                 room.ClothsData.Type = ItemType;
+                
             }
             else
                 playerProgress.RoomsData.Rooms.Add(new RoomState
@@ -66,8 +68,29 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress//, IInitializable
         }
     }
 
-    /*public void Initialize()
+    public override void Stack(Stuff stuff)
     {
-        //AnchorPointTransform = _anchorPointTransform;
-    }*/
+        if(stuff.Item.StuffSpecies == StuffSpecies.Cloths && false == Inventory.HasItem(stuff.Item.Type))
+        {
+            Inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
+            stuff.StartPosition = stuff.Position = AnchorPointTransform.position;
+            stuff.transform.parent = _anchorPointTransform;
+            //GameObject item; 
+            //(item = stuff.gameObject).SetActive(false);
+            stuff.LastStack.UnStack();
+            stuff.AddLastStack(this);
+            SaveLoadService.SaveProgress();
+            Destroy(stuff.gameObject);
+        }
+        else
+        {
+            stuff.Position = stuff.StartPosition;
+        }
+    }
+
+    public override void UnStack()
+    {
+        Debug.Log("Override Virtual unstack method");
+        ItemType = ItemType.None;
+    }
 }

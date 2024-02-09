@@ -7,15 +7,12 @@ public class TrayView : MonoBehaviour, IInitializable
 {
     private Tray _tray;
     private IShowable _poop;
-    private ISaveLoadStorage _saveLoadStorage;
 
     [Inject]
-    public void Construct(Tray tray, IShowable poop, ISaveLoadStorage saveLoadStorage)
+    public void Construct(Tray tray, IShowable poop)
     {
         _tray = tray;
         _poop = poop;
-        _saveLoadStorage = saveLoadStorage;
-        _saveLoadStorage.RegisterInSaveLoadRepositories(_tray);
         
         _tray.ShowPoop += OnShowPoop;
         _tray.HidePoop += OnHidePoop;

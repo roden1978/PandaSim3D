@@ -3,5 +3,5 @@
 [Serializable]
 public class SnowmanDecor
 {
-    public ItemType Type;
+    public ItemType Type = ItemType.None;
 }

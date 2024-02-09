@@ -40,8 +40,8 @@ public class RoomInstaller : MonoInstaller
         BindTimersPrincipal();
         BindInputNameDialog();
         BindEgg();
-        BindPlayer();
         BindInventory();
+        BindPlayer();
         BindMealDrawer();
         BindMealInventoryDialog();
         BindClothsDrawer();
@@ -71,6 +71,7 @@ public class RoomInstaller : MonoInstaller
         IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
         positionAdapter.Position = poopData.Position;
         GameObject poop = Container.InstantiatePrefab(prefab);
+        poop.gameObject.SetActive(false);
         poop.gameObject.name = nameof(Poop);
         Container.BindInterfacesAndSelfTo<Poop>().FromComponentOn(poop).AsSingle();
     }
@@ -183,21 +184,21 @@ public class RoomInstaller : MonoInstaller
 
     private void BindPlayer()
     {
-        GameObject playerPrefab = _prefabsStorage.Get(typeof(Player));
+        GameObject prefab = _prefabsStorage.Get(typeof(Player));
         Vector3 position = _levelStaticData.PlayerSpawnPoint;
         Quaternion rotation = _levelStaticData.PlayerRotation;
-        playerPrefab.SetPositionAdapterValue(position, rotation);
-
-        Container.Bind<Player>()
-            .FromComponentInNewPrefab(playerPrefab)
-            .WithGameObjectName(nameof(Player))
-            .AsSingle()
-            .NonLazy();
+        
+        GameObject player = Container.InstantiatePrefab(prefab, position, rotation, null);
+        player.name = nameof(Player);
+        Container.BindInterfacesAndSelfTo<Player>().FromComponentOn(player).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(player);
     }
 
     private void BindTray()
     {
         Container.BindInterfacesAndSelfTo<Tray>().AsSingle();
+        Tray tray = Container.Resolve<Tray>();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(tray);
     }
 
     private void BindTrayView()

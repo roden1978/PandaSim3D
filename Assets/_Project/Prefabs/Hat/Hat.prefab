@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9009522805927261094}
   - component: {fileID: 2106488564230348119}
   - component: {fileID: 5621795547445381684}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Hat
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8334949394477142890}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -181,12 +181,12 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f61f81c1a5df0704f825c4e006a97228,
         type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8164078558771037576, guid: f61f81c1a5df0704f825c4e006a97228,
         type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

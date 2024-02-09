@@ -2,7 +2,6 @@
 using System.Linq;
 using GameObjectsScripts.Timers;
 using Infrastructure.AssetManagement;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 public class Tray : ISavedProgress, IInitializable
@@ -22,29 +21,11 @@ public class Tray : ISavedProgress, IInitializable
 
     public void LoadProgress(PlayerProgress playerProgress)
     {
-        if (playerProgress.PlayerState.FirstStartGame)
-        {
-            HidePoop?.Invoke();
-            FillTray(false);
-        }
+        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x => x.Name == AssetPaths.RoomSceneName);
 
-        string sceneName = SceneManager.GetActiveScene().name;
-        if (sceneName == AssetPaths.RoomSceneName)
+        if (room is not null)
         {
-            RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x => x.Name == AssetPaths.RoomSceneName);
-            if (room is not null)
-            {
-                if (room.Poop)
-                {
-                    ShowPoop?.Invoke();
-                    FillTray(true);
-                }
-                else
-                {
-                    HidePoop?.Invoke();
-                    FillTray(false);
-                }
-            }
+            FillTray(room.Poop);
         }
     }
 
@@ -71,14 +52,12 @@ public class Tray : ISavedProgress, IInitializable
 
     private void OnRestartTimer(Timer timer, float reward)
     {
-        HidePoop?.Invoke();
         FillTray(false);
         _saveLoadService.SaveProgress();
     }
 
     private void OnEndTimer(Timer timer)
     {
-        ShowPoop?.Invoke();
         FillTray(true);
         _saveLoadService.SaveProgress();
     }
@@ -91,6 +70,11 @@ public class Tray : ISavedProgress, IInitializable
 
     private void FillTray(bool value)
     {
+        if (value)
+            ShowPoop?.Invoke();
+        else
+            HidePoop?.Invoke();
+        
         _isFull = value;
     }
 }

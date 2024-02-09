@@ -30,22 +30,29 @@ namespace PlayerScripts
             {
                 Debug.Log($"The pet ate the {stuff.Item.Name}");
                 _wallet.AddAmount(CurrencyType.Coins, Mathf.FloorToInt(Convert.ToSingle(stuff.Item.Price) / 2));
-                stuff.gameObject.transform.position = stuff.StartPosition;
-                stuff.gameObject.SetActive(false);
-                
+                stuff.Position = stuff.StartPosition;
+                stuff.LastStack.UnStack();
+                //stuff.gameObject.SetActive(false);
                 Reward(stuff);
+                Destroy(stuff.gameObject);
+            }
+            else
+            {
+                stuff.Position = stuff.StartPosition;
             }
         }
 
         private void Reward(Stuff stuff)
         {
-            float value = Convert.ToSingle(stuff.Item.Price) / 100;
-            Debug.Log($"Reward value {value}");
-            _timer.SetReward(value);
+            float value = Extensions.DivideBy100ToFloat(stuff.Item.Price);
+            float rewardValue = value * _timer.PassedTime;
+            _timer.SetReward(rewardValue);
             _timer.Restart();
+            
+            Debug.Log($"Reward value {rewardValue}");
         }
 
-        public void UnStack(Stuff stuff)
+        public void UnStack()
         {
             
         }

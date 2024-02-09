@@ -257,7 +257,7 @@ PrefabInstance:
     - target: {fileID: 4974045377790832093, guid: 9ecba550706e165489e0d88947a8044f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.506
+      value: 0.34
       objectReference: {fileID: 0}
     - target: {fileID: 4974045377790832093, guid: 9ecba550706e165489e0d88947a8044f,
         type: 3}
@@ -267,7 +267,7 @@ PrefabInstance:
     - target: {fileID: 4974045377790832093, guid: 9ecba550706e165489e0d88947a8044f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.532
+      value: 0.93
       objectReference: {fileID: 0}
     - target: {fileID: 4974045377790832093, guid: 9ecba550706e165489e0d88947a8044f,
         type: 3}
@@ -702,7 +702,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EventMask:
     serializedVersion: 2
-    m_Bits: 960
+    m_Bits: 2016
   m_MaxRayIntersections: 0
 --- !u!1001 &2112663433
 PrefabInstance:

@@ -15,6 +15,7 @@ public class SaveLoadService : ISaveLoadService
     private readonly IPersistentProgress _persistentProgress;
     private readonly ISaveLoadStorage _saveLoadStorage;
     private readonly EmptyEncryptor _encryptor;
+
     public SaveLoadService(IPersistentProgress persistentProgress, ISaveLoadStorage saveLoadStorage)
     {
         _persistentProgress = persistentProgress;
@@ -34,9 +35,9 @@ public class SaveLoadService : ISaveLoadService
         Save(Progress, FileName, jsonData);
     }
 
-    public async UniTask<PlayerProgress> LoadProgress()
+    public PlayerProgress LoadProgress()
     {
-        string jsonData = await Load(Progress, FileName);
+        string jsonData = Load(Progress, FileName);
         Debug.Log($"Json string {jsonData}");
         return jsonData?.Deserialize<PlayerProgress>();
     }
@@ -47,35 +48,36 @@ public class SaveLoadService : ISaveLoadService
         Save(Settings, FileName, jsonData);
     }
 
-    public async UniTask<Settings> LoadSettings()
+    public Settings LoadSettings()
     {
-        string jsonData = await Load(Settings, FileName);
+        string jsonData = Load(Settings, FileName);
         return jsonData?.Deserialize<Settings>();
     }
 
-    private async UniTask<string> Load(string folderName, string fileName)
+    private string Load(string folderName, string fileName)
     {
         string dataPath = GetFilePath(folderName, fileName);
         Debug.Log($"Load player progress path {dataPath}");
-        
+
         if (File.Exists(dataPath))
         {
-            await using FileStream reader = new (dataPath, FileMode.OpenOrCreate);
+            using FileStream reader = new(dataPath, FileMode.OpenOrCreate, FileAccess.Read,
+                FileShare.ReadWrite);
             byte[] result = new byte[reader.Length];
-            await reader.ReadAsync(result, 0, (int)reader.Length);
+            int read = reader.Read(result, 0, (int)reader.Length);
             reader.Close();
-            return Encoding.UTF8.GetString(result, 0, result.Length);
+            return Encoding.UTF8.GetString(result, 0, read);
         }
 
         return string.Empty;
     }
 
-    private async void Save(string folderName, string filename, string data)
+    private void Save(string folderName, string filename, string data)
     {
         string dataPath = GetFilePath(folderName, filename);
-        
+
         Debug.Log($"Save player progress path {dataPath}");
-        
+
         if (!Directory.Exists(Path.GetDirectoryName(dataPath)))
             Directory.CreateDirectory(Path.GetDirectoryName(dataPath) ?? string.Empty);
 
@@ -83,8 +85,9 @@ public class SaveLoadService : ISaveLoadService
         {
             data = _encryptor.Encrypt(data);
         }
-        await using FileStream fs = new(dataPath, FileMode.Create, FileAccess.Write);
-        await fs.WriteAsync(Encoding.UTF8.GetBytes(data), 0, data.Length);
+
+        using FileStream fs = new(dataPath, FileMode.Create, FileAccess.Write);
+        fs.Write(Encoding.UTF8.GetBytes(data), 0, data.Length);
         fs.Close();
     }
 

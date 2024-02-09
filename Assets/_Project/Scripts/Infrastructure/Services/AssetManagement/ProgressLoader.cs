@@ -31,14 +31,14 @@ namespace Infrastructure.AssetManagement
             _staticDataService.LoadLevelStaticData();
         }
 
-        private async void LoadSettings()
+        private void LoadSettings()
         {
-            _persistentProgress.Settings = await _saveLoadService.LoadSettings() ?? CreateSettings();
+            _persistentProgress.Settings = _saveLoadService.LoadSettings() ?? CreateSettings();
         }
 
-        private async void LoadPlayerProgress()
+        private void LoadPlayerProgress()
         {
-            _persistentProgress.PlayerProgress = await _saveLoadService.LoadProgress() ?? CreatePlayerProgress();
+            _persistentProgress.PlayerProgress = _saveLoadService.LoadProgress() ?? CreatePlayerProgress();
         }
 
         private Settings CreateSettings()
@@ -52,15 +52,13 @@ namespace Infrastructure.AssetManagement
 
         private PlayerProgress CreatePlayerProgress()
         {
-            PlayerProgress playerProgress = new();
-
-            playerProgress.PlayerState.SceneName = AssetPaths.RoomSceneName;
-            playerProgress.PlayerState.CurrentHealth = playerProgress.StaticPlayerData.Health;
-            playerProgress.PlayerState.MaxHealth = playerProgress.StaticPlayerData.MaxHealth;
-            playerProgress.PlayerState.Dream = playerProgress.StaticPlayerData.Dream;
-            playerProgress.PlayerState.Meal = playerProgress.StaticPlayerData.Meal;
-            playerProgress.PlayerState.Mood = playerProgress.StaticPlayerData.Mood;
-            playerProgress.PlayerState.Toilet = playerProgress.StaticPlayerData.Toilet;
+            PlayerProgress playerProgress = new()
+            {
+                PlayerState =
+                {
+                    SceneName = AssetPaths.RoomSceneName
+                }
+            };
 
             return playerProgress;
         }
