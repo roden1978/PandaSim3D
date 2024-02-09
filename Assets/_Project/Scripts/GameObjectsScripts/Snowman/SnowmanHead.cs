@@ -18,12 +18,14 @@ namespace PlayerScripts
         private ItemType _type = ItemType.None;
         private IAssetProvider _assetProvider;
         private ISaveLoadService _saveLoadService;
+        private TimersPrincipal _timersPrincipal;
 
         [Inject]
-        public void Construct(IAssetProvider assetProvider, ISaveLoadService saveLoadService)
+        public void Construct(IAssetProvider assetProvider, ISaveLoadService saveLoadService, TimersPrincipal timersPrincipal)
         {
             _assetProvider = assetProvider;
             _saveLoadService = saveLoadService;
+            _timersPrincipal = timersPrincipal;
         }
 
         public void Stack(Stuff stuff)

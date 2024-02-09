@@ -12,4 +12,5 @@ public class TimerData
     public float UpdateTime;
     public float IndicatorValue;
     public bool Active;
+    public bool CanStart;
 }

@@ -29,14 +29,14 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
         foreach (SoTimer soTimer in _set.SoTimers)
         {
-            Timer timer = new(soTimer.Duration, soTimer.MoodDecrease, soTimer.Type);
+            Timer timer = new(soTimer);
             _timerSet.AddTimer(timer);
             _debugTimers.Add(timer.TimerType.ToString());
         }
 
         _moodIndicator = new MoodIndicator(_timerSet, saveLoadService);
-        _saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
         InstantiateMoodIndicatorView();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
     }
 
     public void Initialize()
@@ -48,9 +48,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         foreach (Timer timer in _timerSet)
         {
-            //Watch this for cold timer!!!!!
-            if (timer.TimerType == TimerType.Cold) continue;
-            timer.Start();
+            if (timer.CanStart)
+                timer.Start();
         }
     }
 
@@ -69,7 +68,6 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     public void AddTimersView()
     {
-        //InstantiateMoodIndicatorView();
         InstantiateTimersViews();
     }
 
@@ -77,7 +75,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         foreach (Timer timer in _timerSet)
         {
-            SoTimer soTimer = _set.SoTimers.FirstOrDefault(x => x.Type == timer.TimerType);
+            SoTimer soTimer = _set.SoTimers
+                .FirstOrDefault(x => x.TimerPrefab != null && x.Type == timer.TimerType);
 
             if (soTimer is not null)
             {

@@ -29,7 +29,6 @@ public class RoomInstaller : MonoInstaller
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
         _saveLoadStorage.ClearAll();
-        //_saveLoadStorage.ClearGameObjectsType();
     }
 
     public override void InstallBindings()

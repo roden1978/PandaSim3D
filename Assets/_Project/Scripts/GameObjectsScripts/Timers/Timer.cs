@@ -10,6 +10,7 @@ namespace GameObjectsScripts.Timers
         public float PassedTime => 1 - _indicatorValue;
         public TimerType TimerType => _type;
         public float Decrease => _decrease;
+        public bool CanStart => _canStart;
 
         public event Action<float> UpdateTimerView;
         public event Action<Timer> EndTimer;
@@ -26,13 +27,15 @@ namespace GameObjectsScripts.Timers
         private float _indicatorValue;
         private bool _increaseTimer;
         private float _reward;
+        private bool _canStart;
 
-        public Timer(float duration, float decreaseValue, TimerType type)
+        public Timer(SoTimer soTimer) //float duration, float decreaseValue, TimerType type
         {
-            _duration = duration * TimeUtils.OneMinute;
+            _duration = soTimer.Duration * TimeUtils.OneMinute;
             _currentTime = _duration;
-            _decrease = decreaseValue;
-            _type = type;
+            _decrease = soTimer.MoodDecrease;
+            _type = soTimer.Type;
+            _canStart = soTimer.CanStart;
         }
 
         public void Initialize()
@@ -115,8 +118,8 @@ namespace GameObjectsScripts.Timers
             else
             {
                 //_indicatorValue = 1;
+                Restart();
                 IncreaseSetActive(false);
-                //Restart();
             }
 
             Debug.Log(
@@ -138,6 +141,7 @@ namespace GameObjectsScripts.Timers
             _updateTime = timerData.UpdateTime;
             _indicatorValue = timerData.IndicatorValue;
             _active = timerData.Active;
+            _canStart = timerData.CanStart;
             
             UpdateTimerView?.Invoke(_indicatorValue);
         }

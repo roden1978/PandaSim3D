@@ -47,7 +47,8 @@ namespace PlayerScripts
             float value = Extensions.DivideBy100ToFloat(stuff.Item.Price);
             float rewardValue = value * _timer.PassedTime;
             _timer.SetReward(rewardValue);
-            _timer.Restart();
+            _timer.Stop();
+            _timer.IncreaseSetActive(true);
             
             Debug.Log($"Reward value {rewardValue}");
         }

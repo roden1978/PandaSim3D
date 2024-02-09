@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShowable, IPositionAdapter, IInitializable
+public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IShowable, IPositionAdapter, IInitializable
 {
-    [SerializeField] [Range(0, .2f)]private float _cleanReward;
+    [SerializeField] [Range(0, .2f)] private float _cleanReward;
     private TimersPrincipal _timersPrincipal;
     private Timer _timer;
 
@@ -16,7 +16,7 @@ public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShow
     {
         _timersPrincipal = timersPrincipal;
     }
-    
+
     public void Show()
     {
         gameObject.SetActive(true);
@@ -35,19 +35,15 @@ public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler ,IShow
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if(_timer.IndicatorValue < 1)
+        if (_timer.IndicatorValue < 1)
             _timer.IncreaseSetActive(false);
-        else
-        {
-            _timer.SetReward(_cleanReward);
-            _timer.Restart();
-        }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("Pointer down");
         _timer.IncreaseSetActive(true);
+        _timer.SetReward(_cleanReward);
     }
 
     public void Initialize()
