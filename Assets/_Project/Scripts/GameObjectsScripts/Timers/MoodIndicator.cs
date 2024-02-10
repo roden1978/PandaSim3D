@@ -25,16 +25,25 @@ public class MoodIndicator: ISavedProgress, IInitializable
         }
     }
 
-    private void OnRestartAnyTimer(Timer timer, float reward)
+    private void OnRestartAnyTimer(float reward)
+    {
+        IncreaseIndicatorValue(reward);
+    }
+
+    private void OnEndAnyTimer(Timer timer)
+    {
+        DecreaseIndicatorValue(timer);
+    }
+
+    public void IncreaseIndicatorValue(float reward)
     {
         _indicatorValue += reward;
         _indicatorValue = Clamp01();
         UpdateIndicatorValue?.Invoke(_indicatorValue);
         _saveLoadService.SaveProgress();
-        
     }
 
-    private void OnEndAnyTimer(Timer timer)
+    public void DecreaseIndicatorValue(Timer timer)
     {
         _indicatorValue -= timer.Decrease;
         _indicatorValue = Clamp01();

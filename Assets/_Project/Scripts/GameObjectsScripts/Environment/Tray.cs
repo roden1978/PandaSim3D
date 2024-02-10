@@ -50,7 +50,7 @@ public class Tray : ISavedProgress, IInitializable
         _timer.RestartTimer += OnRestartTimer;
     }
 
-    private void OnRestartTimer(Timer timer, float reward)
+    private void OnRestartTimer(float reward)
     {
         FillTray(false);
         _saveLoadService.SaveProgress();

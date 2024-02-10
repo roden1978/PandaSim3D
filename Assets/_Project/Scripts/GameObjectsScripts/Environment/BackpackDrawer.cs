@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -7,6 +8,7 @@ using Zenject;
 public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
 {
     [SerializeField] private Transform _anchorPointTransform;
+
     protected override void ShowDialog()
     {
         if (ItemType != ItemType.None) return;
@@ -15,18 +17,19 @@ public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
         BackpackInventoryDialog dialog = DialogManager.ShowDialog<BackpackInventoryDialog>();
         dialog.UpdateInventoryView();
     }
+
     public async void LoadProgress(PlayerProgress playerProgress)
     {
         AnchorPointTransform = _anchorPointTransform;
         string currentRoomName = SceneManager.GetActiveScene().name;
         RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
             x.Name == currentRoomName);
-        
+
         if (roomState is not null)
         {
-            ItemType mealType = roomState.ItemData.Type; 
-        
-            if(mealType.Equals(ItemType.None)) return;
+            ItemType mealType = roomState.ItemData.Type;
+
+            if (mealType.Equals(ItemType.None)) return;
             ItemType = mealType;
             string mealName = Enum.GetName(typeof(ItemType), (int)mealType);
             Stuff stuff = await InstantiateItem(mealName);
@@ -58,7 +61,7 @@ public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
                 Name = currentRoomName
             });
     }
-    
+
     public override void Stack(Stuff stuff)
     {
         Inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
@@ -73,9 +76,8 @@ public class BackpackDrawer : ItemDrawer, ISavedProgress, IInitializable
     {
         ItemType = ItemType.None;
     }
-    
+
     public void Initialize()
     {
-        
     }
 }

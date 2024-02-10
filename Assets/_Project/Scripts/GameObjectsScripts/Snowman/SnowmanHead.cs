@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using GameObjectsScripts.Timers;
 using Infrastructure.AssetManagement;
 using StaticData;
 using UnityEngine;
@@ -16,16 +16,29 @@ namespace PlayerScripts
 
         [SerializeField] [CustomReadOnly] private ItemType _debugType;
         private ItemType _type = ItemType.None;
+        private Stuff _stuff;
         private IAssetProvider _assetProvider;
         private ISaveLoadService _saveLoadService;
         private TimersPrincipal _timersPrincipal;
+        private Timer _timer;
 
         [Inject]
-        public void Construct(IAssetProvider assetProvider, ISaveLoadService saveLoadService, TimersPrincipal timersPrincipal)
+        public void Construct(IAssetProvider assetProvider, ISaveLoadService saveLoadService,
+            TimersPrincipal timersPrincipal)
         {
             _assetProvider = assetProvider;
             _saveLoadService = saveLoadService;
             _timersPrincipal = timersPrincipal;
+            _timer = timersPrincipal.GetTimerByType(TimerType.Carrot);
+            _timer.EndTimer += OnEndCarrotTimer;
+        }
+
+        private void OnEndCarrotTimer(Timer obj)
+        {
+            _stuff.LastStack.UnStack();
+            UnStack();
+            Destroy(_stuff.gameObject);
+            _saveLoadService.SaveProgress();
         }
 
         public void Stack(Stuff stuff)
@@ -36,8 +49,12 @@ namespace PlayerScripts
                 stuff.transform.parent = _anchorPoint;
                 stuff.LastStack.UnStack();
                 stuff.AddLastStack(this);
+                stuff.GetComponentInChildren<Collider>().isTrigger = true;
+                _stuff = stuff;
                 _type = stuff.Item.Type;
                 _debugType = stuff.Item.Type;
+                _timer.SetReward(Extensions.DivideBy100ToFloat(stuff.Item.Price));
+                _timer.Restart();
                 _saveLoadService.SaveProgress();
             }
             else
@@ -50,27 +67,28 @@ namespace PlayerScripts
         {
             _type = ItemType.None;
             _debugType = ItemType.None;
-            Debug.Log($"Unstack carrot");
+            //Debug.Log($"Unstack carrot");
         }
 
 
-        //TODO: Implement spawn decor after state loading
         public async void LoadProgress(PlayerProgress playerProgress)
         {
-            //TODO: Implement snowman data load;
             string currentRoomName = SceneManager.GetActiveScene().name;
             RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
                 x.Name == currentRoomName);
 
-            if (roomState is not null)
-            {
-                ItemType melaType = roomState.SnowmanDecor.Type;
+            if (roomState is null) return;
 
-                if (melaType.Equals(ItemType.None)) return;
-                _type = melaType;
-                string mealName = Enum.GetName(typeof(ItemType), (int)melaType);
-                await InstantiateDecor(mealName);
-            }
+            ItemType decorType = roomState.SnowmanDecor.Type;
+
+            if (decorType == ItemType.None) return;
+
+            _type = decorType;
+            string decorName = Enum.GetName(typeof(ItemType), (int)decorType);
+            Stuff stuff = await InstantiateDecor(decorName);
+            stuff.GetComponentInChildren<Collider>().isTrigger = true;
+            _stuff = stuff;
+            _timer.Start();
         }
 
         public void SaveProgress(PlayerProgress playerProgress)
@@ -98,7 +116,7 @@ namespace PlayerScripts
                 });
         }
 
-        private async Task InstantiateDecor(string decorName)
+        private async UniTask<Stuff> InstantiateDecor(string decorName)
         {
             UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(decorName);
 
@@ -106,11 +124,17 @@ namespace PlayerScripts
             GameObject prefab = await result;
 
             Stuff stuff = Instantiate(prefab, _anchorPoint.position, Quaternion.identity,
-                    _anchorPoint).GetComponent<Stuff>();
+                _anchorPoint).GetComponent<Stuff>();
 
             stuff.Construct(this);
 
             _assetProvider.ReleaseAssetsByLabel(decorName);
+            return stuff;
+        }
+
+        private void OnDestroy()
+        {
+            _timer.EndTimer -= OnEndCarrotTimer;
         }
     }
 }

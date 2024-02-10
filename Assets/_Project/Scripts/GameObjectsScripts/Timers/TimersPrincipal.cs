@@ -21,6 +21,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private ISaveLoadStorage _saveLoadStorage;
     private ISaveLoadService _saveLoadService;
 
+    public MoodIndicator MoodIndicator => _moodIndicator;
+
 
     [Inject]
     private void Construct(ISaveLoadStorage saveLoadStorage, ISaveLoadService saveLoadService)
@@ -82,7 +84,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             {
                 GameObject prefab = Instantiate(soTimer.TimerPrefab, _parent);
                 TimerView timerView = prefab.GetComponent<TimerView>();
-                timerView.Construct(timer, soTimer.TimeColor);
+                timerView.Construct(timer, soTimer.TimeColor, _saveLoadService);
             }
         }
     }
@@ -91,7 +93,6 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         MoodIndicatorView moodIndicatorView = Instantiate(_moodIndicatorView, _moodIndicatorParent);
         moodIndicatorView.Construct(_moodIndicator, _saveLoadStorage);
-        //moodIndicatorView.Initialize();
     }
 
     public void LoadProgress(PlayerProgress playerProgress)
@@ -108,14 +109,14 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             TimerData timerData = playerProgress.TimersData.Timers
                 .FirstOrDefault(x => x.Type == timer.TimerType);
 
-            if (timerData is null) continue;
+            //if (timerData is null) continue;
 
             timer.UpdateTimerState(timerData);
 
             if (timer.Active)
                 timer.Start();
-            else
-                timer.Stop();
+            /*else
+                timer.Stop();*/
         }
     }
 

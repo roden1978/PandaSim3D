@@ -14,8 +14,8 @@ namespace GameObjectsScripts.Timers
 
         public event Action<float> UpdateTimerView;
         public event Action<Timer> EndTimer;
-        public event Action<Timer, float> RestartTimer;
-        
+        public event Action<float> RestartTimer;
+
         private readonly float _decrease;
         private float _duration;
         private TimerType _type;
@@ -29,7 +29,7 @@ namespace GameObjectsScripts.Timers
         private float _reward;
         private bool _canStart;
 
-        public Timer(SoTimer soTimer) //float duration, float decreaseValue, TimerType type
+        public Timer(SoTimer soTimer)
         {
             _duration = soTimer.Duration * TimeUtils.OneMinute;
             _currentTime = _duration;
@@ -58,7 +58,7 @@ namespace GameObjectsScripts.Timers
         {
             if (_increaseTimer)
                 IncreaseTimer();
-            
+
             if (false == _active) return;
 
             if (_currentTime > 0)
@@ -81,22 +81,26 @@ namespace GameObjectsScripts.Timers
                 _updateTime = 0;
             }
 
-            
-            //Debug.Log($"Update time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");
+
+            if (_type == TimerType.Carrot)
+                Debug.Log(
+                    $"Update timer {_type.ToString()} time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");
         }
 
         private void Reset()
         {
             _currentTime = 0;
             _indicatorValue = 0;
+            _updateTime = 0;
         }
 
         public void Restart()
         {
             _currentTime = _duration;
             _indicatorValue = 1;
+            _updateTime = 0;
             Start();
-            RestartTimer?.Invoke(this, _reward);
+            RestartTimer?.Invoke(_reward);
         }
 
         public void SetReward(float value)
@@ -117,7 +121,6 @@ namespace GameObjectsScripts.Timers
             }
             else
             {
-                //_indicatorValue = 1;
                 Restart();
                 IncreaseSetActive(false);
             }
@@ -142,7 +145,7 @@ namespace GameObjectsScripts.Timers
             _indicatorValue = timerData.IndicatorValue;
             _active = timerData.Active;
             _canStart = timerData.CanStart;
-            
+
             UpdateTimerView?.Invoke(_indicatorValue);
         }
 
@@ -158,7 +161,8 @@ namespace GameObjectsScripts.Timers
                 CurrentTime = _currentTime,
                 UpdateTime = _updateTime,
                 IndicatorValue = _indicatorValue,
-                Active = _active
+                Active = _active,
+                CanStart = _canStart
             };
         }
     }
