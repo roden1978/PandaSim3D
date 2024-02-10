@@ -224,6 +224,7 @@ MonoBehaviour:
   _moodIndicatorView: {fileID: 8223779992992596408, guid: 051ebd848343dd645a9fbbf1c3b8c317,
     type: 3}
   _moodIndicatorParent: {fileID: 7697762072802919508}
+  _saveStateInterval: 2
   _debugTimers: []
 --- !u!1 &8527385988906623371
 GameObject:

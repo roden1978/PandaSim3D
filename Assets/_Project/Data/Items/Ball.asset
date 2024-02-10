@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
-  m_Name: SoCarrotTimer
+  m_Script: {fileID: 11500000, guid: 98372642e9c74fb799d2d7b0819f0a56, type: 3}
+  m_Name: Ball
   m_EditorClassIdentifier: 
-  _type: 7
-  _duration: 0.2
-  _timerPrefab: {fileID: 0}
-  _timerColor: {r: 1, g: 1, b: 1, a: 1}
-  _moodDecrease: 0
-  _canStart: 0
+  Type: 9
+  Name: Ball
+  Sprite: {fileID: 21300000, guid: 6fb0ce8fc9ddba4419c2dd4aee7eb19a, type: 3}
+  Description: "\u041C\u044F\u0447\u0438\u043A"
+  Price: 50
+  StuffSpecies: 1

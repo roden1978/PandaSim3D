@@ -10,5 +10,6 @@
         Cold = 5,
         Fun = 6,
         Carrot = 7,
+        GameState = 8,
     }
 }

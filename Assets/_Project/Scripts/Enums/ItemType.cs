@@ -9,4 +9,5 @@
     Sushi = 6,
     Carrot = 7,
     Hat = 8,
+    Ball = 9,
 }

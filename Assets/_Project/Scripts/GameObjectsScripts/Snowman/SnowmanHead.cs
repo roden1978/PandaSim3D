@@ -67,7 +67,6 @@ namespace PlayerScripts
         {
             _type = ItemType.None;
             _debugType = ItemType.None;
-            //Debug.Log($"Unstack carrot");
         }
 
 

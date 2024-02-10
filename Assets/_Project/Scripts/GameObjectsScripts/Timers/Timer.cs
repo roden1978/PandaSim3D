@@ -15,6 +15,7 @@ namespace GameObjectsScripts.Timers
         public event Action<float> UpdateTimerView;
         public event Action<Timer> EndTimer;
         public event Action<float> RestartTimer;
+        public event Action UpdateGameState;
 
         private readonly float _decrease;
         private float _duration;
@@ -28,6 +29,7 @@ namespace GameObjectsScripts.Timers
         private bool _increaseTimer;
         private float _reward;
         private bool _canStart;
+        private float _saveStateInterval; 
 
         public Timer(SoTimer soTimer)
         {
@@ -61,7 +63,30 @@ namespace GameObjectsScripts.Timers
 
             if (false == _active) return;
 
-            if (_currentTime > 0)
+            UpdateSaveGameTimer();
+            UpdatePrimaryTimer();
+
+            /*if (_type == TimerType.Carrot)
+                Debug.Log(
+                    $"Update timer {_type.ToString()} time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");*/
+        }
+
+        private void UpdateSaveGameTimer()
+        {
+            if (_duration == 0)
+            {
+                _saveStateInterval += Time.unscaledDeltaTime;
+                if (_saveStateInterval >= 1)
+                {
+                    _saveStateInterval = 0;
+                    UpdateGameState?.Invoke();
+                }
+            }
+        }
+
+        private void UpdatePrimaryTimer()
+        {
+            if (_duration > 0 && _currentTime > 0)
             {
                 _currentTime -= Time.unscaledDeltaTime;
                 _updateTime += Time.unscaledDeltaTime;
@@ -80,11 +105,6 @@ namespace GameObjectsScripts.Timers
                 UpdateTimerView?.Invoke(_indicatorValue);
                 _updateTime = 0;
             }
-
-
-            if (_type == TimerType.Carrot)
-                Debug.Log(
-                    $"Update timer {_type.ToString()} time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");
         }
 
         private void Reset()

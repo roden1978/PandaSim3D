@@ -18,3 +18,4 @@ MonoBehaviour:
     type: 3}
   _timerColor: {r: 0, g: 1, b: 0.125, a: 1}
   _moodDecrease: 0.2
+  _canStart: 1

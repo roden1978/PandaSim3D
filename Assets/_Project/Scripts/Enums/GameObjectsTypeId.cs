@@ -17,5 +17,6 @@
         ClothsDrawer = 12,
         Plant = 13,
         BackpackDrawer = 14,
+        Ball = 15,
     }
 }
