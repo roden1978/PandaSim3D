@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;

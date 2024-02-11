@@ -42,6 +42,8 @@ namespace PlayerScripts
                 result.onComplete = SaveHatHolderState;
                 Debug.Log($"Stack to hat holder");
             }
+            else
+                stuff.Position = stuff.StartPosition;
         }
 
         private void Callback()

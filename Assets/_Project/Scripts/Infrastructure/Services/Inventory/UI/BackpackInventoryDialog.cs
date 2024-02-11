@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Services.SaveLoad.PlayerProgress;
+using StaticData;
 using UnityEngine;
 using Zenject;
 
 public class BackpackInventoryDialog : InventoryDialog
 {
     private const string InventoryTitle = "Backpack";
-    
+
     [Inject]
     public void Construct(IInventory inventory, ISaveLoadService saveLoadService, BackpackDrawer maelDrawer,
         ISaveLoadStorage saveLoadStorage)
@@ -26,15 +27,16 @@ public class BackpackInventoryDialog : InventoryDialog
             UISlots.Add(uiInventorySlot);
             SaveLoadStorage.RegisterInSaveLoadRepositories(Inventory);
         }
-        
+
         SetInventoryTitle();
     }
+
     protected override void UpdateAllSlots()
     {
         UpdateDebugList();
         ClearUiSlots();
-        IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false);
-        //.Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Meal);
+        IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false)
+            .Where(x => x.InventoryItem.StuffSpecies != StuffSpecies.Toys);
         int i = 0;
         foreach (Slot slot in slots)
         {

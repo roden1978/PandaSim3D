@@ -79,6 +79,7 @@ public class ShopDialog : Dialog
         if (ConfirmMeal(item)) return true;
         if (ConfirmHat(item)) return true;
         if (ConfirmBall(item)) return true;
+        if (ConfirmCarrot(item)) return true;
         
         return false;
     }
@@ -95,6 +96,23 @@ public class ShopDialog : Dialog
         if (a && !b)
         {
             return _persistentProgress.PlayerProgress.PlayerState.PlayerDecor.Type == ItemType.None;
+        }
+
+        return false;
+    }
+    
+    private bool ConfirmCarrot(Item item)
+    {
+        var a = item.StuffSpecies is StuffSpecies.Decor;
+        var b = _inventory.HasItem(item.Type);
+        if (a && !b)
+        {
+            RoomState room = _persistentProgress.PlayerProgress.RoomsData.Rooms.FirstOrDefault(x =>
+                x.Name == AssetPaths.WinterRoomSceneName);
+            if (room is null)
+                return true;
+
+            return room.SnowmanDecor.Type != ItemType.Carrot;
         }
 
         return false;

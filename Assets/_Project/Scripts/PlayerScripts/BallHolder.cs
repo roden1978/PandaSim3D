@@ -1,4 +1,5 @@
 ﻿using Infrastructure.AssetManagement;
+using StaticData;
 using UnityEngine;
 using Zenject;
 
@@ -21,6 +22,10 @@ namespace PlayerScripts
 
         public void Stack(Stuff stuff)
         {
+            /*if (stuff.Item.StuffSpecies == StuffSpecies.Toys)
+            {
+            }*/
+            stuff.Position = stuff.StartPosition;
         }
 
         public void UnStack()
