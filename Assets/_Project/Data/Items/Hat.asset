@@ -16,5 +16,5 @@ MonoBehaviour:
   Name: Hat
   Sprite: {fileID: 21300000, guid: d954163f58e264342846d072610715a9, type: 3}
   Description: "\u0417\u0438\u043C\u043D\u044F\u044F \u0448\u0430\u043F\u043A\u0430"
-  Price: 10
+  Price: 100
   StuffSpecies: 3

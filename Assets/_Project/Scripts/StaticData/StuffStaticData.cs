@@ -15,5 +15,6 @@ namespace StaticData
         Meal = 2,
         Cloths = 3,
         Stuff = 4,
+        Toys = 5,
     }
 }

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Ball
   m_EditorClassIdentifier: 
   Prefab: {fileID: 5115136887771049377, guid: cb34e9b217f38dc449a6a02eb15e537a, type: 3}
-  GameObjectsTypeId: 15
+  GameObjectsTypeId: 16

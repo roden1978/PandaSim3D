@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UI;
 using System.Collections.Generic;
+using System.Linq;
 using CustomEventBus.Signals;
+using Infrastructure.AssetManagement;
 using StaticData;
 using TMPro;
 using UnityEngine.EventSystems;
@@ -56,24 +58,60 @@ public class ShopDialog : Dialog
 
     private void OnBuyItem(BuyItemSignal signal)
     {
-        if (CheckEquipment(signal.Item))
-            if (_walletService.TrySpend(CurrencyType.Coins, signal.Item.Price))
-            {
-                _inventory.TryAddItem(this, signal.Item, signal.Value);
-                SaveProgress();
-                Debug.Log($"Was spend {signal.Item.Price}");
-            }
+        if (false == CanBuyItem(signal.Item)) return;
+
+        bool result = _walletService.TrySpend(CurrencyType.Coins, signal.Item.Price);
+
+        if (result)
+        {
+            _inventory.TryAddItem(this, signal.Item, signal.Value);
+            Debug.Log($"Was spend {signal.Item.Price}");
+            
+            if (signal.Item.Type == ItemType.Ball)
+                _eventBus.Invoke(new BoughtBallSignal());
+            
+            SaveProgress();
+        }
     }
 
-    private bool CheckEquipment(Item item)
+    private bool CanBuyItem(Item item)
     {
-        if (item.StuffSpecies is StuffSpecies.Meal or StuffSpecies.Decor) return true;
+        if (ConfirmMeal(item)) return true;
+        if (ConfirmHat(item)) return true;
+        if (ConfirmBall(item)) return true;
+        
+        return false;
+    }
 
-        var a = item.StuffSpecies == StuffSpecies.Cloths;
+    private bool ConfirmMeal(Item item)
+    {
+        return item.StuffSpecies is StuffSpecies.Meal;
+    }
+
+    private bool ConfirmHat(Item item)
+    {
+        var a = item.StuffSpecies is StuffSpecies.Cloths;
         var b = _inventory.HasItem(item.Type);
         if (a && !b)
         {
             return _persistentProgress.PlayerProgress.PlayerState.PlayerDecor.Type == ItemType.None;
+        }
+
+        return false;
+    }
+
+    private bool ConfirmBall(Item item)
+    {
+        var a = item.StuffSpecies is StuffSpecies.Toys;
+        var b = _inventory.HasItem(item.Type);
+        if (a && !b)
+        {
+            RoomState room = _persistentProgress.PlayerProgress.RoomsData.Rooms.FirstOrDefault(x =>
+                x.Name == AssetPaths.RoomSceneName);
+            if (room is null)
+                return true;
+
+            return !room.Ball;
         }
 
         return false;

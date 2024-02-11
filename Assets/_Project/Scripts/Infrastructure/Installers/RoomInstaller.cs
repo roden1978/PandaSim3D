@@ -45,6 +45,8 @@ public class RoomInstaller : MonoInstaller
         BindMealInventoryDialog();
         BindClothsDrawer();
         BindClothsInventoryDialog();
+        BindToysDrawer();
+        BindToysInventoryDialog();
         BindShop();
         BindPoop();
         BindTray();
@@ -114,6 +116,12 @@ public class RoomInstaller : MonoInstaller
         GameObject clothsInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
         Container.BindInterfacesAndSelfTo<ClothsInventoryDialog>().FromComponentOn(clothsInventoryDialog).AsSingle();
     }
+    private void BindToysInventoryDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(ToysInventoryDialog));
+        GameObject toysInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<ToysInventoryDialog>().FromComponentOn(toysInventoryDialog).AsSingle();
+    }
 
     private void BindDialogManager()
     {
@@ -163,6 +171,19 @@ public class RoomInstaller : MonoInstaller
         clothsDrawer.gameObject.name = nameof(ClothsDrawer);
         Container.BindInterfacesAndSelfTo<ClothsDrawer>().FromComponentOn(clothsDrawer).AsSingle();
         _saveLoadStorage.RegisterInSaveLoadRepositories(clothsDrawer);
+    }
+    
+    private void BindToysDrawer()
+    {
+        EnvironmentObjectSpawnData toysDrawerData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.ToysDrawer);
+        GameObject prefab = _prefabsStorage.Get(typeof(ToysDrawer));
+        IPositionAdapter positionAdapter = prefab.GetComponentInChildren<IPositionAdapter>(true);
+        positionAdapter.Position = toysDrawerData.Position;
+        GameObject toysDrawer = Container.InstantiatePrefab(prefab);
+        toysDrawer.gameObject.name = nameof(ToysDrawer);
+        Container.BindInterfacesAndSelfTo<ToysDrawer>().FromComponentOn(toysDrawer).AsSingle();
+        _saveLoadStorage.RegisterInSaveLoadRepositories(toysDrawer);
     }
 
     private void BindEgg()

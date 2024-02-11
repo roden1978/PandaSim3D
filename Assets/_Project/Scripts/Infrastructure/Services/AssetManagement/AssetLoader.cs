@@ -37,6 +37,7 @@ namespace Infrastructure.AssetManagement
             LoadPrefab(typeof(Poop), AssetPaths.PoopPath);
             LoadPrefab(typeof(ClothsDrawer), AssetPaths.ClothsDrawerPath);
             LoadPrefab(typeof(Carpet), AssetPaths.CarpetPath);
+            LoadPrefab(typeof(ToysDrawer), AssetPaths.ToysDrawerPath);
         }
 
 

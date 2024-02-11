@@ -10,6 +10,7 @@
         public const string MealInventoryDialog = "MealInventoryDialog";
         public const string ClothsInventoryDialog = "ClothsInventoryDialog";
         public const string BackpackInventoryDialog = "BackpackInventoryDialog";
+        public const string ToysInventoryDialog = "ToysInventoryDialog";
         public const string ShopDialog = "ShopDialog";
         public const string InputNameDialog = "InputNameDialog";
         public const string ProgressUpdater = "ProgressUpdater";
@@ -18,6 +19,7 @@
         public const string CarpetPath = "Carpet";
         public const string ClothsDrawerPath = "ClothsDrawer";
         public const string BackpackPath = "BackpackDrawer";
+        public const string ToysDrawerPath = "ToysDrawer";
         public const string TrayPath = "TrayView";
         public const string EggPath = "Egg";
         public const string SnowmanPath = "Snowman";

@@ -16,16 +16,22 @@ MonoBehaviour:
   PlayerSpawnPoint: {x: 0, y: 0, z: 0}
   PlayerRotation: {x: -0, y: -0, z: -0, w: 1}
   EnvironmentObjectsSpawnData:
-  - Id: Room_e6deb413-871a-4d82-87d7-96b627b26810
+  - Id: Room_53988731-a68d-4734-8e6c-05742dda3268
+    GameObjectsTypeId: 15
+    Position: {x: 0, y: 0, z: -2.29}
+  - Id: Room_41038121-4a1a-4dd1-9369-37fed4b6bcbf
+    GameObjectsTypeId: 16
+    Position: {x: 0, y: 0, z: -2.29}
+  - Id: Room_3dce9684-8a2c-4ef6-b28a-17bb184113e7
     GameObjectsTypeId: 5
     Position: {x: 2.11, y: 0.032, z: -2.56}
-  - Id: Room_f3931e8e-41a6-4371-875c-7da5d344bbfa
+  - Id: Room_83e5386a-95ea-4a40-a9cb-aa00dd47ee6f
     GameObjectsTypeId: 2
     Position: {x: 2.799, y: 1.292, z: 2.21}
-  - Id: Room_36324b61-a3ee-4b76-bcf7-12192170e5bb
+  - Id: Room_6cf0f66f-bbcf-4364-ac8d-a0b693c27e82
     GameObjectsTypeId: 13
     Position: {x: 0.199, y: 1.344, z: 2.21}
-  - Id: Room_254606d3-4f64-4405-9c18-56df2d24ca89
+  - Id: Room_f0c4e730-7469-409f-b5d8-3784c74a1245
     GameObjectsTypeId: 12
     Position: {x: 1.61, y: 0, z: 2.21}
   - Id: Room_8f7b069c-cb67-4922-bf8c-d10cc8cb9da4
@@ -34,17 +40,17 @@ MonoBehaviour:
   - Id: Room_c7bd7ef3-e35d-4a47-963b-d9354aadb90e
     GameObjectsTypeId: 3
     Position: {x: -1.81, y: 0, z: -2.63}
-  - Id: Room_89f8f9cd-35e7-4459-a155-a0709f5a7471
+  - Id: Room_267af659-0b8c-46f9-8b44-e0c8349bce5b
     GameObjectsTypeId: 11
     Position: {x: -2.86, y: 0.1, z: 2.15}
-  - Id: Room_9eeb21e9-51fe-4a57-88bb-8b6ff44d8d45
+  - Id: Room_1765f022-6262-4b49-8f29-d6131e5c5e72
     GameObjectsTypeId: 6
     Position: {x: -3.6699998, y: 0.92, z: 2.15}
   - Id: Room_929486f1-6f5d-4fc7-8aad-7fbfb5d5d286
     GameObjectsTypeId: 4
     Position: {x: -2.86, y: 0, z: 2.15}
   StuffSpawnData:
-  - Id: Room_59f32709-1d7a-462f-8588-89786bc05ea8
+  - Id: Room_bff4310f-b9c0-41a2-ab51-1b25eab4f345
     StuffSpecies: 4
     Position: {x: 1.61, y: 0.7, z: 2.21}
   - Id: Room_2877e53d-6b8a-4791-99fa-d391c14fa662

@@ -52,6 +52,11 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
 
     private void OnUseButtonClick(PointerEventData data)
     {
+        UseButtonAction();
+    }
+
+    protected virtual void UseButtonAction()
+    {
         int slotId = TryGetActiveSlotId(out UIInventorySlot uiInventorySlot);
 
         if (slotId == int.MaxValue) return;
@@ -65,7 +70,6 @@ public abstract class InventoryDialog : Dialog, ISlotChanger
             UpdateAllSlots();
             SaveProgress();
             Hide();
-            Debug.Log(data.pointerClick.gameObject.name == "UseButton" ? "Item was used" : "Item was dropped");
         }
     }
 

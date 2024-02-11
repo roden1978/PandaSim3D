@@ -13,5 +13,6 @@ public class RoomState
     public ItemData ItemData;
     public ClothsData ClothsData;
     public bool Poop;
+    public bool Ball;
     public SnowmanDecor SnowmanDecor;
 }

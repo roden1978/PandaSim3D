@@ -23,6 +23,7 @@ namespace UI
             { typeof(MealInventoryDialog), AssetPaths.MealInventoryDialog },
             { typeof(ClothsInventoryDialog), AssetPaths.ClothsInventoryDialog },
             { typeof(BackpackInventoryDialog), AssetPaths.BackpackInventoryDialog },
+            { typeof(ToysInventoryDialog), AssetPaths.ToysInventoryDialog },
             { typeof(InputNameDialog), AssetPaths.InputNameDialog },
         };
 

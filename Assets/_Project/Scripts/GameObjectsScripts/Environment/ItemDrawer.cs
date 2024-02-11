@@ -16,14 +16,16 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         set => transform.position = value;
     }
 
+    public GameObject View;
+    
     protected Transform AnchorPointTransform;
     protected DialogManager DialogManager => _dialogManager;
     protected ItemType ItemType = ItemType.None;
+    protected IInventory Inventory;
+    protected ISaveLoadService SaveLoadService;
     private readonly Dictionary<string, Stuff> _cachedItems = new();
     private DialogManager _dialogManager;
     private IAssetProvider _assetProvider;
-    protected IInventory Inventory;
-    protected ISaveLoadService SaveLoadService;
 
     [Inject]
     public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory,

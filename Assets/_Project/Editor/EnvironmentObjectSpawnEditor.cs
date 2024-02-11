@@ -13,10 +13,10 @@ namespace Editor
         {
             Vector3 scale;
             MeshFilter meshFilter =
-                environmentObjectMarker.EnvironmentObjectStaticData.Prefab.GetComponentInChildren<MeshFilter>();
+                environmentObjectMarker.EnvironmentObjectStaticData.Prefab.GetComponentInChildren<MeshFilter>(true);
             MeshRenderer meshRenderer =
                 environmentObjectMarker.EnvironmentObjectStaticData.Prefab.GetComponentInChildren<MeshRenderer>();
-            Gizmos.color = environmentObjectMarker.Color;//meshRenderer.sharedMaterial.GetColor("_BaseMap");
+            Gizmos.color = environmentObjectMarker.Color;
             Vector3 position = environmentObjectMarker.transform.position;
             float size = environmentObjectMarker.Size;
             GameObject gameObject = meshFilter.gameObject;

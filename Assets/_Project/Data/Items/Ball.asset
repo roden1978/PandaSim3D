@@ -16,5 +16,5 @@ MonoBehaviour:
   Name: Ball
   Sprite: {fileID: 21300000, guid: 6fb0ce8fc9ddba4419c2dd4aee7eb19a, type: 3}
   Description: "\u041C\u044F\u0447\u0438\u043A"
-  Price: 50
-  StuffSpecies: 1
+  Price: 200
+  StuffSpecies: 5
