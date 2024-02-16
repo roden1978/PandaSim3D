@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameObjectsScripts.Timers;
 using Services.SaveLoad.PlayerProgress;
 using TriInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
@@ -17,7 +19,6 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     [Header("Debug")] [ReadOnly] [SerializeField]
     private List<string> _debugTimers;
 
-    public ColdTimerView ColdTimerView { get; private set; }
     private readonly TimerSet _timerSet = new();
     private MoodIndicator _moodIndicator;
     private ISaveLoadStorage _saveLoadStorage;
@@ -29,7 +30,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         _saveLoadStorage = saveLoadStorage;
 
-        foreach (SoTimer soTimer in _set.SoTimers)
+        foreach (SoTimer soTimer in _set.SoCommonTimers)
         {
             Timer timer = new(soTimer);
             _timerSet.AddTimer(timer);
@@ -84,37 +85,43 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         return _timerSet.FirstOrDefault(x => x.TimerType == type);
     }
     
-    //public ATimerView GetTimer
-
-    public void AddTimersView()
+    public void AddTimersView(string roomName)
     {
-        InstantiateTimersViews();
+        InstantiateTimersViews(roomName);
     }
 
-    private void InstantiateTimersViews()
+    private void InstantiateTimersViews(string roomName)
     {
         foreach (Timer timer in _timerSet)
         {
-            SoTimer soTimer = _set.SoTimers
+            SoTimer soTimer = _set.SoCommonTimers
                 .FirstOrDefault(x => x.TimerPrefab != null && x.Type == timer.TimerType);
-
-
+            
             if (soTimer is not null)
             {
-                GameObject prefab = Instantiate(soTimer.TimerPrefab, _parent);
-                ATimerView timerView;
-                if (soTimer!.Type == TimerType.Cold)
-                {
-                     timerView = ColdTimerView = prefab.GetComponent<ColdTimerView>();
-                }
-                else
-                {
-                    timerView = prefab.GetComponent<TimerView>();
-                }
-
-                timerView.Construct(timer, soTimer.TimeColor);
+                CreateTimerView(soTimer, timer);
             }
         }
+
+        foreach (SoTimer soTimer in GetRoomTimers(Enum.Parse<RoomsType>(roomName)))
+        {
+            Timer timer = new(soTimer);
+            _timerSet.AddTimer(timer);
+            CreateTimerView(soTimer, timer);
+        }
+    }
+
+    private IEnumerable<SoTimer> GetRoomTimers(RoomsType type)
+    {
+        RoomTimers result = _set.SoRoomTimers.FirstOrDefault(x => x.RoomType == type);
+        return result?.SoTimers;
+    }
+
+    private void CreateTimerView(SoTimer soTimer, Timer timer)
+    {
+        GameObject prefab = Instantiate(soTimer.TimerPrefab, _parent);
+        TimerView timerView = prefab.GetComponent<TimerView>();
+        timerView.Construct(timer, soTimer.TimeColor);
     }
 
     private void InstantiateMoodIndicatorView()
@@ -126,8 +133,14 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     public void LoadProgress(PlayerProgress playerProgress)
     {
         if (playerProgress.PlayerState.FirstStartGame) return;
-        AddTimersView();
+        string roomName = CurrentSceneName();
+        AddTimersView(roomName);
         UpdateTimersProgress(playerProgress);
+    }
+
+    private static string CurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
     }
 
     private void UpdateTimersProgress(PlayerProgress playerProgress)

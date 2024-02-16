@@ -25,15 +25,9 @@ MonoBehaviour:
   - Id: Room_3dce9684-8a2c-4ef6-b28a-17bb184113e7
     GameObjectsTypeId: 5
     Position: {x: 2.11, y: 0.032, z: -2.56}
-  - Id: Room_83e5386a-95ea-4a40-a9cb-aa00dd47ee6f
-    GameObjectsTypeId: 2
-    Position: {x: 2.799, y: 1.292, z: 2.21}
-  - Id: Room_6cf0f66f-bbcf-4364-ac8d-a0b693c27e82
-    GameObjectsTypeId: 13
-    Position: {x: 0.199, y: 1.344, z: 2.21}
-  - Id: Room_f0c4e730-7469-409f-b5d8-3784c74a1245
+  - Id: Room_bd3b9a36-8850-4409-a746-2b1676f3defa
     GameObjectsTypeId: 12
-    Position: {x: 1.61, y: 0, z: 2.21}
+    Position: {x: 2.59, y: 0, z: 0.71}
   - Id: Room_8f7b069c-cb67-4922-bf8c-d10cc8cb9da4
     GameObjectsTypeId: 8
     Position: {x: 0, y: 0, z: 0}
@@ -52,7 +46,7 @@ MonoBehaviour:
   StuffSpawnData:
   - Id: Room_bff4310f-b9c0-41a2-ab51-1b25eab4f345
     StuffSpecies: 4
-    Position: {x: 1.61, y: 0.7, z: 2.21}
+    Position: {x: 2.59, y: 1.27, z: 0.62}
   - Id: Room_2877e53d-6b8a-4791-99fa-d391c14fa662
     StuffSpecies: 3
     Position: {x: 0, y: 2, z: 0}

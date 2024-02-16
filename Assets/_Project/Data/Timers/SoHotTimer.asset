@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
-  m_Name: SoColdTimer
+  m_Name: SoHotTimer
   m_EditorClassIdentifier: 
   _type: 5
   _duration: 0.2

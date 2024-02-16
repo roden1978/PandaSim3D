@@ -53,13 +53,13 @@ public class Hud : MonoBehaviour, ISavedProgress
     private void OnRoomButtonClick(PointerEventData obj)
     {
         SaveProgress();
-        LoadScene(AssetPaths.RoomSceneName);
+        LoadScene(AssetPaths.RoomSceneName.ToString());
     }
 
     private void OnWinterRoomButtonClick(PointerEventData obj)
     {
         SaveProgress();
-        LoadScene(AssetPaths.WinterRoomSceneName);
+        LoadScene(AssetPaths.WinterRoomSceneName.ToString());
     }
 
     private void OnShopButtonClick(PointerEventData obj)
@@ -90,12 +90,13 @@ public class Hud : MonoBehaviour, ISavedProgress
     private void UpdateHudButtons()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        RoomsButtonsSwitch(currentSceneName);
+        RoomsType type = Enum.Parse<RoomsType>(currentSceneName);
+        RoomsButtonsSwitch(type);
     }
 
-    private void RoomsButtonsSwitch(string sceneName)
+    private void RoomsButtonsSwitch(RoomsType type)
     {
-        switch (sceneName)
+        switch (type)
         {
             case AssetPaths.WinterRoomSceneName :
                 PointerListenerSetActive(_winterRoom, false);
@@ -105,6 +106,10 @@ public class Hud : MonoBehaviour, ISavedProgress
                 PointerListenerSetActive(_winterRoom, true);
                 PointerListenerSetActive(_room, false);
                 break;
+            case RoomsType.None:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
     }
 

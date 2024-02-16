@@ -27,7 +27,7 @@ public class RoomInstaller : MonoInstaller
         _staticDataService = staticDataService;
         _persistenceProgress = persistentProgress;
 
-        _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName);
+        _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName.ToString());
         _saveLoadStorage.ClearAll();
     }
 

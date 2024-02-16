@@ -56,7 +56,7 @@ namespace Infrastructure.AssetManagement
             {
                 PlayerState =
                 {
-                    SceneName = AssetPaths.RoomSceneName
+                    SceneName = AssetPaths.RoomSceneName.ToString()
                 }
             };
 

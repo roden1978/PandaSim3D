@@ -21,7 +21,8 @@ public class Tray : ISavedProgress, IInitializable
 
     public void LoadProgress(PlayerProgress playerProgress)
     {
-        RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x => x.Name == AssetPaths.RoomSceneName);
+        RoomState room =
+            playerProgress.RoomsData.Rooms.FirstOrDefault(x => x.Name == AssetPaths.RoomSceneName.ToString());
 
         if (room is not null)
         {
@@ -32,14 +33,14 @@ public class Tray : ISavedProgress, IInitializable
     public void SaveProgress(PlayerProgress playerProgress)
     {
         RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-            x.Name == AssetPaths.RoomSceneName);
+            x.Name == AssetPaths.RoomSceneName.ToString());
         if (room is not null)
             room.Poop = _isFull;
         else
             playerProgress.RoomsData.Rooms.Add(new RoomState
             {
                 Poop = _isFull,
-                Name = AssetPaths.RoomSceneName
+                Name = AssetPaths.RoomSceneName.ToString()
             });
     }
 
@@ -74,7 +75,7 @@ public class Tray : ISavedProgress, IInitializable
             ShowPoop?.Invoke();
         else
             HidePoop?.Invoke();
-        
+
         _isFull = value;
     }
 }

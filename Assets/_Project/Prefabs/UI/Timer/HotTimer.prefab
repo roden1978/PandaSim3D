@@ -11,7 +11,7 @@ PrefabInstance:
     - target: {fileID: 692645394995065244, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
       propertyPath: m_Name
-      value: ColdTimer
+      value: HotTimer
       objectReference: {fileID: 0}
     - target: {fileID: 1182443187029035972, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
@@ -26,12 +26,12 @@ PrefabInstance:
     - target: {fileID: 1182443187029035972, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1.4
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 1182443187029035972, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2.1
+      value: 1.7
       objectReference: {fileID: 0}
     - target: {fileID: 1212282137064467324, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}
@@ -183,7 +183,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1283202643, guid: 7404669935c652d4a80781fa046cc326,
+      objectReference: {fileID: -923084630, guid: 7404669935c652d4a80781fa046cc326,
         type: 3}
     - target: {fileID: 6198867598609807875, guid: 5510079c83a8d7d4a8dee4c9128c5aed,
         type: 3}

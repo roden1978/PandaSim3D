@@ -66,7 +66,7 @@ public class InputNameDialog : Dialog, ISavedProgress
 
     private void OnClickContinueButton(PointerEventData eventData)
     {
-        _timerPrincipal.AddTimersView();
+        _timerPrincipal.AddTimersView(_persistentProgress.PlayerProgress.PlayerState.SceneName);
         _timerPrincipal.StartTimers();
         _saveLoadService.SaveProgress();
         Hide();

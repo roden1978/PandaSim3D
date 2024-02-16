@@ -22,7 +22,7 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
     {
         AnchorPointTransform = _anchorPointTransform;
         string currentRoomName = SceneManager.GetActiveScene().name;
-        if (currentRoomName == AssetPaths.RoomSceneName)
+        if (currentRoomName == AssetPaths.RoomSceneName.ToString())
         {
             RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
                 x.Name == currentRoomName);
@@ -43,7 +43,7 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
     public void SaveProgress(PlayerProgress playerProgress)
     {
         string currentRoomName = SceneManager.GetActiveScene().name;
-        if (currentRoomName == AssetPaths.RoomSceneName)
+        if (currentRoomName == AssetPaths.RoomSceneName.ToString())
         {
             RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
                 x.Name == currentRoomName);

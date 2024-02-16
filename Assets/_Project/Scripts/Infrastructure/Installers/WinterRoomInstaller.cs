@@ -29,7 +29,7 @@ public class WinterRoomInstaller : MonoInstaller
         _staticDataService = staticDataService;
         _persistenceProgress = persistentProgress;
 
-        _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName);
+        _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName.ToString());
         _saveLoadStorage.ClearAll();
         //_saveLoadStorage.ClearGameObjectsType();
     }

@@ -108,7 +108,7 @@ public class ShopDialog : Dialog
         if (a && !b)
         {
             RoomState room = _persistentProgress.PlayerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-                x.Name == AssetPaths.WinterRoomSceneName);
+                x.Name == AssetPaths.WinterRoomSceneName.ToString());
             if (room is null)
                 return true;
 
@@ -125,7 +125,7 @@ public class ShopDialog : Dialog
         if (a && !b)
         {
             RoomState room = _persistentProgress.PlayerProgress.RoomsData.Rooms.FirstOrDefault(x =>
-                x.Name == AssetPaths.RoomSceneName);
+                x.Name == AssetPaths.RoomSceneName.ToString());
             if (room is null)
                 return true;
 
