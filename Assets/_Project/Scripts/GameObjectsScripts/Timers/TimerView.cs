@@ -1,30 +1,18 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
 namespace GameObjectsScripts.Timers
 {
-    public class TimerView : MonoBehaviour
+    public class TimerView : ATimerView
     {
-        [SerializeField] private Image _indicator;
-
-        private Timer _timer;
-
-        public void Construct(Timer timer, Color color)
+        public override void Construct(Timer timer, Color color)
         {
-            _timer = timer;
+            Timer = timer;
             _indicator.color = color;
-            _timer.UpdateTimerView += OnUpdateTimerView;
+            Timer.UpdateTimerView += OnUpdateTimerView;
         }
-        
-        private void OnDisable()
-        {
-            _timer.UpdateTimerView -= OnUpdateTimerView;
-        }
-
-        private void OnUpdateTimerView(float value)
+        public override void OnUpdateTimerView(float value)
         {
             _indicator.fillAmount = value;
-           
         }
     }
 }

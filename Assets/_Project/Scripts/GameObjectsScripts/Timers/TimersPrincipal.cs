@@ -12,11 +12,12 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     [SerializeField] private Transform _parent;
     [SerializeField] private MoodIndicatorView _moodIndicatorView;
     [SerializeField] private Transform _moodIndicatorParent;
-    [SerializeField] [Range(1, 5)]private int _saveStateInterval;
+    [SerializeField] [Range(1, 5)] private int _saveStateInterval;
 
     [Header("Debug")] [ReadOnly] [SerializeField]
     private List<string> _debugTimers;
 
+    public ColdTimerView ColdTimerView { get; private set; }
     private readonly TimerSet _timerSet = new();
     private MoodIndicator _moodIndicator;
     private ISaveLoadStorage _saveLoadStorage;
@@ -33,6 +34,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             Timer timer = new(soTimer);
             _timerSet.AddTimer(timer);
             _debugTimers.Add(timer.TimerType.ToString());
+
             if (timer.TimerType == TimerType.GameState)
                 timer.UpdateGameState += OnUpdateGameState;
         }
@@ -81,6 +83,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         return _timerSet.FirstOrDefault(x => x.TimerType == type);
     }
+    
+    //public ATimerView GetTimer
 
     public void AddTimersView()
     {
@@ -94,10 +98,20 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             SoTimer soTimer = _set.SoTimers
                 .FirstOrDefault(x => x.TimerPrefab != null && x.Type == timer.TimerType);
 
+
             if (soTimer is not null)
             {
                 GameObject prefab = Instantiate(soTimer.TimerPrefab, _parent);
-                TimerView timerView = prefab.GetComponent<TimerView>();
+                ATimerView timerView;
+                if (soTimer!.Type == TimerType.Cold)
+                {
+                     timerView = ColdTimerView = prefab.GetComponent<ColdTimerView>();
+                }
+                else
+                {
+                    timerView = prefab.GetComponent<TimerView>();
+                }
+
                 timerView.Construct(timer, soTimer.TimeColor);
             }
         }
@@ -122,7 +136,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         {
             TimerData timerData = playerProgress.TimersData.Timers
                 .FirstOrDefault(x => x.Type == timer.TimerType);
-            
+
             timer.UpdateTimerState(timerData);
 
             if (timer.Active)

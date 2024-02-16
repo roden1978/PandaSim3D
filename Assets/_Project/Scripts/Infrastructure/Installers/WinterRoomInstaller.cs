@@ -41,12 +41,13 @@ public class WinterRoomInstaller : MonoInstaller
         BindHud();
         BindTimersPrincipal();
         BindInventory();
-        BindPlayer();
         BindBackpackDrawer();
         BindBackpackInventoryDialog();
         BindShop();
         BindSnowman();
         BindTray();
+        //Bind player in the end
+        BindPlayer();
     }
 
     private void BindShop()

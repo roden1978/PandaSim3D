@@ -29,7 +29,7 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
 
     private bool _isCanDrag;
 
-    private List<IStack> _stacks = new();
+    private IStack[] _stacks;
 
     public void Construct(IStack lastStack)
     {
@@ -40,11 +40,6 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     {
         _camera = Camera.main;
         _startPosition = transform.position;
-    }
-
-    public void SetCanDrag(bool value)
-    {
-        _isCanDrag = value;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -60,13 +55,11 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
         {
             Debug.Log($"Hit to {raycastHit.collider.gameObject.name}");
 
-            _stacks = raycastHit.transform.GetComponentsInChildren<IStack>(true).ToList();
+            _stacks = raycastHit.transform.GetComponentsInChildren<IStack>(true);
             foreach (IStack stack in _stacks)
             {
                 stack.Stack(this);
             }
-
-            //_lastStack.UnStack(this);
         }
         else
         {
@@ -76,8 +69,7 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     
     public void OnDrag(PointerEventData eventData)
     {
-        if (_isCanDrag)
-        {
+        
             Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
             float zPosition = _startPosition.z >= 0 ? -1 : _startPosition.z;
             Vector3 currentPosition = new(Position.x, Position.y, zPosition);
@@ -87,35 +79,20 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
             Vector3 position = screenPointToRay.origin + screenPointToRay.direction * t;
 
             Position = position;
-        }
+        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        SetCanDrag(true);
-        /*foreach (IStack stack in _stacks.Where(x => x is not null))
-        {
-            stack.UnStack(this);
-        }*/
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
     }
-
-    public void AddToStacks(IStack stack)
-    {
-        _stacks.Add(stack);
-    }
-
+    
     public void AddLastStack(IStack stack)
     {
         _lastStack = stack;
-    }
-
-    public void ClearStacks()
-    {
-        _stacks.Clear();
     }
 
     public Vector3 Position

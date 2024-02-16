@@ -48,6 +48,10 @@ public static class Extensions
     {
         return Convert.ToSingle(value) / 100;
     }
+    public static float DivideBy100ToFloat(float value)
+    {
+        return value / 100;
+    }
 
     public static int OneItem => 1;
 

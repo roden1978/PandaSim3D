@@ -249,6 +249,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 133389624882564099, guid: fc013cdb7b7f60142853a83c2d470b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 485176982080848007, guid: fc013cdb7b7f60142853a83c2d470b55,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -299,12 +304,28 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3928655647472476660, guid: fc013cdb7b7f60142853a83c2d470b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4048185226655328810, guid: fc013cdb7b7f60142853a83c2d470b55,
         type: 3}
       propertyPath: m_Name
       value: Bao
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4048185226655328810, guid: fc013cdb7b7f60142853a83c2d470b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8670721743917354448, guid: fc013cdb7b7f60142853a83c2d470b55,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6747611757814908278, guid: fc013cdb7b7f60142853a83c2d470b55, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -435,12 +456,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2409523418999990243, guid: f2e87737691f6c2468f986a0aa5758bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3928655647472476660, guid: f2e87737691f6c2468f986a0aa5758bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4048185226655328810, guid: f2e87737691f6c2468f986a0aa5758bb,
         type: 3}
       propertyPath: m_Name
       value: Dango
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4048185226655328810, guid: f2e87737691f6c2468f986a0aa5758bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6695761858262552170, guid: f2e87737691f6c2468f986a0aa5758bb,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2828663391220457450, guid: f2e87737691f6c2468f986a0aa5758bb, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -676,12 +718,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3928655647472476660, guid: 58cb2461f677ee94a9f8a16c5ca9c801,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4048185226655328810, guid: 58cb2461f677ee94a9f8a16c5ca9c801,
         type: 3}
       propertyPath: m_Name
       value: Sushi
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4048185226655328810, guid: 58cb2461f677ee94a9f8a16c5ca9c801,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981511058698444522, guid: 58cb2461f677ee94a9f8a16c5ca9c801,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100263723523188203, guid: 58cb2461f677ee94a9f8a16c5ca9c801,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: -5862247308015368357, guid: 58cb2461f677ee94a9f8a16c5ca9c801, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

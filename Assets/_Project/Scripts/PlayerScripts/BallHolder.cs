@@ -1,30 +1,29 @@
-﻿using Infrastructure.AssetManagement;
+﻿using GameObjectsScripts.Timers;
 using StaticData;
 using UnityEngine;
 using Zenject;
 
 namespace PlayerScripts
 {
-    public class BallHolder : MonoBehaviour, IStack, ISavedProgress
+    public class BallHolder : MonoBehaviour, IStack
     {
-        [SerializeField] private Transform _anchorPoint;
         private Stuff _stuff;
-        private ISaveLoadService _saveLoadService;
-        private IAssetProvider _assetProvider;
         private ItemType _itemType = ItemType.None;
+        private Timer _timer;
 
         [Inject]
-        public void Construct(ISaveLoadService saveLoadService, IAssetProvider assetProvider)
+        public void Construct(TimersPrincipal timersPrincipal)
         {
-            _saveLoadService = saveLoadService;
-            _assetProvider = assetProvider;
+            _timer = timersPrincipal.GetTimerByType(TimerType.Fun);
         }
 
         public void Stack(Stuff stuff)
         {
-            /*if (stuff.Item.StuffSpecies == StuffSpecies.Toys)
+            if (stuff.Item.StuffSpecies == StuffSpecies.Toys)
             {
-            }*/
+                Reward(stuff);
+            }
+
             stuff.Position = stuff.StartPosition;
         }
 
@@ -32,12 +31,17 @@ namespace PlayerScripts
         {
         }
 
-        public void LoadProgress(PlayerProgress playerProgress)
+        private void Reward(Stuff stuff)
         {
-        }
+            float value = Extensions.DivideBy100ToFloat(stuff.Item.Price);
+            float rewardValue = _timer.IndicatorValue <= 0
+                ? value * .1f
+                : value * Extensions.DivideBy100ToFloat(_timer.PassedTime);
+            _timer.SetReward(rewardValue);
+            _timer.Stop();
+            _timer.IncreaseSetActive(true);
 
-        public void SaveProgress(PlayerProgress playerProgress)
-        {
+            Debug.Log($"Reward value {rewardValue}");
         }
     }
 }

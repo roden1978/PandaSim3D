@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class ClothsDrawer : ItemDrawer, ISavedProgress
 {
     [SerializeField] private Transform _anchorPointTransform;
+
     protected override void ShowDialog()
     {
         if (ItemType != ItemType.None) return;
@@ -16,12 +17,12 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
         ClothsInventoryDialog dialog = DialogManager.ShowDialog<ClothsInventoryDialog>();
         dialog.UpdateInventoryView();
     }
-    
+
     public async void LoadProgress(PlayerProgress playerProgress)
     {
         AnchorPointTransform = _anchorPointTransform;
         string currentRoomName = SceneManager.GetActiveScene().name;
-        if(currentRoomName == AssetPaths.RoomSceneName)
+        if (currentRoomName == AssetPaths.RoomSceneName)
         {
             RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
                 x.Name == currentRoomName);
@@ -42,7 +43,7 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
     public void SaveProgress(PlayerProgress playerProgress)
     {
         string currentRoomName = SceneManager.GetActiveScene().name;
-        if(currentRoomName == AssetPaths.RoomSceneName)
+        if (currentRoomName == AssetPaths.RoomSceneName)
         {
             RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
                 x.Name == currentRoomName);
@@ -54,7 +55,6 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
                 };
 
                 room.ClothsData.Type = ItemType;
-                
             }
             else
                 playerProgress.RoomsData.Rooms.Add(new RoomState
@@ -70,13 +70,11 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
 
     public override void Stack(Stuff stuff)
     {
-        if(stuff.Item.StuffSpecies == StuffSpecies.Cloths && false == Inventory.HasItem(stuff.Item.Type))
+        if (stuff.Item.StuffSpecies is StuffSpecies.Cloths or StuffSpecies.Decor)
         {
             Inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
             stuff.StartPosition = stuff.Position = AnchorPointTransform.position;
             stuff.transform.parent = _anchorPointTransform;
-            //GameObject item; 
-            //(item = stuff.gameObject).SetActive(false);
             stuff.LastStack.UnStack();
             stuff.AddLastStack(this);
             SaveLoadService.SaveProgress();

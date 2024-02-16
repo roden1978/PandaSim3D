@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 4
   Name: Bao
-  Sprite: {fileID: 389625113, guid: d8dc97a4e2f796d4fb06c055fa8b002f, type: 3}
+  Sprite: {fileID: -789967310, guid: d8dc97a4e2f796d4fb06c055fa8b002f, type: 3}
   Description: "\u041F\u0435\u043B\u044C\u043C\u0435\u043D\u0438"
   Price: 20
   StuffSpecies: 2

@@ -168,8 +168,8 @@ TextureImporter:
       name: MealTex_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 512
+        y: 256
         width: 256
         height: 256
       alignment: 0
@@ -189,7 +189,7 @@ TextureImporter:
       name: MealTex_3
       rect:
         serializedVersion: 2
-        x: 256
+        x: 0
         y: 0
         width: 256
         height: 256
@@ -202,6 +202,48 @@ TextureImporter:
       bones: []
       spriteID: b4a3c2be4cd25144eb260d04fc1bfa4c
       internalID: -789967310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MealTex_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6125d74d5134f7942bdccc9d7c3298c4
+      internalID: 205343198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: MealTex_5
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0c7b0e7eb4be78e4c98f2bd89df83aa2
+      internalID: -1686730578
       vertices: []
       indices: 
       edges: []
@@ -221,6 +263,8 @@ TextureImporter:
       MealTex_1: 538876924
       MealTex_2: 389625113
       MealTex_3: -789967310
+      MealTex_4: 205343198
+      MealTex_5: -1686730578
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

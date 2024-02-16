@@ -3,9 +3,12 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using GameObjectsScripts.Timers;
+using Infrastructure;
 using Infrastructure.AssetManagement;
 using StaticData;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace PlayerScripts
@@ -19,12 +22,22 @@ namespace PlayerScripts
         private ISaveLoadService _saveLoadService;
         private ItemType _itemType = ItemType.None;
         private IAssetProvider _assetProvider;
+        private TimersPrincipal _timerPrincipal;
+        private TimerObserver _timerObserver;
+        private ISceneLoader _sceneLoader;
+        private string _currentRoom;
 
         [Inject]
-        public void Construct(ISaveLoadService saveLoadService, IAssetProvider assetProvider)
+        public void Construct(ISaveLoadService saveLoadService, IAssetProvider assetProvider,
+            TimersPrincipal timersPrincipal, ISceneLoader sceneLoader)
         {
             _saveLoadService = saveLoadService;
             _assetProvider = assetProvider;
+            _timerPrincipal = timersPrincipal;
+            _sceneLoader = sceneLoader;
+            _timerObserver = new TimerObserver(timersPrincipal.GetTimerByType(TimerType.Cold),
+                timersPrincipal.ColdTimerView);
+            _timerObserver.Initialize();
         }
 
         public void Stack(Stuff stuff)
@@ -73,16 +86,41 @@ namespace PlayerScripts
 
         public async void LoadProgress(PlayerProgress playerProgress)
         {
-            if (playerProgress.PlayerState.PlayerDecor.Type == ItemType.None) return;
+            if (playerProgress.PlayerState.PlayerDecor.Type == ItemType.None)
+            {
+                _currentRoom = SceneManager.GetActiveScene().name;
+                var isWinterRoom = _currentRoom == AssetPaths.WinterRoomSceneName;
+                var notHaveHat = playerProgress.PlayerState.PlayerDecor.Type == ItemType.None;
 
-            _itemType = playerProgress.PlayerState.PlayerDecor.Type;
-            string clothName = Enum.GetName(typeof(ItemType), (int)_itemType);
-            _stuff = await InstantiateItem(clothName);
-            _stuff.transform.localScale = _scale;
-            _stuff.Rotation = transform.rotation;
-            _stuff.StartPosition = playerProgress.PlayerState.PlayerDecor.StartPosition
-                .Vector3DataToVector3();
-            _stuff.AddToStacks(this);
+                if (isWinterRoom)
+                    _timerObserver.SetIndicatorColdColor();
+                else
+                    _timerObserver.SetIndicatorWarmColor();
+                
+                if (isWinterRoom & notHaveHat)
+                    _timerObserver.TimerStart();
+                else
+                {
+                    _timerObserver.TimerStop();
+                    //_timer.Reset();
+                }
+                
+                if(!isWinterRoom & !notHaveHat)
+                    _timerObserver.TimerStart();
+                else
+                    _timerObserver.TimerStop();
+            }
+            else
+            {
+                _itemType = playerProgress.PlayerState.PlayerDecor.Type;
+                string clothName = Enum.GetName(typeof(ItemType), (int)_itemType);
+                _stuff = await InstantiateItem(clothName);
+                _stuff.transform.localScale = _scale;
+                _stuff.Rotation = transform.rotation;
+                _stuff.StartPosition = playerProgress.PlayerState.PlayerDecor.StartPosition
+                    .Vector3DataToVector3();
+                _stuff.AddLastStack(this);
+            }
         }
 
         public void SaveProgress(PlayerProgress playerProgress)
@@ -106,6 +144,11 @@ namespace PlayerScripts
 
             _assetProvider.ReleaseAssetsByLabel(itemName);
             return stuff;
+        }
+
+        private void OnDestroy()
+        {
+            _timerObserver.Dispose();
         }
     }
 }

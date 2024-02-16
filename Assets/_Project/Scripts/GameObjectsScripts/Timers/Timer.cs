@@ -107,11 +107,13 @@ namespace GameObjectsScripts.Timers
             }
         }
 
-        private void Reset()
+        public void Reset()
         {
             _currentTime = 0;
-            _indicatorValue = 0;
+            _indicatorValue = 1;
             _updateTime = 0;
+            
+            UpdateTimerView?.Invoke(_indicatorValue);
         }
 
         public void Restart()

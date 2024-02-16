@@ -36,7 +36,7 @@ public class ClothsInventoryDialog : InventoryDialog
         UpdateDebugList();
         ClearUiSlots();
         IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false)
-            .Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Cloths);
+            .Where(x => x.InventoryItem.StuffSpecies is StuffSpecies.Cloths or StuffSpecies.Decor);
         int i = 0;
         foreach (Slot slot in slots)
         {
