@@ -10,4 +10,5 @@
     Carrot = 7,
     GameState = 8,
     Hot = 9,
+    Thermo = 10,
 }

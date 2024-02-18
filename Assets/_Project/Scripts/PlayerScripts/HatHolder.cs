@@ -3,12 +3,10 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
-using GameObjectsScripts.Timers;
 using Infrastructure;
 using Infrastructure.AssetManagement;
 using StaticData;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace PlayerScripts
@@ -17,6 +15,8 @@ namespace PlayerScripts
     {
         [SerializeField] private Transform _anchorPoint;
         [SerializeField] private Vector3 _scale;
+        public event Action<bool> HasHat;
+        public ItemType ItemType => _itemType;
         private bool _tweenComplete;
         private Stuff _stuff;
         private ISaveLoadService _saveLoadService;
@@ -47,6 +47,7 @@ namespace PlayerScripts
                 stuff.AddLastStack(this);
                 _stuff = stuff;
                 _itemType = stuff.Item.Type;
+                HasHat?.Invoke(_itemType != ItemType.None);
                 TweenerCore<Vector3, Vector3, VectorOptions> result = _stuff.transform.DOScale(_scale, .5f);
                 result.onComplete = SaveHatHolderState;
                 Debug.Log($"Stack to hat holder");
@@ -69,6 +70,7 @@ namespace PlayerScripts
         {
             _itemType = ItemType.None;
             _stuff = null;
+            HasHat?.Invoke(_itemType != ItemType.None);
             //Destroy(_stuff);
             SaveHatHolderState();
             //TweenerCore<Vector3, Vector3, VectorOptions> result = _stuff.transform.DOScale(Vector3.one, .5f);

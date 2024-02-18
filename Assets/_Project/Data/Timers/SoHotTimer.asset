@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
   m_Name: SoHotTimer
   m_EditorClassIdentifier: 
-  _type: 5
+  _type: 10
   _duration: 0.2
-  _timerPrefab: {fileID: 2802259814680247830, guid: 31225b070a8825445849a43a05fd7951,
+  _timerPrefab: {fileID: 2802259814680247830, guid: c1bdfde22ef2e484894c4c2b49d03f66,
     type: 3}
-  _timerColor: {r: 1, g: 1, b: 1, a: 1}
+  _timerColor: {r: 0.8490566, g: 0.1289741, b: 0, a: 1}
   _moodDecrease: 0.2
   _canStart: 0

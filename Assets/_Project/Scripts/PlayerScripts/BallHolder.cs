@@ -8,13 +8,12 @@ namespace PlayerScripts
     public class BallHolder : MonoBehaviour, IStack
     {
         private Stuff _stuff;
-        private ItemType _itemType = ItemType.None;
-        private Timer _timer;
+        private TimersPrincipal _timerPrincipal;
 
         [Inject]
         public void Construct(TimersPrincipal timersPrincipal)
         {
-            _timer = timersPrincipal.GetTimerByType(TimerType.Fun);
+            _timerPrincipal = timersPrincipal;
         }
 
         public void Stack(Stuff stuff)
@@ -33,13 +32,15 @@ namespace PlayerScripts
 
         private void Reward(Stuff stuff)
         {
+            Timer timer = _timerPrincipal.GetTimerByType(TimerType.Fun);
+            
             float value = Extensions.DivideBy100ToFloat(stuff.Item.Price);
-            float rewardValue = _timer.IndicatorValue <= 0
+            float rewardValue = timer.IndicatorValue <= 0
                 ? value * .1f
-                : value * Extensions.DivideBy100ToFloat(_timer.PassedTime);
-            _timer.SetReward(rewardValue);
-            _timer.Stop();
-            _timer.IncreaseSetActive(true);
+                : value * Extensions.DivideBy100ToFloat(timer.PassedTime);
+            timer.SetReward(rewardValue);
+            timer.Stop();
+            timer.IncreaseSetActive(true);
 
             Debug.Log($"Reward value {rewardValue}");
         }

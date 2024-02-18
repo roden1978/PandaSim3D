@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
   m_Name: SoColdTimer
   m_EditorClassIdentifier: 
-  _type: 5
-  _duration: 0.2
+  _type: 10
+  _duration: 0.05
   _timerPrefab: {fileID: 2802259814680247830, guid: 31225b070a8825445849a43a05fd7951,
     type: 3}
-  _timerColor: {r: 1, g: 1, b: 1, a: 1}
+  _timerColor: {r: 0.2028302, g: 0.2791671, b: 1, a: 1}
   _moodDecrease: 0.2
   _canStart: 0

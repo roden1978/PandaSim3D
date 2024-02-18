@@ -99,8 +99,9 @@ namespace GameObjectsScripts.Timers
                 EndTimer?.Invoke(this);
             }
 
-            _indicatorValue = Convert.ToSingle(_currentTime / _duration);
-            if (Convert.ToInt32(_updateTime) >= 1)
+            _indicatorValue = _currentTime / _duration;
+            
+            if (_updateTime >= .1f)
             {
                 UpdateTimerView?.Invoke(_indicatorValue);
                 _updateTime = 0;
@@ -159,7 +160,6 @@ namespace GameObjectsScripts.Timers
         public void UpdateTimerState(TimerData timerData)
         {
             _type = timerData.Type;
-            _duration = timerData.Duration;
             _startTime = timerData.StartTimerTimeInSeconds;
             _endTime = timerData.EndTimerTimeInSeconds;
             _currentTime = timerData.CurrentTime;
@@ -171,13 +171,17 @@ namespace GameObjectsScripts.Timers
             UpdateTimerView?.Invoke(_indicatorValue);
         }
 
+        public void UpdateDuration(float value)
+        {
+            _duration = value;
+        }
+
 
         public TimerData SaveState()
         {
             return new TimerData()
             {
                 Type = _type,
-                Duration = _duration,
                 StartTimerTimeInSeconds = _startTime,
                 EndTimerTimeInSeconds = _endTime,
                 CurrentTime = _currentTime,

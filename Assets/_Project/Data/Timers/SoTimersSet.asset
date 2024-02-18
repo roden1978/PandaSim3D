@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d6eb696e549408aa042c37f948b7fb3, type: 3}
   m_Name: SoTimersSet
   m_EditorClassIdentifier: 
-  _soTimers:
+  _soCommonTimers:
   - {fileID: 11400000, guid: dcd9490d2e41ba14096c7b4c79ca76fe, type: 2}
   - {fileID: 11400000, guid: 5c3bf2e972a672c41b0b24e3d38506da, type: 2}
   - {fileID: 11400000, guid: f58765fbe95aeec44ae4702838993109, type: 2}
   - {fileID: 11400000, guid: e5a25e6de96f2004bb21d84944c10da8, type: 2}
-  - {fileID: 11400000, guid: 817f8916ca8531b468094e480276be40, type: 2}
   - {fileID: 11400000, guid: 09bb4114b9699074eab88dc50a8e3165, type: 2}
   - {fileID: 11400000, guid: e857e2e194dc58b45b7de83c68b6c577, type: 2}
+  _soRoomTimers:
+  - RoomType: 1
+    SoTimers:
+    - {fileID: 11400000, guid: d6cb3b3f8ff65014095b51f97d8a505d, type: 2}
+  - RoomType: 2
+    SoTimers:
+    - {fileID: 11400000, guid: 817f8916ca8531b468094e480276be40, type: 2}

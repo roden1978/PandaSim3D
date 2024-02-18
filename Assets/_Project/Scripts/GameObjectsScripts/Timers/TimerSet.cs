@@ -12,6 +12,11 @@ public class TimerSet : IEnumerable<Timer>
         _timers.Add(timer);
     }
 
+    public void RemoveTimer(Timer timer)
+    {
+        _timers.Remove(timer);
+    }
+
     public IEnumerator<Timer> GetEnumerator()
     {
         return _timers.GetEnumerator();
