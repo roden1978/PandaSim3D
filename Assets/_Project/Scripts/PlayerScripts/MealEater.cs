@@ -48,7 +48,7 @@ namespace PlayerScripts
             float rewardValue = value * _timer.PassedTime;
             _timer.SetReward(rewardValue);
             _timer.Stop();
-            _timer.IncreaseSetActive(true);
+            _timer.RevertSetActive(true);
             
             Debug.Log($"Reward value {rewardValue}");
         }

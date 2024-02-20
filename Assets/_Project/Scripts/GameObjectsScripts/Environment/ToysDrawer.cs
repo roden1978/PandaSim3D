@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagement;
+using StaticData;
 using UnityEngine;
 using Zenject;
 
-public class ToysDrawer : ItemDrawer, ISavedProgress, IInitializable
+public class ToysDrawer : ItemDrawer, ISavedProgress
 {
     [SerializeField] private Transform _anchorPointTransform;
     [SerializeField] private GameObject _drawerView;
     private bool _isFull;
+    private bool _isDrawerEnabled;
     private IEventBus _eventBus;
 
     [Inject]
@@ -26,14 +29,13 @@ public class ToysDrawer : ItemDrawer, ISavedProgress, IInitializable
     private void OnBoughtBall(BoughtBallSignal signal)
     {
         _drawerView.SetActive(true);
+        _isDrawerEnabled = true;
         _isFull = true;
+        SaveLoadService.SaveProgress();
     }
-    
+
     protected override void ShowDialog()
     {
-        if (ItemType != ItemType.None) return;
-
-        Debug.Log("Click on plate");
         ToysInventoryDialog dialog = DialogManager.ShowDialog<ToysInventoryDialog>();
         dialog.UpdateInventoryView();
     }
@@ -41,11 +43,13 @@ public class ToysDrawer : ItemDrawer, ISavedProgress, IInitializable
     public async void LoadProgress(PlayerProgress playerProgress)
     {
         AnchorPointTransform = _anchorPointTransform;
-        
+
         RoomState roomState = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
             x.Name == AssetPaths.RoomSceneName.ToString());
 
-        if (roomState is not null && roomState.Ball)
+        if (roomState is null) return;
+        
+        if (roomState.Ball)
         {
             ItemType = ItemType.Ball;
             string itemName = Enum.GetName(typeof(ItemType), (int)ItemType.Ball);
@@ -54,40 +58,35 @@ public class ToysDrawer : ItemDrawer, ISavedProgress, IInitializable
             _isFull = true;
             stuff.AddLastStack(this);
         }
+
+        if (roomState.ToysDrawer)
+            _drawerView.SetActive(true);
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
     {
         RoomState room = playerProgress.RoomsData.Rooms.FirstOrDefault(x =>
             x.Name == AssetPaths.RoomSceneName.ToString());
-        if (room is not null)
-        {
-            room.Ball = _isFull;
-        }
-        else
+        if (room is null)
             playerProgress.RoomsData.Rooms.Add(new RoomState
             {
                 Ball = _isFull,
+                ToysDrawer = _isDrawerEnabled,
                 Name = AssetPaths.RoomSceneName.ToString()
             });
+        else
+        {
+            room.Ball = _isFull;
+            room.ToysDrawer = _isDrawerEnabled;
+        }
+            
     }
 
     public override void Stack(Stuff stuff)
     {
-        /*Inventory.TryAddItem(this, stuff.Item, Extensions.OneItem);
-        stuff.StartPosition = stuff.Position = AnchorPointTransform.position;
-        stuff.LastStack.UnStack();
-        stuff.AddLastStack(this);
-        SaveLoadService.SaveProgress();
-        Destroy(stuff.gameObject);*/
     }
 
     public override void UnStack()
-    {
-        //ItemType = ItemType.None;
-    }
-
-    public void Initialize()
     {
     }
 

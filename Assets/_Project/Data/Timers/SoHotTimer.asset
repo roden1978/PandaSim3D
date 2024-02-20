@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SoHotTimer
   m_EditorClassIdentifier: 
   _type: 10
-  _duration: 0.2
+  _duration: 0.05
   _timerPrefab: {fileID: 2802259814680247830, guid: c1bdfde22ef2e484894c4c2b49d03f66,
     type: 3}
   _timerColor: {r: 0.8490566, g: 0.1289741, b: 0, a: 1}
-  _moodDecrease: 0.2
-  _canStart: 0
+  _moodDecrease: 0.25
+  _awakeStart: 0

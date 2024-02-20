@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c54eac40c16e42b6946e021fd94f8786, type: 3}
-  m_Name: SoGameStateTimer
+  m_Name: SoGameOverTimer
   m_EditorClassIdentifier: 
   _type: 8
-  _duration: 0
+  _duration: 0.3
   _timerPrefab: {fileID: 0}
   _timerColor: {r: 1, g: 1, b: 1, a: 1}
   _moodDecrease: 0
-  _canStart: 1
+  _awakeStart: 0

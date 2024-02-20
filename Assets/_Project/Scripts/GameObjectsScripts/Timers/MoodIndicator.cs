@@ -3,12 +3,14 @@ using GameObjectsScripts.Timers;
 using UnityEngine;
 using Zenject;
 
-public class MoodIndicator: ISavedProgress, IInitializable
+public class MoodIndicator : ISavedProgress, IInitializable
 {
-    public event Action<float> UpdateIndicatorValue; 
+    public event Action<float> UpdateIndicatorValue;
     private readonly TimerSet _timers;
-    private float _indicatorValue = 1;
     private readonly ISaveLoadService _saveLoadService;
+    private float _indicatorValue = 1;
+    private Timer _gameOverTimer;
+    private bool _isGameOverTimerEnabled;
 
     public MoodIndicator(TimerSet timers, ISaveLoadService saveLoadService)
     {
@@ -22,20 +24,45 @@ public class MoodIndicator: ISavedProgress, IInitializable
         {
             timer.EndTimer += OnEndAnyTimer;
             timer.RestartTimer += OnRestartAnyTimer;
+
+            if (timer.TimerType == TimerType.GameOver)
+                _gameOverTimer = timer;
         }
     }
 
     private void OnRestartAnyTimer(float reward)
     {
-        IncreaseIndicatorValue(reward);
+        RevertIndicatorValue(reward);
     }
 
     private void OnEndAnyTimer(Timer timer)
     {
         DecreaseIndicatorValue(timer);
+        ActivateGameOverTimer();
+        GameOver(timer);
     }
 
-    public void IncreaseIndicatorValue(float reward)
+    private void GameOver(Timer timer)
+    {
+        if (timer.TimerType == _gameOverTimer.TimerType)
+            Debug.Log("Game Over!");
+    }
+
+    private void ActivateGameOverTimer()
+    {
+        if (_indicatorValue <= 0 && _isGameOverTimerEnabled == false)
+        {
+            _gameOverTimer.Start();
+            _isGameOverTimerEnabled = true;
+        }
+        else
+        {
+            _gameOverTimer.Stop();
+            _gameOverTimer.Reset();
+        }
+    }
+
+    private void RevertIndicatorValue(float reward)
     {
         _indicatorValue += reward;
         _indicatorValue = Clamp01();
@@ -43,7 +70,7 @@ public class MoodIndicator: ISavedProgress, IInitializable
         _saveLoadService.SaveProgress();
     }
 
-    public void DecreaseIndicatorValue(Timer timer)
+    private void DecreaseIndicatorValue(Timer timer)
     {
         _indicatorValue -= timer.Decrease;
         _indicatorValue = Clamp01();
@@ -62,7 +89,7 @@ public class MoodIndicator: ISavedProgress, IInitializable
         {
             timer.EndTimer -= OnEndAnyTimer;
             timer.RestartTimer -= OnRestartAnyTimer;
-        } 
+        }
     }
 
     public void LoadProgress(PlayerProgress playerProgress)

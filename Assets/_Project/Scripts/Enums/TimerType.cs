@@ -8,7 +8,7 @@
     Cold = 5,
     Fun = 6,
     Carrot = 7,
-    GameState = 8,
+    GameOver = 8,
     Hot = 9,
     Thermo = 10,
 }

@@ -16,7 +16,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         set => transform.position = value;
     }
 
-    public GameObject View;
+    protected GameObject View;
     
     protected Transform AnchorPointTransform;
     protected DialogManager DialogManager => _dialogManager;
@@ -25,14 +25,14 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     protected ISaveLoadService SaveLoadService;
     private readonly Dictionary<string, Stuff> _cachedItems = new();
     private DialogManager _dialogManager;
-    private IAssetProvider _assetProvider;
+    protected IAssetProvider AssetProvider;
 
     [Inject]
     public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory,
         ISaveLoadService saveLoadService)
     {
         _dialogManager = dialogManager;
-        _assetProvider = assetProvider;
+        AssetProvider = assetProvider;
         Inventory = inventory;
         SaveLoadService = saveLoadService;
     }
@@ -67,7 +67,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         }
         else
         {
-            UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(itemName);
+            UniTask<GameObject> result = AssetProvider.LoadAsync<GameObject>(itemName);
 
             await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
             GameObject prefab = await result;
@@ -76,7 +76,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
                 AnchorPointTransform).GetComponent<Stuff>();
         }
         
-        _assetProvider.ReleaseAssetsByLabel(itemName);
+        AssetProvider.ReleaseAssetsByLabel(itemName);
         return stuff;
     }
 
@@ -89,6 +89,11 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     private bool TryGetItemFromCache(string itemName, out Stuff item)
     {
         return _cachedItems.TryGetValue(itemName, out item);
+    }
+
+    public void DisableView()
+    {
+        View.SetActive(false);
     }
 
     public abstract void Stack(Stuff stuff);

@@ -18,11 +18,7 @@ public class MoodIndicatorView : MonoBehaviour
         _moodIndicator.UpdateIndicatorValue += OnUpdateIndicatorView;
         saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
     }
-    public void Initialize()
-    {
-        //SetColour(1); //TODO: Change after indicator state loading
-    }
-
+    
     private void OnDisable()
     {
         _moodIndicator.UpdateIndicatorValue -= OnUpdateIndicatorView;

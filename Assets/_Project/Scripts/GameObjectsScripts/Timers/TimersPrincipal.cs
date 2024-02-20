@@ -33,12 +33,20 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
         foreach (SoTimer soTimer in _set.SoCommonTimers)
         {
-            Timer timer = new(soTimer);
-            _timerSet.AddTimer(timer);
-            _debugTimers.Add(new TimerDebugInfo { Name = timer.TimerType.ToString(), Duration = soTimer.Duration });
+            Timer timer = soTimer.Type == TimerType.Sleep
+                ? new Timer(soTimer, new DurationRevert(soTimer.Duration))
+                : new Timer(soTimer, new SimpleRevert());
 
-            if (timer.TimerType == TimerType.GameState)
-                timer.UpdateGameState += OnUpdateGameState;
+            _timerSet.AddTimer(timer);
+            _debugTimers.Add(new TimerDebugInfo
+                {
+                    Name = timer.TimerType.ToString(),
+                    Duration = soTimer.Duration
+                }
+            );
+
+            /*if (timer.TimerType == TimerType.GameOver)
+                timer.UpdateGameState += OnUpdateGameState;*/
         }
 
         _moodIndicator = new MoodIndicator(_timerSet, saveLoadService);
@@ -59,56 +67,42 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         }
     }
 
-    public void Initialize()
-    {
+    public void Initialize() => 
         _moodIndicator.Initialize();
-    }
 
     public void StartTimers()
     {
-        foreach (Timer timer in _timerSet)
-        {
-            if (timer.CanStart)
-                timer.Start();
-        }
+        foreach (Timer timer in _timerSet.Where(x => x.AwakeStart))
+            timer.Start();
     }
 
     private void Update()
     {
         foreach (Timer timer in _timerSet)
-        {
             timer.Tick();
-        }
     }
 
-    public Timer GetTimerByType(TimerType type)
-    {
-        return _timerSet.FirstOrDefault(x => x.TimerType == type);
-    }
+    public Timer GetTimerByType(TimerType type) => 
+        _timerSet.FirstOrDefault(x => x.TimerType == type);
 
-    public void AddTimersView(string roomName)
-    {
+    public void AddTimersView(string roomName) =>
         InstantiateTimersViews(roomName);
-    }
 
     private void InstantiateTimersViews(string roomName)
     {
-        foreach (Timer timer in _timerSet)
-        {
-            SoTimer soTimer = _set.SoCommonTimers
-                .FirstOrDefault(x => x.TimerPrefab != null && x.Type == timer.TimerType);
+        InstantiateBasicTimers();
+        InstantiateRoomAdditionalTimers(roomName);
+    }
 
-            if (soTimer is not null)
-                CreateTimerView(soTimer, timer);
-        }
-
+    private void InstantiateRoomAdditionalTimers(string roomName)
+    {
         foreach (SoTimer soTimer in GetRoomTimers(Enum.Parse<RoomsType>(roomName)))
         {
             Timer timer = GetTimerByType(soTimer.Type);
-            
+
             if (timer is null)
             {
-                timer = new Timer(soTimer);
+                timer = new Timer(soTimer, new SimpleRevert());
                 _timerSet.AddTimer(timer);
                 _debugTimers.Add(new TimerDebugInfo { Name = timer.TimerType.ToString(), Duration = soTimer.Duration });
             }
@@ -118,9 +112,19 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
                 _debugTimers.FirstOrDefault(x => x.Name == timer.TimerType.ToString())!.Duration = soTimer.Duration;
             }
 
-           
-
             CreateTimerView(soTimer, timer);
+        }
+    }
+
+    private void InstantiateBasicTimers()
+    {
+        foreach (Timer timer in _timerSet)
+        {
+            SoTimer soTimer = _set.SoCommonTimers
+                .FirstOrDefault(x => x.TimerPrefab != null && x.Type == timer.TimerType);
+
+            if (soTimer is not null)
+                CreateTimerView(soTimer, timer);
         }
     }
 
@@ -153,20 +157,14 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         return _timerViewSet.TryGetValue(type, out timerView);
     }
 
-    public void ReStartTimerByType(TimerType type)
-    {
+    public void ReStartTimerByType(TimerType type) =>
         GetTimerByType(type).Restart();
-    }
 
-    public void StopTimerByType(TimerType type)
-    {
+    public void StopTimerByType(TimerType type) => 
         GetTimerByType(type).Stop();
-    }
 
-    public void ResetTimerByType(TimerType type)
-    {
+    public void ResetTimerByType(TimerType type) => 
         GetTimerByType(type).Reset();
-    }
 
     private void InstantiateMoodIndicatorView()
     {

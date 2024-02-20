@@ -35,7 +35,7 @@ public class ToysInventoryDialog : InventoryDialog
     protected override void UseButtonAction()
     {
         base.UseButtonAction();
-        ItemDrawer.View.SetActive(false);
+        ItemDrawer.DisableView();
     }
     protected override void UpdateAllSlots()
     {

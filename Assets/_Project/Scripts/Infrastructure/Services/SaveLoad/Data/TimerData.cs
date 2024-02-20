@@ -4,8 +4,8 @@ using GameObjectsScripts.Timers;
 [Serializable]
 public class TimerData
 {
-    public TimerType Type;
-    public float Duration;
+    public TimerType Type = TimerType.None;
+    public TimerState State = TimerState.Countdown;
     public float StartTimerTimeInSeconds;
     public float EndTimerTimeInSeconds;
     public float CurrentTime;

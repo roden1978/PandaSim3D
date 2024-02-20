@@ -17,5 +17,5 @@ MonoBehaviour:
   _timerPrefab: {fileID: 2802259814680247830, guid: 31225b070a8825445849a43a05fd7951,
     type: 3}
   _timerColor: {r: 0.2028302, g: 0.2791671, b: 1, a: 1}
-  _moodDecrease: 0.2
-  _canStart: 0
+  _moodDecrease: 0.25
+  _awakeStart: 0

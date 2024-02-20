@@ -8,12 +8,14 @@ public class PlayerState
     public bool FirstStartGame;
     public string PetName;
     public PlayerDecor PlayerDecor;
+    public bool Sleep;
 
     public PlayerState()
     {
         FirstStartGame = true;
         PetName = string.Empty;
         PlayerDecor = new PlayerDecor(ItemType.None, new Vector3Data());
+        Sleep = false;
     }
 }
 

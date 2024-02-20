@@ -14,5 +14,6 @@ public class RoomState
     public ClothsData ClothsData;
     public bool Poop;
     public bool Ball;
+    public bool ToysDrawer;
     public SnowmanDecor SnowmanDecor;
 }

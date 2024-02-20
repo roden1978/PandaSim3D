@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace GameObjectsScripts.Timers
@@ -9,16 +10,16 @@ namespace GameObjectsScripts.Timers
         private Timer _timer;
         private IBehaviourStrategy _behaviourStrategy;
 
-        private void OnDisable()
-        {
-            _timer.UpdateTimerView -= OnUpdateTimerView;
-        }
         public void Construct(Timer timer, Color color, IBehaviourStrategy behaviourStrategy)
         {
             _timer = timer;
             _indicator.color = color;
             _behaviourStrategy = behaviourStrategy;
             _timer.UpdateTimerView += OnUpdateTimerView;
+        }
+        private void OnDisable()
+        {
+            _timer.UpdateTimerView -= OnUpdateTimerView;
         }
         private void OnUpdateTimerView(float value)
         {

@@ -36,13 +36,13 @@ public class Poop : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IShow
     public void OnPointerUp(PointerEventData eventData)
     {
         if (_timer.IndicatorValue < 1)
-            _timer.IncreaseSetActive(false);
+            _timer.RevertSetActive(false);
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("Pointer down");
-        _timer.IncreaseSetActive(true);
+        _timer.RevertSetActive(true);
         _timer.SetReward(_cleanReward);
     }
 
