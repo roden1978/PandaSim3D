@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using PlayerScripts;
@@ -21,7 +22,7 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
         set => _startPosition = value;
     }
 
-    private const int LayerMask = 1 << 8 | 1 << 6 ;
+    private const int LayerMask = 1 << 8 | 1 << 6;
     private Vector3 _mousePosition;
     private Vector3 _startPosition;
     private Camera _camera;
@@ -66,20 +67,19 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
             Position = _startPosition;
         }
     }
-    
+
     public void OnDrag(PointerEventData eventData)
     {
-        
-            Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
-            float zPosition = _startPosition.z >= 0 ? -1 : _startPosition.z;
-            Vector3 currentPosition = new(Position.x, Position.y, zPosition);
-            Vector3 negativeCameraPosition = -_camera.transform.forward;
-            float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /
-                      Vector3.Dot(screenPointToRay.direction, negativeCameraPosition);
-            Vector3 position = screenPointToRay.origin + screenPointToRay.direction * t;
+        Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
+        float zPosition = _startPosition.z >= 0 ? -1 : _startPosition.z;
+        Vector3 currentPosition = new(Position.x, Position.y, zPosition);
+        Vector3 negativeCameraPosition = -_camera.transform.forward;
+        float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /
+                  Vector3.Dot(screenPointToRay.direction, negativeCameraPosition);
+        Vector3 position = screenPointToRay.origin + screenPointToRay.direction * t;
 
+        if (position.y > 0f)
             Position = position;
-        
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -89,7 +89,7 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     public void OnEndDrag(PointerEventData eventData)
     {
     }
-    
+
     public void AddLastStack(IStack stack)
     {
         _lastStack = stack;
