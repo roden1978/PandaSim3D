@@ -54,6 +54,18 @@ public class SaveLoadService : ISaveLoadService
         return jsonData?.Deserialize<Settings>();
     }
 
+    public void Delete()
+    {
+        string progress = GetFilePath(Progress, FileName);
+        string soundSettings = GetFilePath(Settings, FileName);
+
+        if (File.Exists(progress))
+            File.Delete(progress);
+        
+        if (File.Exists(soundSettings))
+            File.Delete(soundSettings);
+    }
+
     private string Load(string folderName, string fileName)
     {
         string dataPath = GetFilePath(folderName, fileName);

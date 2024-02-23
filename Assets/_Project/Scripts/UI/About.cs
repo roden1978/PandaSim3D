@@ -1,21 +1,27 @@
+using System;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace UI
 {
     public class About : MonoBehaviour
     {
         [SerializeField] private MainMenu _mainMenu;
-        [SerializeField] private Button _back;
+        [SerializeField] private PointerListener _back;
 
         private void Start()
         {
-            _back.onClick.AddListener(OnBackButton);
+            _back.Click += OnBackButton;
         }
 
-        private void OnBackButton()
+        private void OnDisable()
         {
-            HideSettings();
+            _back.Click -= OnBackButton;
+        }
+
+        private void OnBackButton(PointerEventData data)
+        {
+            HideAbout();
             ShowMainMenu();
         }
         private void ShowMainMenu()
@@ -23,7 +29,7 @@ namespace UI
             _mainMenu.gameObject.SetActive(true);
         }
 
-        private void HideSettings()
+        private void HideAbout()
         {
             gameObject.SetActive(false);
         }

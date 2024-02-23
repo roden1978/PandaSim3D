@@ -293,6 +293,7 @@ MonoBehaviour:
   _winterRoom: {fileID: 2479012462966886756}
   _room: {fileID: 3969129452995773557}
   _ads: {fileID: 281499040402857086}
+  _menu: {fileID: 5568974556617660071}
   _petName: {fileID: 2590268873105274860}
   _currencyValueText: {fileID: 2997819428557755994}
 --- !u!1 &3681285851207673091
@@ -1383,3 +1384,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 8803191083507448510}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5568974556617660071 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3991261829152812057, guid: 72b0e2d0ecfac604492a22c94114275f,
+    type: 3}
+  m_PrefabInstance: {fileID: 8803191083507448510}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a6701dd19f3834b99694406f45ba1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,70 +1,84 @@
 using Infrastructure;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using Zenject;
 
 namespace UI
 {
     public class MainMenu : MonoBehaviour
     {
-        [SerializeField] private Button _start;
-        [SerializeField] private Button _options;
-        [SerializeField] private Button _about;
-        [SerializeField] private Button _exit;
-        [SerializeField] private About _aboutPanel;
-        [SerializeField] private Settings _settingsPanel;
-        [SerializeField] private AudioSource _mainMenuMusic;
-        private bool _mute;
-        private float _volume;
+        [SerializeField] private PointerListener _restart;
+        [SerializeField] private PointerListener _language;
+        [SerializeField] private PointerListener _soundSettings;
+        [SerializeField] private PointerListener _about;
+        [SerializeField] private PointerListener _exit;
+        [SerializeField] private Canvas _aboutPanel;
+        [SerializeField] private Canvas _soundSettingsPanel;
+        [SerializeField] private Canvas _languagePanel;
+
+
+        private ISceneLoader _sceneLoader;
+        private ISaveLoadService _saveLoadService;
+        private IPersistentProgress _persistentProgress;
+
+        [Inject]
+        public void Construct(IPersistentProgress persistentProgress, ISceneLoader sceneLoader,
+            ISaveLoadService saveLoadService)
+        {
+            _sceneLoader = sceneLoader;
+            _saveLoadService = saveLoadService;
+            _persistentProgress = persistentProgress;
+        }
 
         private void OnEnable()
         {
-            _start.onClick.AddListener(OnStartButton);
-            _options.onClick.AddListener(OnOptionsButton);
-            _about.onClick.AddListener(OnAboutButton);
-            _exit.onClick.AddListener(OnExitButton);
+            _restart.Click += OnRestartButton;
+            _language.Click += OnLanguageButton;
+            _soundSettings.Click += OnSoundSettingsButton;
+            _about.Click += OnAboutButton;
+            _exit.Click += OnExitButton;
         }
 
-        private void Start()
-        {
-            //IPersistentProgressService persistentProgressService =
-           //     ServiceLocator.Container.Single<IPersistentProgressService>();
-           //  _volume = persistentProgressService.Settings.SoundSettings.Volume;
-          //  _mute = persistentProgressService.Settings.SoundSettings.Mute == 0;
-            _settingsPanel.SetMute(_mute);
-            _settingsPanel.SetVolume(_volume);
-            _settingsPanel.UpdateSettingsControls(_volume, _mute);
-            _mainMenuMusic.Play();
-        }
-
-        
         private void OnDisable()
         {
-            _start.onClick.RemoveListener(OnStartButton);
-            _options.onClick.RemoveListener(OnOptionsButton);
-            _about.onClick.RemoveListener(OnAboutButton);
-            _exit.onClick.RemoveListener(OnExitButton);
+            _restart.Click -= OnRestartButton;
+            _language.Click -= OnLanguageButton;
+            _soundSettings.Click -= OnSoundSettingsButton;
+            _about.Click -= OnAboutButton;
+            _exit.Click -= OnExitButton;
         }
 
-        private void OnExitButton()
+        private void OnLanguageButton(PointerEventData obj)
         {
+            HideMenu();
+            _languagePanel.gameObject.SetActive(true);
+        }
+
+        private void OnRestartButton(PointerEventData data)
+        {
+            _saveLoadService.Delete();
+            _persistentProgress.PlayerProgress = new PlayerProgress();
+            _persistentProgress.Settings = new Settings();
+            _sceneLoader.LoadScene(_persistentProgress.PlayerProgress.PlayerState.SceneName);
+        }
+
+        private void OnExitButton(PointerEventData data)
+        {
+            _saveLoadService.SaveProgress();
+            HideMenu();
             Application.Quit();
         }
 
-        private void OnAboutButton()
+        private void OnAboutButton(PointerEventData data)
         {
+            HideMenu();
             _aboutPanel.gameObject.SetActive(true);
         }
 
-        private void OnOptionsButton()
-        {
-            _settingsPanel.gameObject.SetActive(true);
-        }
-
-        private void OnStartButton()
+        private void OnSoundSettingsButton(PointerEventData data)
         {
             HideMenu();
-            Bootstrapper bootstrapper = FindObjectOfType<Bootstrapper>();
-            //bootstrapper.LoadLevelState();
+            _soundSettingsPanel.gameObject.SetActive(true);
         }
 
         private void HideMenu()

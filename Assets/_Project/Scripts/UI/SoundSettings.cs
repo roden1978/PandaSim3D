@@ -1,14 +1,15 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Zenject;
 
 namespace UI
 {
-    public class Settings : MonoBehaviour
+    public class SoundSettings : MonoBehaviour
     {
         [SerializeField] private MainMenu _mainMenu;
-        [SerializeField] private Button _back;
+        [SerializeField] private PointerListener _back;
         [SerializeField] private Toggle _mute;
         [SerializeField] private Slider _volume;
         [SerializeField] private AudioMixerGroup _mixer;
@@ -32,14 +33,14 @@ namespace UI
         }
         private void OnEnable()
         {
-            _back.onClick.AddListener(OnBackButton);
+            _back.Click += OnBackButtonClick;
             _mute.onValueChanged.AddListener(OnMuteChanged);
             _volume.onValueChanged.AddListener(OnVolumeChanged);
         }
 
         private void OnDisable()
         {
-            _back.onClick.RemoveListener(OnBackButton);
+            _back.Click -= OnBackButtonClick;
             _mute.onValueChanged.RemoveListener(OnMuteChanged);
             _volume.onValueChanged.RemoveListener(OnVolumeChanged);
         }
@@ -66,7 +67,7 @@ namespace UI
             _mixer.audioMixer.SetFloat(UI, enable ? MaxValue : MinValue);
         }
 
-        private void OnBackButton()
+        private void OnBackButtonClick(PointerEventData data)
         {
             SaveSoundSettings();
             HideSettings();

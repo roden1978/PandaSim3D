@@ -33,7 +33,7 @@ public class PrefabsStorage : IPrefabsStorage
         component = _repository[type];
         return true;
     }
-    
+
     public bool Has(Type type)
     {
         return _repository.ContainsKey(type);
@@ -41,7 +41,7 @@ public class PrefabsStorage : IPrefabsStorage
 
     public void Register(Type type, GameObject component)
     {
-        if (_repository.ContainsKey(type))
+        if (Has(type))
             throw new Exception("Type is exist");
 
         _repository[type] = component;

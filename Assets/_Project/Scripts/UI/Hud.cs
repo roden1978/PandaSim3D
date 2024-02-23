@@ -15,6 +15,7 @@ public class Hud : MonoBehaviour, ISavedProgress
     [SerializeField] private PointerListener _winterRoom;
     [SerializeField] private PointerListener _room;
     [SerializeField] private PointerListener _ads;
+    [SerializeField] private PointerListener _menu;
     [SerializeField] private TMP_Text _petName;
     [SerializeField] private TMP_Text _currencyValueText;
     private ISceneLoader _sceneLoader;
@@ -23,31 +24,39 @@ public class Hud : MonoBehaviour, ISavedProgress
     private ISaveLoadService _saveLoadService;
 
     [Inject]
-    public void Construct(ISceneLoader sceneLoader, DialogManager dialogManager, EventBus eventBus, ISaveLoadService saveLoadService)
+    public void Construct(ISceneLoader sceneLoader, DialogManager dialogManager, EventBus eventBus,
+        ISaveLoadService saveLoadService)
     {
         _sceneLoader = sceneLoader;
         _dialogManager = dialogManager;
         _eventBus = eventBus;
         _saveLoadService = saveLoadService;
     }
+
     private void OnEnable()
     {
         _shop.Click += OnShopButtonClick;
         _winterRoom.Click += OnWinterRoomButtonClick;
         _room.Click += OnRoomButtonClick;
         _ads.Click += OnAdsButtonClick;
+        _menu.Click += OnMenuButtonClick;
         Debug.Log($"Event bus in hud {_eventBus}");
         _eventBus.Subscribe<CoinsViewTextUpdateSignal>(OnWalletUpdateSignal);
     }
+
 
     private void OnWalletUpdateSignal(CoinsViewTextUpdateSignal signal)
     {
         _currencyValueText.text = signal.NewValue.ToString();
     }
 
+    private void OnMenuButtonClick(PointerEventData obj)
+    {
+        _dialogManager.ShowDialog<MenuDialog>();
+    }
+
     private void OnAdsButtonClick(PointerEventData obj)
     {
-      
     }
 
     private void OnRoomButtonClick(PointerEventData obj)
@@ -73,6 +82,7 @@ public class Hud : MonoBehaviour, ISavedProgress
         _winterRoom.Click -= OnWinterRoomButtonClick;
         _room.Click -= OnRoomButtonClick;
         _ads.Click -= OnAdsButtonClick;
+        _menu.Click -= OnMenuButtonClick;
         _eventBus.Unsubscribe<CoinsViewTextUpdateSignal>(OnWalletUpdateSignal);
     }
 
@@ -98,7 +108,7 @@ public class Hud : MonoBehaviour, ISavedProgress
     {
         switch (type)
         {
-            case AssetPaths.WinterRoomSceneName :
+            case AssetPaths.WinterRoomSceneName:
                 PointerListenerSetActive(_winterRoom, false);
                 PointerListenerSetActive(_room, true);
                 break;

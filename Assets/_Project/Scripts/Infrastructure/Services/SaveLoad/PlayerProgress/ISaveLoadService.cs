@@ -1,9 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
-
-public interface ISaveLoadService
+﻿public interface ISaveLoadService
 {
     void SaveProgress();
     PlayerProgress LoadProgress();
-    public void SaveSettings();
+    void SaveSettings();
     Settings LoadSettings();
+    void Delete();
 }
