@@ -25,14 +25,14 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     protected ISaveLoadService SaveLoadService;
     private readonly Dictionary<string, Stuff> _cachedItems = new();
     private DialogManager _dialogManager;
-    protected IAssetProvider AssetProvider;
+    private IAssetProvider _assetProvider;
 
     [Inject]
     public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory,
         ISaveLoadService saveLoadService)
     {
         _dialogManager = dialogManager;
-        AssetProvider = assetProvider;
+        _assetProvider = assetProvider;
         Inventory = inventory;
         SaveLoadService = saveLoadService;
     }
@@ -67,7 +67,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         }
         else
         {
-            UniTask<GameObject> result = AssetProvider.LoadAsync<GameObject>(itemName);
+            UniTask<GameObject> result = _assetProvider.LoadAsync<GameObject>(itemName);
 
             await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
             GameObject prefab = await result;
@@ -76,7 +76,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
                 AnchorPointTransform).GetComponent<Stuff>();
         }
         
-        AssetProvider.ReleaseAssetsByLabel(itemName);
+        _assetProvider.ReleaseAssetsByLabel(itemName);
         return stuff;
     }
 
@@ -91,9 +91,9 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         return _cachedItems.TryGetValue(itemName, out item);
     }
 
-    public void DisableView()
+    protected void ViewSetActive(bool value)
     {
-        View.SetActive(false);
+        View.SetActive(value);
     }
 
     public abstract void Stack(Stuff stuff);

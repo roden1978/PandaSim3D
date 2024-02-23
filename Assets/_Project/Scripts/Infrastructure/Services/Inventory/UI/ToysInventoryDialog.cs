@@ -9,14 +9,15 @@ public class ToysInventoryDialog : InventoryDialog
 {
     private const string InventoryTitle = "Toys";
     private const int Capacity = 1;
-    
+    private ToysDrawer _toysDrawer;
+
     [Inject]
     public void Construct(IInventory inventory, ISaveLoadService saveLoadService, ToysDrawer toysDrawer,
         ISaveLoadStorage saveLoadStorage)
     {
         Inventory = inventory;
         SaveLoadService = saveLoadService;
-        ItemDrawer = toysDrawer;
+        ItemDrawer = _toysDrawer = toysDrawer;
         SaveLoadStorage = saveLoadStorage;
         Debug.Log($"Inventory {Inventory}, SaveLoad {SaveLoadService}");
         UISlots = new List<UIInventorySlot>(Inventory.Capacity);
@@ -28,21 +29,22 @@ public class ToysInventoryDialog : InventoryDialog
             UISlots.Add(uiInventorySlot);
             SaveLoadStorage.RegisterInSaveLoadRepositories(Inventory);
         }
-        
+
         SetInventoryTitle();
     }
 
     protected override void UseButtonAction()
     {
+        _toysDrawer.DrawerSetActive(false);
         base.UseButtonAction();
-        ItemDrawer.DisableView();
     }
+
     protected override void UpdateAllSlots()
     {
         UpdateDebugList();
         ClearUiSlots();
         IEnumerable<Slot> slots = Inventory.GetAllSlots().Where(x => x.IsEmpty == false)
-        .Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Toys);
+            .Where(x => x.InventoryItem.StuffSpecies == StuffSpecies.Toys);
         int i = 0;
         foreach (Slot slot in slots)
         {

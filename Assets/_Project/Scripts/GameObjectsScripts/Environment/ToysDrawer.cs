@@ -28,10 +28,15 @@ public class ToysDrawer : ItemDrawer, ISavedProgress
 
     private void OnBoughtBall(BoughtBallSignal signal)
     {
-        _drawerView.SetActive(true);
-        _isDrawerEnabled = true;
+        DrawerSetActive(true);
         _isFull = true;
         SaveLoadService.SaveProgress();
+    }
+
+    public void DrawerSetActive(bool value)
+    {
+        ViewSetActive(value);
+        _isDrawerEnabled = value;
     }
 
     protected override void ShowDialog()
@@ -60,7 +65,7 @@ public class ToysDrawer : ItemDrawer, ISavedProgress
         }
 
         if (roomState.ToysDrawer)
-            _drawerView.SetActive(true);
+            DrawerSetActive(true);
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
