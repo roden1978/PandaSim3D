@@ -6,10 +6,12 @@ public class PrefabsStorage : IPrefabsStorage
 {
     public int Count => _repository.Count;
     private readonly Dictionary<Type, GameObject> _repository;
+
     public PrefabsStorage()
     {
         _repository = new Dictionary<Type, GameObject>();
     }
+
     public GameObject Get(Type type)
     {
         if (!_repository.ContainsKey(type))
@@ -17,7 +19,7 @@ public class PrefabsStorage : IPrefabsStorage
 
         return _repository[type];
     }
-    
+
     public IEnumerable<GameObject> GetAll()
     {
         return _repository.Values;
@@ -30,6 +32,7 @@ public class PrefabsStorage : IPrefabsStorage
             component = default;
             return false;
         }
+
         component = _repository[type];
         return true;
     }
@@ -41,19 +44,29 @@ public class PrefabsStorage : IPrefabsStorage
 
     public void Register(Type type, GameObject component)
     {
+#if UNITY_EDITOR
         if (Has(type))
             throw new Exception("Type is exist");
+#else
+        if (Has(type))
+            return;
+#endif
 
         _repository[type] = component;
     }
-    
+
     public void RegisterAll(IEnumerable<GameObject> components)
     {
         foreach (GameObject component in components)
         {
             Type type = components.GetType();
-            if (_repository.ContainsKey(type))
+#if UNITY_EDITOR
+            if (Has(type))
                 throw new Exception("Type is exist");
+#else
+        if (Has(type))
+            return;
+#endif
             _repository[type] = component;
         }
     }
@@ -65,5 +78,10 @@ public class PrefabsStorage : IPrefabsStorage
         {
             _repository.Remove(type);
         }
+    }
+
+    public void UnregisterAll()
+    {
+        _repository.Clear();
     }
 }
