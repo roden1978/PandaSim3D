@@ -13,6 +13,7 @@
         public const string ToysInventoryDialog = "ToysInventoryDialog";
         public const string ShopDialog = "ShopDialog";
         public const string MenuDialog = "MenuDialog";
+        public const string GameOverDialog = "GameOverDialog";
         public const string InputNameDialog = "InputNameDialog";
         public const string ProgressUpdater = "ProgressUpdater";
         public const string PlayerPath = "Player";

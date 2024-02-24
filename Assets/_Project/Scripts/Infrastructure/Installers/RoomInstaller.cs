@@ -52,6 +52,8 @@ public class RoomInstaller : MonoInstaller
         BindTray();
         BindTrayView();
         BindCarpet();
+        BindMenuDialog();
+        BindGameOverDialog();
     }
 
     private void BindGuiHolder()
@@ -121,6 +123,19 @@ public class RoomInstaller : MonoInstaller
         GameObject prefab = _prefabsStorage.Get(typeof(ToysInventoryDialog));
         GameObject toysInventoryDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
         Container.BindInterfacesAndSelfTo<ToysInventoryDialog>().FromComponentOn(toysInventoryDialog).AsSingle();
+    }
+    
+    private void BindMenuDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(MenuDialog));
+        GameObject menuDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<MenuDialog>().FromComponentOn(menuDialog).AsSingle();
+    }
+    private void BindGameOverDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(GameOverDialog));
+        GameObject gameOverDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<GameOverDialog>().FromComponentOn(gameOverDialog).AsSingle();
     }
 
     private void BindDialogManager()

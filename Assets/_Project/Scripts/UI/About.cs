@@ -1,5 +1,4 @@
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace UI
@@ -9,7 +8,7 @@ namespace UI
         [SerializeField] private MainMenu _mainMenu;
         [SerializeField] private PointerListener _back;
 
-        private void Start()
+        private void OnEnable()
         {
             _back.Click += OnBackButton;
         }

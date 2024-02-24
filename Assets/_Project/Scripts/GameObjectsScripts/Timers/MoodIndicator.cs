@@ -1,5 +1,6 @@
 ﻿using System;
 using GameObjectsScripts.Timers;
+using UI;
 using UnityEngine;
 using Zenject;
 
@@ -11,11 +12,13 @@ public class MoodIndicator : ISavedProgress, IInitializable
     private float _indicatorValue = 1;
     private Timer _gameOverTimer;
     private bool _isGameOverTimerEnabled;
+    private readonly DialogManager _dialogManager;
 
-    public MoodIndicator(TimerSet timers, ISaveLoadService saveLoadService)
+    public MoodIndicator(TimerSet timers, ISaveLoadService saveLoadService, DialogManager dialogManager)
     {
         _timers = timers;
         _saveLoadService = saveLoadService;
+        _dialogManager = dialogManager;
     }
 
     public void Initialize()
@@ -45,7 +48,10 @@ public class MoodIndicator : ISavedProgress, IInitializable
     private void GameOver(Timer timer)
     {
         if (timer.TimerType == _gameOverTimer.TimerType)
+        {
             Debug.Log("Game Over!");
+            _dialogManager.ShowDialog<GameOverDialog>();
+        }
     }
 
     private void ActivateGameOverTimer()

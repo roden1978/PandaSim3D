@@ -24,7 +24,7 @@ namespace Infrastructure.AssetManagement
         public void Initialize()
         {
             Debug.Log($"Asset loader init");
-
+            
             LoadPrefabs(AssetPaths.UILabel);
             LoadPrefab(typeof(ProgressUpdater), AssetPaths.ProgressUpdater);
 
@@ -51,11 +51,13 @@ namespace Infrastructure.AssetManagement
 
         private async void LoadPrefabs(string path)
         {
-            IList<string> list = await _assetProvider.GetAssetsListByLabel(path);
-            IList<GameObject> prefabs = await _assetProvider.LoadAllAsync<GameObject>(path);
-
+            List<string> list = await _assetProvider.GetAssetsListByLabel(path);
+            GameObject[] prefabs = await _assetProvider.LoadAllAsync<GameObject>(list);
+         
+            
             foreach (GameObject gameObject in prefabs)
             {
+                Debug.Log($"Registered game object {gameObject} name: {gameObject.name} type: {Type.GetType(gameObject.name)}");
                 _prefabsStorage.Register(Type.GetType(gameObject.name), gameObject);
             }
 

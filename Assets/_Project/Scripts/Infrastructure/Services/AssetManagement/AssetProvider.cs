@@ -47,12 +47,7 @@ namespace Infrastructure.AssetManagement
         public async UniTask<TAsset[]> LoadAllAsync<TAsset>(List<string> keys) where TAsset : class
         {
             List<UniTask<TAsset>> tasks = new(keys.Count);
-
-            foreach (string key in keys)
-            {
-                UniTask<TAsset> handle = LoadAsync<TAsset>(key);
-                tasks.Add(handle);
-            }
+            tasks.AddRange(Enumerable.Select(keys, LoadAsync<TAsset>));
 
             return await UniTask.WhenAll(tasks);
         }

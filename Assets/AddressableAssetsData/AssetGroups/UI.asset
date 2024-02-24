@@ -18,7 +18,7 @@ MonoBehaviour:
   m_GUID: b71dac0af0cf36344a863ec962a20fdd
   m_SerializeEntries:
   - m_GUID: f5fefbb8580a0d54c9729a14a5fe14d0
-    m_Address: Assets/Prefabs/UI/UIPrefabs
+    m_Address: Assets/_Project/Prefabs/UI/UIPrefabs
     m_ReadOnly: 0
     m_SerializedLabels:
     - UIPrefabs

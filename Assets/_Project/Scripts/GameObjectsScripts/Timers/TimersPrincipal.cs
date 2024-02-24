@@ -4,6 +4,7 @@ using System.Linq;
 using GameObjectsScripts.Timers;
 using Services.SaveLoad.PlayerProgress;
 using TriInspector;
+using UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Zenject;
@@ -25,11 +26,14 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private ISaveLoadStorage _saveLoadStorage;
     private ISaveLoadService _saveLoadService;
     private int _currentGameStateValue;
+    private DialogManager _dialogManager;
 
     [Inject]
-    private void Construct(ISaveLoadStorage saveLoadStorage, ISaveLoadService saveLoadService)
+    private void Construct(ISaveLoadStorage saveLoadStorage, ISaveLoadService saveLoadService,
+        DialogManager dialogManager)
     {
         _saveLoadStorage = saveLoadStorage;
+        _dialogManager = dialogManager;
 
         foreach (SoTimer soTimer in _set.SoCommonTimers)
         {
@@ -44,30 +48,14 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
                     Duration = soTimer.Duration
                 }
             );
-
-            /*if (timer.TimerType == TimerType.GameOver)
-                timer.UpdateGameState += OnUpdateGameState;*/
         }
 
-        _moodIndicator = new MoodIndicator(_timerSet, saveLoadService);
+        _moodIndicator = new MoodIndicator(_timerSet, saveLoadService, _dialogManager);
         InstantiateMoodIndicatorView();
         _saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
     }
 
-    private void OnUpdateGameState()
-    {
-        if (_currentGameStateValue < _saveStateInterval)
-        {
-            _currentGameStateValue++;
-        }
-        else
-        {
-            _currentGameStateValue = 0;
-            _saveLoadService.SaveProgress();
-        }
-    }
-
-    public void Initialize() => 
+    public void Initialize() =>
         _moodIndicator.Initialize();
 
     public void StartTimers()
@@ -82,7 +70,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             timer.Tick();
     }
 
-    public Timer GetTimerByType(TimerType type) => 
+    public Timer GetTimerByType(TimerType type) =>
         _timerSet.FirstOrDefault(x => x.TimerType == type);
 
     public void AddTimersView(string roomName) =>
@@ -160,10 +148,10 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     public void ReStartTimerByType(TimerType type) =>
         GetTimerByType(type).Restart();
 
-    public void StopTimerByType(TimerType type) => 
+    public void StopTimerByType(TimerType type) =>
         GetTimerByType(type).Stop();
 
-    public void ResetTimerByType(TimerType type) => 
+    public void ResetTimerByType(TimerType type) =>
         GetTimerByType(type).Reset();
 
     private void InstantiateMoodIndicatorView()

@@ -48,8 +48,23 @@ public class WinterRoomInstaller : MonoInstaller
         BindTray();
         //Bind player in the end
         BindPlayer();
+        BindMenuDialog();
+        BindGameOverDialog();
     }
 
+    private void BindMenuDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(MenuDialog));
+        GameObject menuDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<MenuDialog>().FromComponentOn(menuDialog).AsSingle();
+    }
+    
+    private void BindGameOverDialog()
+    {
+        GameObject prefab = _prefabsStorage.Get(typeof(GameOverDialog));
+        GameObject gameOverDialog = Container.InstantiatePrefab(prefab, _guiHolderTransform);
+        Container.BindInterfacesAndSelfTo<GameOverDialog>().FromComponentOn(gameOverDialog).AsSingle();
+    }
     private void BindShop()
     {
         GameObject shopDialog = _prefabsStorage.Get(typeof(ShopDialog));

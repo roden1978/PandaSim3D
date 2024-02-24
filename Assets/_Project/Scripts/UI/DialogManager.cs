@@ -26,6 +26,7 @@ namespace UI
             { typeof(ToysInventoryDialog), AssetPaths.ToysInventoryDialog },
             { typeof(InputNameDialog), AssetPaths.InputNameDialog },
             { typeof(MenuDialog), AssetPaths.MenuDialog },
+            { typeof(GameOverDialog), AssetPaths.GameOverDialog },
         };
 
         public T ShowDialog<T>() where T : Dialog
