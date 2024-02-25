@@ -1,5 +1,7 @@
+using System;
 using Infrastructure;
 using Infrastructure.AssetManagement;
+using Services.SaveLoad.PlayerProgress;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -8,8 +10,11 @@ using Zenject;
 public class GameOverDialog : Dialog
 {
     [SerializeField] private PointerListener _continue;
-    [SerializeField] private CanvasGroup _continueCanvasGroup;
     [SerializeField] private PointerListener _restart;
+    [SerializeReference] private GameOverView _gameOverView;
+
+    public event Action GameWasContinue;  
+    
     private const int PetPrice = 2000;
     private ISceneLoader _sceneLoader;
     private IWalletService _wallet;
@@ -24,13 +29,13 @@ public class GameOverDialog : Dialog
         _wallet = wallet;
         _saveLoadService = saveLoadService;
         _persistentProgress = persistentProgress;
+        _gameOverView.Construct(wallet, PetPrice);
     }
 
     private void OnEnable()
     {
         _continue.Click += OnContinue;
         _restart.Click += OnRestart;
-        ValidateCurrencyCount();
     }
 
     private void OnDisable()
@@ -55,21 +60,8 @@ public class GameOverDialog : Dialog
 
     private void OnContinue(PointerEventData data)
     {
+        _wallet.TrySpend(CurrencyType.Coins, PetPrice);
+        GameWasContinue?.Invoke();
         Hide();
-    }
-
-    private void SetCanvasGroupValues(CanvasGroup canvasGroup, float alphaValue, bool interactable, bool blockRaycast)
-    {
-        canvasGroup.alpha = alphaValue;
-        canvasGroup.interactable = interactable;
-        canvasGroup.blocksRaycasts = blockRaycast;
-    }
-
-    private void ValidateCurrencyCount()
-    {
-        if (_wallet.GetAmount(CurrencyType.Coins) < PetPrice)
-            SetCanvasGroupValues(_continueCanvasGroup, .5f, false, false);
-        else
-            SetCanvasGroupValues(_continueCanvasGroup, 1f, true, true);
     }
 }

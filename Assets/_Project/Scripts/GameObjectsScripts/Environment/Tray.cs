@@ -17,6 +17,7 @@ public class Tray : ISavedProgress, IInitializable
     {
         _timersPrincipal = timersPrincipal;
         _saveLoadService = saveLoadService;
+        
     }
 
     public void LoadProgress(PlayerProgress playerProgress)

@@ -11,6 +11,7 @@ namespace GameObjectsScripts.Timers
         public TimerType TimerType => _type;
         public float Decrease => _decrease;
         public bool AwakeStart => _awakeStart;
+        public bool BasicTimer => _basicTimer;
 
         public event Action<float> UpdateTimerView;
         public event Action<Timer> EndTimer;
@@ -32,6 +33,7 @@ namespace GameObjectsScripts.Timers
         private bool _awakeStart;
         private float _saveStateInterval;
         private TimerState _timerState;
+        private bool _basicTimer;
 
         public Timer(SoTimer soTimer, ITimerRevert timerRevert)
         {
@@ -41,6 +43,7 @@ namespace GameObjectsScripts.Timers
             _type = soTimer.Type;
             _awakeStart = soTimer.AwakeStart;
             _timerRevert = timerRevert;
+            _basicTimer = soTimer.BasicTimer;
         }
 
         public void Initialize()
@@ -152,7 +155,7 @@ namespace GameObjectsScripts.Timers
             _updateTime = timerData.UpdateTime;
             _indicatorValue = timerData.IndicatorValue;
             _active = timerData.Active;
-            _awakeStart = timerData.CanStart;
+            _awakeStart = timerData.AwakeStart;
 
             UpdateTimerView?.Invoke(_indicatorValue);
         }
@@ -174,7 +177,7 @@ namespace GameObjectsScripts.Timers
                 UpdateTime = _updateTime,
                 IndicatorValue = _indicatorValue,
                 Active = _active,
-                CanStart = _awakeStart,
+                AwakeStart = _awakeStart,
                 State = _timerState,
             };
         }

@@ -19,3 +19,4 @@ MonoBehaviour:
   _timerColor: {r: 0.5849056, g: 0.21463116, b: 0, a: 1}
   _moodDecrease: 0.25
   _awakeStart: 1
+  _basicTimer: 1

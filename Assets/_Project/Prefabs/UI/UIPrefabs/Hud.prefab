@@ -1268,6 +1268,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2155691445950082052}
     m_Modifications:
+    - target: {fileID: 4289754841459049208, guid: 72b0e2d0ecfac604492a22c94114275f,
+        type: 3}
+      propertyPath: m_text
+      value: Menu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289754841459049208, guid: 72b0e2d0ecfac604492a22c94114275f,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289754841459049208, guid: 72b0e2d0ecfac604492a22c94114275f,
+        type: 3}
+      propertyPath: m_isRichText
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289754841459049208, guid: 72b0e2d0ecfac604492a22c94114275f,
+        type: 3}
+      propertyPath: m_fontSizeBase
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289754841459049208, guid: 72b0e2d0ecfac604492a22c94114275f,
+        type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5066013084674410931, guid: 72b0e2d0ecfac604492a22c94114275f,
         type: 3}
       propertyPath: m_Pivot.x

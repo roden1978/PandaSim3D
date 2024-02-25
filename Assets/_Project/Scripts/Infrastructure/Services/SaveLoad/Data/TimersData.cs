@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Serializable]
 public class TimersData
@@ -15,5 +16,10 @@ public class TimersData
     public void Clear()
     {
         Timers.Clear();
+    }
+
+    public TimerData GetTimerDataByTimerType(TimerType type)
+    {
+        return Timers.FirstOrDefault(x => x.Type == type);
     }
 }

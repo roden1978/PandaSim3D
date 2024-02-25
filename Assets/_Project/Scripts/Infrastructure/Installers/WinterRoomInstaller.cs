@@ -1,5 +1,4 @@
 ﻿using System;
-using GameObjectsScripts;
 using Infrastructure.AssetManagement;
 using PlayerScripts;
 using Services.SaveLoad.PlayerProgress;
@@ -19,23 +18,25 @@ public class WinterRoomInstaller : MonoInstaller
 
     private Transform _guiHolderTransform;
     private Transform _hudTransform;
+    private IWalletService _wallet;
 
     [Inject]
     public void Construct(PrefabsStorage prefabsStorage, ISaveLoadStorage saveLoadStorage,
-        IStaticDataService staticDataService, IPersistentProgress persistentProgress)
+        IStaticDataService staticDataService, IPersistentProgress persistentProgress, IWalletService wallet)
     {
         _prefabsStorage = prefabsStorage;
         _saveLoadStorage = saveLoadStorage;
         _staticDataService = staticDataService;
         _persistenceProgress = persistentProgress;
+        _wallet = wallet;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.WinterRoomSceneName.ToString());
         _saveLoadStorage.ClearAll();
-        //_saveLoadStorage.ClearGameObjectsType();
     }
 
     public override void InstallBindings()
     {
+        RegisterWallet();
         BindGuiHolder();
         BindDialogManager();
         BindHud();
@@ -46,10 +47,14 @@ public class WinterRoomInstaller : MonoInstaller
         BindShop();
         BindSnowman();
         BindTray();
-        //Bind player in the end
         BindPlayer();
         BindMenuDialog();
         BindGameOverDialog();
+    }
+    
+    private void RegisterWallet()
+    {
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_wallet);
     }
 
     private void BindMenuDialog()

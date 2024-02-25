@@ -17,22 +17,26 @@ public class RoomInstaller : MonoInstaller
 
     private Transform _guiHolderTransform;
     private Transform _hudTransform;
+    private IWalletService _wallet;
 
     [Inject]
     public void Construct(PrefabsStorage prefabsStorage, ISaveLoadStorage saveLoadStorage,
-        IStaticDataService staticDataService, IPersistentProgress persistentProgress)
+        IStaticDataService staticDataService, IPersistentProgress persistentProgress, IWalletService wallet)
     {
         _prefabsStorage = prefabsStorage;
         _saveLoadStorage = saveLoadStorage;
         _staticDataService = staticDataService;
         _persistenceProgress = persistentProgress;
+        _wallet = wallet;
 
         _levelStaticData = _staticDataService.GetLevelStaticData(AssetPaths.RoomSceneName.ToString());
         _saveLoadStorage.ClearAll();
     }
 
+
     public override void InstallBindings()
     {
+        RegisterWallet();
         BindGuiHolder();
         BindDialogManager();
         BindHud();
@@ -54,6 +58,11 @@ public class RoomInstaller : MonoInstaller
         BindCarpet();
         BindMenuDialog();
         BindGameOverDialog();
+    }
+    
+    private void RegisterWallet()
+    {
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_wallet);
     }
 
     private void BindGuiHolder()

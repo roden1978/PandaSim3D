@@ -9,6 +9,7 @@ public class PlayerState
     public string PetName;
     public PlayerDecor PlayerDecor;
     public bool Sleep;
+    public bool GameOver;
 
     public PlayerState()
     {
@@ -16,6 +17,7 @@ public class PlayerState
         PetName = string.Empty;
         PlayerDecor = new PlayerDecor(ItemType.None, new Vector3Data());
         Sleep = false;
+        GameOver = false;
     }
 }
 

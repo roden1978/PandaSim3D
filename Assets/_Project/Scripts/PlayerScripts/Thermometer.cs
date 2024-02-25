@@ -1,4 +1,5 @@
 ﻿using System;
+using GameObjectsScripts.Timers;
 using Infrastructure;
 using Infrastructure.AssetManagement;
 using Services.SaveLoad.PlayerProgress;
@@ -11,17 +12,20 @@ namespace PlayerScripts
     public class Thermometer : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private HatHolder _hatHolder;
-        private TimersPrincipal _timerPrincipal;
         private string _roomName;
         private ISaveLoadStorage _saveLoadStorage;
         private ISceneLoader _sceneLoader;
+        private Timer _timer;
+        private TimersPrincipal _timersPrincipal;
 
         [Inject]
-        public void Construct(TimersPrincipal timersPrincipal, ISaveLoadStorage saveLoadStorage, ISceneLoader sceneLoader)
+        public void Construct(TimersPrincipal timersPrincipal, ISaveLoadStorage saveLoadStorage,
+            ISceneLoader sceneLoader)
         {
-            _timerPrincipal = timersPrincipal;
             _saveLoadStorage = saveLoadStorage;
             _sceneLoader = sceneLoader;
+            _timersPrincipal = timersPrincipal;
+            _timer = timersPrincipal.GetTimerByType(TimerType.Thermo);
             _hatHolder.HasHat += OnHasHat;
             _saveLoadStorage.RegisterInSaveLoadRepositories(gameObject);
         }
@@ -38,6 +42,7 @@ namespace PlayerScripts
 
         private void UpdateThermometerState(bool value)
         {
+            _timer ??= _timersPrincipal.GetTimerByType(TimerType.Thermo);
             RoomsType type = Enum.Parse<RoomsType>(_roomName);
             switch (type)
             {
@@ -45,9 +50,7 @@ namespace PlayerScripts
                     if (value)
                         RestartTimer();
                     else
-                    {
                         StopTimer();
-                    }
 
                     break;
                 case AssetPaths.WinterRoomSceneName:
@@ -69,13 +72,13 @@ namespace PlayerScripts
 
         private void RestartTimer()
         {
-            _timerPrincipal.ReStartTimerByType(TimerType.Thermo);
+            _timer.Restart();
         }
 
         private void StopTimer()
         {
-            _timerPrincipal.StopTimerByType(TimerType.Thermo);
-            _timerPrincipal.ResetTimerByType(TimerType.Thermo);
+            _timer.Stop();
+            _timer.Reset();
         }
 
         private void BackToRoom()
@@ -90,8 +93,9 @@ namespace PlayerScripts
 
         public void LoadProgress(PlayerProgress playerProgress)
         {
-            if (false == playerProgress.PlayerState.FirstStartGame)
-                UpdateThermometerState(_hatHolder.ItemType != ItemType.None);
+            if (playerProgress.PlayerState.FirstStartGame) return;
+
+            UpdateThermometerState(_hatHolder.ItemType != ItemType.None);
         }
 
         public void SaveProgress(PlayerProgress playerProgress)
