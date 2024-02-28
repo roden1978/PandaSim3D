@@ -13,17 +13,17 @@ public class GameOverTimerObserver
 
     public void Initialize()
     {
-        _timer.EndTimer += OnEndTimer;
+        _timer.StopCountdownTimer += OnStopCountdownTimer;
     }
 
-    private void OnEndTimer(Timer obj)
+    private void OnStopCountdownTimer(Timer obj)
     {
         EndGameOverTimer?.Invoke();
     }
 
     public void Dispose()
     {
-        _timer.EndTimer -= OnEndTimer;
+        _timer.StopCountdownTimer -= OnStopCountdownTimer;
     }
 
     public void StartGameOverTimer()

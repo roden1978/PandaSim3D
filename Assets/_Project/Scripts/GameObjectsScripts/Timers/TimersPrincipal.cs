@@ -157,6 +157,22 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             timer.Start();
     }
 
+    public void SetActiveTimersBySleepPlayerState(bool value)
+    {
+        foreach (Timer timer in _timerSet.Where(x => x.BasicTimer & x.CurrentTime > 0))
+        {
+            if(value)
+                timer.Start();
+            else
+                timer.Stop();
+        }
+        
+        if(value & _moodIndicator.MoodIndicatorValue <= 0)
+            _gameOverTimerObserver.StartGameOverTimer();
+        else
+            _gameOverTimerObserver.StopGameOverTimer();
+    }
+
     private void Update()
     {
         foreach (Timer timer in _timerSet)

@@ -60,7 +60,9 @@ public class GameOverDialog : Dialog
 
     private void OnContinue(PointerEventData data)
     {
+#if UNITY_EDITOR == false
         _wallet.TrySpend(CurrencyType.Coins, PetPrice);
+#endif
         GameWasContinue?.Invoke();
         Hide();
     }

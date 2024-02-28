@@ -30,10 +30,10 @@ namespace PlayerScripts
             _saveLoadService = saveLoadService;
             _timersPrincipal = timersPrincipal;
             _timer = timersPrincipal.GetTimerByType(TimerType.Carrot);
-            _timer.EndTimer += OnEndCarrotTimer;
+            _timer.StopCountdownTimer += OnStopCountdownCarrotTimer;
         }
 
-        private void OnEndCarrotTimer(Timer obj)
+        private void OnStopCountdownCarrotTimer(Timer obj)
         {
             _stuff.LastStack.UnStack();
             UnStack();
@@ -133,7 +133,7 @@ namespace PlayerScripts
 
         private void OnDestroy()
         {
-            _timer.EndTimer -= OnEndCarrotTimer;
+            _timer.StopCountdownTimer -= OnStopCountdownCarrotTimer;
         }
     }
 }

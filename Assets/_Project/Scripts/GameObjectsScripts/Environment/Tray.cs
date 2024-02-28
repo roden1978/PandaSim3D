@@ -48,7 +48,7 @@ public class Tray : ISavedProgress, IInitializable
     public void Initialize()
     {
         _timer = _timersPrincipal.GetTimerByType(TimerType.Poop);
-        _timer.EndTimer += OnEndTimer;
+        _timer.StopCountdownTimer += OnStopCountdownTimer;
         _timer.RestartTimer += OnRestartTimer;
     }
 
@@ -58,7 +58,7 @@ public class Tray : ISavedProgress, IInitializable
         _saveLoadService.SaveProgress();
     }
 
-    private void OnEndTimer(Timer timer)
+    private void OnStopCountdownTimer(Timer timer)
     {
         FillTray(true);
         _saveLoadService.SaveProgress();
@@ -66,7 +66,7 @@ public class Tray : ISavedProgress, IInitializable
 
     public void Dispose()
     {
-        _timer.EndTimer -= OnEndTimer;
+        _timer.StopCountdownTimer -= OnStopCountdownTimer;
         _timer.RestartTimer -= OnRestartTimer;
     }
 

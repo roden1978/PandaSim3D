@@ -249,6 +249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5fb1f74f982ef42be19ec55c63aeb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerSleepPoint: {fileID: 3453532017800130394}
 --- !u!65 &3425060206406744452
 BoxCollider:
   m_ObjectHideFlags: 0

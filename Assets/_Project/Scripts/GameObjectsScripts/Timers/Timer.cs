@@ -12,11 +12,13 @@ namespace GameObjectsScripts.Timers
         public float Decrease => _decrease;
         public bool AwakeStart => _awakeStart;
         public bool BasicTimer => _basicTimer;
+        public float CurrentTime => _currentTime;
 
         public event Action<float> UpdateTimerView;
-        public event Action<Timer> EndTimer;
+        public event Action<Timer> StopCountdownTimer;
         public event Action<float> RestartTimer;
         public event Action UpdateGameState;
+        public event Action StopRevertTimer;
 
         private readonly ITimerRevert _timerRevert;
         private readonly float _decrease;
@@ -28,7 +30,7 @@ namespace GameObjectsScripts.Timers
         private float _startTime;
         private float _endTime;
         private float _indicatorValue;
-        private bool _increaseTimer;
+        private bool _revertTimer;
         private float _reward;
         private bool _awakeStart;
         private float _saveStateInterval;
@@ -77,7 +79,7 @@ namespace GameObjectsScripts.Timers
             {
                 Stop();
                 UpdateTimerView?.Invoke(Single.Epsilon);
-                EndTimer?.Invoke(this);
+                StopCountdownTimer?.Invoke(this);
             }
 
             _indicatorValue = _currentTime / _duration;
@@ -122,7 +124,7 @@ namespace GameObjectsScripts.Timers
 
         private void RevertTimer()
         {
-            if (false == _increaseTimer) return;
+            if (false == _revertTimer) return;
 
             _indicatorValue += _timerRevert.GetValue();
 
@@ -132,6 +134,7 @@ namespace GameObjectsScripts.Timers
             }
             else
             {
+                StopRevertTimer?.Invoke();
                 Restart();
                 RevertSetActive(false);
             }
@@ -142,7 +145,7 @@ namespace GameObjectsScripts.Timers
 
         public void RevertSetActive(bool value)
         {
-            _increaseTimer = value;
+            _revertTimer = value;
             _timerState = value ? TimerState.Revert : TimerState.Countdown;
         }
 

@@ -7,6 +7,7 @@ using Zenject;
 public class MoodIndicator : ISavedProgress, IInitializable
 {
     public event Action<float> UpdateIndicatorValue;
+    public float MoodIndicatorValue => _indicatorValue;
     private readonly TimerSet _timers;
     private readonly ISaveLoadService _saveLoadService;
     private float _indicatorValue = 1;
@@ -21,7 +22,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
     {
         foreach (Timer timer in _timers)
         {
-            timer.EndTimer += OnEndAnyTimer;
+            timer.StopCountdownTimer += OnStopCountdownAnyTimer;
             timer.RestartTimer += OnRestartAnyTimer;
         }
     }
@@ -31,7 +32,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
         RevertIndicatorValue(reward);
     }
 
-    private void OnEndAnyTimer(Timer timer)
+    private void OnStopCountdownAnyTimer(Timer timer)
     {
         DecreaseIndicatorValue(timer);
     }
@@ -72,7 +73,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
     {
         foreach (Timer timer in _timers)
         {
-            timer.EndTimer -= OnEndAnyTimer;
+            timer.StopCountdownTimer -= OnStopCountdownAnyTimer;
             timer.RestartTimer -= OnRestartAnyTimer;
         }
     }
