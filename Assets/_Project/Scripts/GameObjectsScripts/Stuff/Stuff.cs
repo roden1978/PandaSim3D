@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using PlayerScripts;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,7 +12,6 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     [SerializeField] private Item _item;
     public Item Item => _item;
     public IStack LastStack => _lastStack;
-
     public Vector3 StartPosition
     {
         get => _startPosition;
@@ -31,10 +27,12 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     private bool _isCanDrag;
 
     private IStack[] _stacks;
+    private IPositionAdapter _positionAdapter;
 
-    public void Construct(IStack lastStack)
+    public void Construct(IStack lastStack, IPositionAdapter positionAdapter)
     {
         _lastStack = lastStack;
+        _positionAdapter = positionAdapter;
     }
 
     private void Start()
@@ -71,7 +69,7 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     public void OnDrag(PointerEventData eventData)
     {
         Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
-        float zPosition = _startPosition.z >= 0 ? -1 : _startPosition.z;
+        float zPosition = _startPosition.z >= _positionAdapter.Position.z ? _positionAdapter.Position.z - 1 : _startPosition.z;
         Vector3 currentPosition = new(Position.x, Position.y, zPosition);
         Vector3 negativeCameraPosition = -_camera.transform.forward;
         float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /

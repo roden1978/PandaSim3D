@@ -109,13 +109,30 @@ namespace PlayerScripts
             await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
             GameObject prefab = await result;
 
-            Stuff stuff = Instantiate(prefab, _anchorPoint.position, Quaternion.identity, _anchorPoint)
+            Vector3 position = _anchorPoint.position;
+            
+            Stuff stuff = Instantiate(prefab, position, Quaternion.identity, _anchorPoint)
                 .GetComponent<Stuff>();
 
-            stuff.Construct(this);
+            stuff.Construct(this, new PositionAdapter(position));
 
             _assetProvider.ReleaseAssetsByLabel(itemName);
             return stuff;
         }
+    }
+
+    public class PositionAdapter : IPositionAdapter
+    {
+        public Vector3 Position { get; set; }
+        public PositionAdapter()
+        {
+            Position = new Vector3();
+        }
+
+        public PositionAdapter(Vector3 position)
+        {
+            Position = position;
+        }
+        
     }
 }

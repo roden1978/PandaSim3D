@@ -39,6 +39,16 @@ public static class Extensions
         return new Vector3Data(vector3.x, vector3.y, vector3.z);
     }
 
+    public static QuaternionData QuaternionToQuaternionData(this Quaternion quaternion)
+    {
+        return new QuaternionData(quaternion.x, quaternion.y, quaternion.z, quaternion.w);
+    }
+
+    public static Quaternion QuaternionDataToQuaternion(this QuaternionData quaternionData)
+    {
+        return new Quaternion(quaternionData.X, quaternionData.Y, quaternionData.Z, quaternionData.W);
+    }
+
     public static int Random100()
     {
         return Random.Range(0, 101);

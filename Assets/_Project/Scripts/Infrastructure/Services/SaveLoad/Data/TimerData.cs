@@ -5,6 +5,7 @@ using UnityEngine.Serialization;
 [Serializable]
 public class TimerData
 {
+    public string Name = string.Empty;
     public TimerType Type = TimerType.None;
     public TimerState State = TimerState.Countdown;
     public float StartTimerTimeInSeconds;

@@ -40,8 +40,8 @@ namespace PlayerScripts
                 : value * Extensions.DivideBy100ToFloat(timer.PassedTime);
             timer.SetReward(rewardValue);
             timer.Stop();
-            timer.RevertSetActive(true);
-
+            timer.SetTimerState(TimerState.Revert);
+            timer.Active = true;
             Debug.Log($"Reward value {rewardValue}");
         }
     }

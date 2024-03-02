@@ -15,10 +15,12 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
     private Vector3 _playerStayPoint;
     private Player _player;
     private float _gotoSleepTimerPassedTime;
+    private ISaveLoadService _saveLoadService;
 
     [Inject]
-    public void Construct(Player player, TimersPrincipal timersPrincipal)
+    public void Construct(Player player, TimersPrincipal timersPrincipal, ISaveLoadService saveLoadService)
     {
+        _saveLoadService = saveLoadService;
         _playerPosition = player;
         _player = player;
         _playerTransform = player.transform;
@@ -26,7 +28,7 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
         _timersPrincipal = timersPrincipal;
         _timer = timersPrincipal.GetTimerByType(TimerType.Sleep);
         _timer.StopRevertTimer += OnStopRevertTimer;
-        _player.WakeUp += OnWakeUp;
+        _player.ChangePlayerState += OnChangePlayerState;
     }
 
     private void OnStopRevertTimer()
@@ -35,7 +37,7 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
         ReturnToStayPoint();
     }
 
-    private void OnWakeUp()
+    private void OnChangePlayerState(State state)
     {
         SetSleepTimerReward();
         ReturnToStayPoint();
@@ -59,7 +61,10 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
         {
             _timersPrincipal.SetActiveTimersBySleepPlayerState(false);
             _player.SetActiveTriggerCollider(false);
-            _timer.RevertSetActive(true);
+            _player.SetState(State.Sleep);
+            _timer.SetTimerState(TimerState.Revert);
+            _timer.Active = true;
+            _saveLoadService.SaveProgress();
         };
     }
 
@@ -71,13 +76,16 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
         {
             _timersPrincipal.SetActiveTimersBySleepPlayerState(true);
             _player.SetActiveTriggerCollider(true);
+            _player.SetState(State.Awake);
             _timer.Restart();
+            _timer.Active = true;
+            _saveLoadService.SaveProgress();
         };
     }
 
     private void OnDisable()
     {
-        _player.WakeUp -= OnWakeUp;
+        _player.ChangePlayerState -= OnChangePlayerState;
         _timer.StopRevertTimer -= OnStopRevertTimer;
     }
 

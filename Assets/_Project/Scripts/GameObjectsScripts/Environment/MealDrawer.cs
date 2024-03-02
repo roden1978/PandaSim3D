@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using PlayerScripts;
 using StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -31,6 +32,8 @@ public class MealDrawer : ItemDrawer, ISavedProgress, IInitializable
             ItemType = mealType;
             string mealName = Enum.GetName(typeof(ItemType), (int)mealType);
             Stuff stuff = await InstantiateItem(mealName);
+            Vector3 position = _anchorPointTransform.position;
+            stuff.Construct(this, new PositionAdapter(position));
             stuff.AddLastStack(this);
         }
     }

@@ -2,6 +2,7 @@
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Infrastructure.AssetManagement;
+using PlayerScripts;
 using StaticData;
 using UnityEngine;
 using Zenject;
@@ -59,7 +60,9 @@ public class ToysDrawer : ItemDrawer, ISavedProgress
             ItemType = ItemType.Ball;
             string itemName = Enum.GetName(typeof(ItemType), (int)ItemType.Ball);
             Stuff stuff = await InstantiateItem(itemName);
-            stuff.Position = stuff.StartPosition = _anchorPointTransform.position;
+            Vector3 position = _anchorPointTransform.position;
+            stuff.Construct(this, new PositionAdapter(position));
+            stuff.Position = stuff.StartPosition = position;
             _isFull = true;
             stuff.AddLastStack(this);
         }

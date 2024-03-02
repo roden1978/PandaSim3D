@@ -50,11 +50,12 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         string itemName = Enum.GetName(typeof(ItemType), (int)type);
 
         Stuff stuff = await InstantiateItem(itemName);
-        
-        stuff.StartPosition = AnchorPointTransform.position;
+
+        Vector3 position = AnchorPointTransform.position;
+        stuff.StartPosition = position;
         stuff.AddLastStack(this);
 
-        stuff.Construct(this);
+        stuff.Construct(this, new PositionAdapter(position));
     }
 
     protected async UniTask<Stuff> InstantiateItem(string itemName)

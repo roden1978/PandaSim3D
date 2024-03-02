@@ -296,6 +296,7 @@ MonoBehaviour:
   _menu: {fileID: 5568974556617660071}
   _petName: {fileID: 2590268873105274860}
   _currencyValueText: {fileID: 2997819428557755994}
+  _winterRoomButtonCanvasGroup: {fileID: 6736605709274807977}
 --- !u!1 &3681285851207673091
 GameObject:
   m_ObjectHideFlags: 0
@@ -948,7 +949,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8151583150168045829, guid: 72b0e2d0ecfac604492a22c94114275f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6736605709274807977}
   m_SourcePrefab: {fileID: 100100000, guid: 72b0e2d0ecfac604492a22c94114275f, type: 3}
 --- !u!114 &2479012462966886756 stripped
 MonoBehaviour:
@@ -956,7 +961,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 1514607846569999741}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7216115018398532728}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16a6701dd19f3834b99694406f45ba1d, type: 3}
@@ -968,6 +973,24 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1514607846569999741}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7216115018398532728 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8151583150168045829, guid: 72b0e2d0ecfac604492a22c94114275f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1514607846569999741}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &6736605709274807977
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7216115018398532728}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &3786360285752324199
 PrefabInstance:
   m_ObjectHideFlags: 0

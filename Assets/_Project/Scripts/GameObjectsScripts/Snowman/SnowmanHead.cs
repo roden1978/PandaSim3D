@@ -21,7 +21,6 @@ namespace PlayerScripts
         private ISaveLoadService _saveLoadService;
         private TimersPrincipal _timersPrincipal;
         private Timer _timer;
-
         [Inject]
         public void Construct(IAssetProvider assetProvider, ISaveLoadService saveLoadService,
             TimersPrincipal timersPrincipal)
@@ -122,10 +121,12 @@ namespace PlayerScripts
             await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
             GameObject prefab = await result;
 
-            Stuff stuff = Instantiate(prefab, _anchorPoint.position, Quaternion.identity,
+            Vector3 position = _anchorPoint.position;
+            
+            Stuff stuff = Instantiate(prefab, position, Quaternion.identity,
                 _anchorPoint).GetComponent<Stuff>();
 
-            stuff.Construct(this);
+            stuff.Construct(this, new PositionAdapter(position));
 
             _assetProvider.ReleaseAssetsByLabel(decorName);
             return stuff;

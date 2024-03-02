@@ -5,14 +5,14 @@ namespace GameObjectsScripts.Timers
 {
     public class Timer
     {
-        public bool Active => _active;
-        public float IndicatorValue => _indicatorValue;
-        public float PassedTime => 1 - _indicatorValue;
-        public TimerType TimerType => _type;
-        public float Decrease => _decrease;
-        public bool AwakeStart => _awakeStart;
-        public bool BasicTimer => _basicTimer;
-        public float CurrentTime => _currentTime;
+        public bool Active { get; set; }
+        public float IndicatorValue { get; private set; }
+        public float PassedTime => 1 - IndicatorValue;
+        public TimerType TimerType { get; private set; }
+        public bool AwakeStart { get; private set; }
+        public float Decrease { get; }
+        public bool BasicTimer { get; }
+        public float CurrentTime { get; private set; }
 
         public event Action<float> UpdateTimerView;
         public event Action<Timer> StopCountdownTimer;
@@ -21,31 +21,26 @@ namespace GameObjectsScripts.Timers
         public event Action StopRevertTimer;
 
         private readonly ITimerRevert _timerRevert;
-        private readonly float _decrease;
+
+        private string _name;
         private float _duration;
-        private TimerType _type;
-        private bool _active;
-        private float _currentTime;
         private float _updateTime;
         private float _startTime;
         private float _endTime;
-        private float _indicatorValue;
-        private bool _revertTimer;
         private float _reward;
-        private bool _awakeStart;
         private float _saveStateInterval;
         private TimerState _timerState;
-        private bool _basicTimer;
 
         public Timer(SoTimer soTimer, ITimerRevert timerRevert)
         {
+            _name = soTimer.Type.ToString();
             _duration = soTimer.Duration * TimeUtils.OneMinute;
-            _currentTime = _duration;
-            _decrease = soTimer.MoodDecrease;
-            _type = soTimer.Type;
-            _awakeStart = soTimer.AwakeStart;
+            CurrentTime = _duration;
             _timerRevert = timerRevert;
-            _basicTimer = soTimer.BasicTimer;
+            Decrease = soTimer.MoodDecrease;
+            TimerType = soTimer.Type;
+            AwakeStart = soTimer.AwakeStart;
+            BasicTimer = soTimer.BasicTimer;
         }
 
         public void Initialize()
@@ -55,24 +50,27 @@ namespace GameObjectsScripts.Timers
         }
 
         public void Start() =>
-            _active = true;
+            Active = true;
 
         public void Stop() =>
-            _active = false;
+            Active = false;
 
         public void Tick()
         {
-            RevertTimer();
-            CountdownTimer();
+            if (Active)
+            {
+                RevertTimer();
+                CountdownTimer();
+            }
         }
 
         private void CountdownTimer()
         {
-            if (false == _active) return;
+            if (_timerState == TimerState.Revert) return;
 
-            if (_duration > 0 && _currentTime > 0)
+            if (_duration > 0 && CurrentTime > 0)
             {
-                _currentTime -= Time.unscaledDeltaTime;
+                CurrentTime -= Time.unscaledDeltaTime;
                 _updateTime += Time.unscaledDeltaTime;
             }
             else
@@ -82,32 +80,32 @@ namespace GameObjectsScripts.Timers
                 StopCountdownTimer?.Invoke(this);
             }
 
-            _indicatorValue = _currentTime / _duration;
+            IndicatorValue = CurrentTime / _duration;
 
             if (_updateTime >= .1f)
             {
-                UpdateTimerView?.Invoke(_indicatorValue);
+                UpdateTimerView?.Invoke(IndicatorValue);
                 _updateTime = 0;
             }
-            
-            if (_type == TimerType.GameOver)
+
+            if (TimerType == TimerType.GameOver)
                 Debug.Log(
-                    $"Update timer {_type.ToString()} time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");
+                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");
         }
 
         public void Reset()
         {
-            _currentTime = _duration;
-            _indicatorValue = 1;
+            CurrentTime = _duration;
+            IndicatorValue = 1;
             _updateTime = 0;
 
-            UpdateTimerView?.Invoke(_indicatorValue);
+            UpdateTimerView?.Invoke(IndicatorValue);
         }
 
         public void Restart()
         {
-            _currentTime = _duration;
-            _indicatorValue = 1;
+            CurrentTime = _duration;
+            IndicatorValue = 1;
             _updateTime = 0;
             Start();
             RestartTimer?.Invoke(_reward);
@@ -124,43 +122,44 @@ namespace GameObjectsScripts.Timers
 
         private void RevertTimer()
         {
-            if (false == _revertTimer) return;
+            if (_timerState == TimerState.Countdown) return;
 
-            _indicatorValue += _timerRevert.GetValue();
+            IndicatorValue += _timerRevert.GetValue();
 
-            if (_indicatorValue < 1)
+            if (IndicatorValue < 1)
             {
-                UpdateTimerView?.Invoke(_indicatorValue);
+                UpdateTimerView?.Invoke(IndicatorValue);
             }
             else
             {
                 StopRevertTimer?.Invoke();
                 Restart();
-                RevertSetActive(false);
+                SetTimerState(TimerState.Countdown);
             }
 
             /*Debug.Log(
                 $"Update time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");*/
         }
 
-        public void RevertSetActive(bool value)
+        public void SetTimerState(TimerState value)
         {
-            _revertTimer = value;
-            _timerState = value ? TimerState.Revert : TimerState.Countdown;
+            _timerState = value;
         }
 
         public void UpdateTimerState(TimerData timerData)
         {
-            _type = timerData.Type;
+            _name = timerData.Name;
+            TimerType = timerData.Type;
             _startTime = timerData.StartTimerTimeInSeconds;
             _endTime = timerData.EndTimerTimeInSeconds;
-            _currentTime = timerData.CurrentTime;
+            CurrentTime = timerData.CurrentTime;
             _updateTime = timerData.UpdateTime;
-            _indicatorValue = timerData.IndicatorValue;
-            _active = timerData.Active;
-            _awakeStart = timerData.AwakeStart;
+            IndicatorValue = timerData.IndicatorValue;
+            Active = timerData.Active;
+            AwakeStart = timerData.AwakeStart;
+            _timerState = timerData.State;
 
-            UpdateTimerView?.Invoke(_indicatorValue);
+            UpdateTimerView?.Invoke(IndicatorValue);
         }
 
         public void UpdateDuration(float value)
@@ -168,19 +167,19 @@ namespace GameObjectsScripts.Timers
             _duration = value;
         }
 
-
         public TimerData SaveState()
         {
             return new TimerData()
             {
-                Type = _type,
+                Name = _name,
+                Type = TimerType,
                 StartTimerTimeInSeconds = _startTime,
                 EndTimerTimeInSeconds = _endTime,
-                CurrentTime = _currentTime,
+                CurrentTime = CurrentTime,
                 UpdateTime = _updateTime,
-                IndicatorValue = _indicatorValue,
-                Active = _active,
-                AwakeStart = _awakeStart,
+                IndicatorValue = IndicatorValue,
+                Active = Active,
+                AwakeStart = AwakeStart,
                 State = _timerState,
             };
         }

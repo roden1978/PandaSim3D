@@ -1,5 +1,6 @@
 ﻿using System;
 using Data;
+using PlayerScripts;
 
 [Serializable]
 public class PlayerState
@@ -8,16 +9,20 @@ public class PlayerState
     public bool FirstStartGame;
     public string PetName;
     public PlayerDecor PlayerDecor;
-    public bool Sleep;
+    public State State;
     public bool GameOver;
+    public Vector3Data Position;
+    public QuaternionData Rotation;
 
     public PlayerState()
     {
         FirstStartGame = true;
         PetName = string.Empty;
         PlayerDecor = new PlayerDecor(ItemType.None, new Vector3Data());
-        Sleep = false;
+        State = State.Awake;
         GameOver = false;
+        Position = new Vector3Data();
+        Rotation = new QuaternionData();
     }
 }
 
