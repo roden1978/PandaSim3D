@@ -42,12 +42,12 @@ public class WinterRoomInstaller : MonoInstaller
         BindHud();
         BindTimersPrincipal();
         BindInventory();
+        BindPlayer();
         BindBackpackDrawer();
         BindBackpackInventoryDialog();
         BindShop();
         BindSnowman();
         BindTray();
-        BindPlayer();
         BindMenuDialog();
         BindGameOverDialog();
     }

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using Infrastructure.AssetManagement;
 using Infrastructure.Services.EventBus.Signals.PlayerSignals;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -23,7 +25,8 @@ namespace PlayerScripts
             set => transform.position = value;
         }
 
-        [SerializeField] private BoxCollider _collider;
+        [SerializeField] private List<Collider> _awakeColliders;
+        [SerializeField] private List<Collider> _sleepColliders;
         private IEventBus _eventBus;
 
         [Inject]
@@ -32,9 +35,10 @@ namespace PlayerScripts
             _eventBus = eventBus;
         }
 
-        public void SetActiveTriggerCollider(bool value)
+        public void SetActiveColliders(bool value)
         {
-            _collider.isTrigger = value;
+                _awakeColliders.ForEach(x => x.isTrigger = !value);
+                _sleepColliders.ForEach(x => x.isTrigger = value);
         }
 
         public void SetState(State state)
@@ -51,7 +55,7 @@ namespace PlayerScripts
         public void LoadProgress(PlayerProgress playerProgress)
         {
             _state = playerProgress.PlayerState.State;
-            
+            SetActiveColliders(true);
             string currentSceneName = SceneManager.GetActiveScene().name;
             
             if(currentSceneName == AssetPaths.RoomSceneName.ToString())
@@ -63,9 +67,14 @@ namespace PlayerScripts
 
         public void SaveProgress(PlayerProgress playerProgress)
         {
-            playerProgress.PlayerState.State = _state;
-            playerProgress.PlayerState.Position = transform.position.Vector3ToVector3Data();
-            playerProgress.PlayerState.Rotation = transform.rotation.QuaternionToQuaternionData();
+            string currentSceneName = SceneManager.GetActiveScene().name;
+
+            if (currentSceneName == AssetPaths.RoomSceneName.ToString())
+            {
+                playerProgress.PlayerState.State = _state;
+                playerProgress.PlayerState.Position = transform.position.Vector3ToVector3Data();
+                playerProgress.PlayerState.Rotation = transform.rotation.QuaternionToQuaternionData();
+            }
         }
 
         public event Action<State> ChangePlayerState;

@@ -60,9 +60,7 @@ public class ToysDrawer : ItemDrawer, ISavedProgress
             ItemType = ItemType.Ball;
             string itemName = Enum.GetName(typeof(ItemType), (int)ItemType.Ball);
             Stuff stuff = await InstantiateItem(itemName);
-            Vector3 position = _anchorPointTransform.position;
-            stuff.Construct(this, new PositionAdapter(position));
-            stuff.Position = stuff.StartPosition = position;
+            stuff.Position = stuff.StartPosition = _anchorPointTransform.position;
             _isFull = true;
             stuff.AddLastStack(this);
         }

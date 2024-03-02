@@ -305,7 +305,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c570d870a8f0a43ae3248276eca9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collider: {fileID: 2277355213084798132}
+  _awakeColliders:
+  - {fileID: 7998879066044328631}
+  - {fileID: 8485799284871496486}
+  _sleepColliders:
+  - {fileID: 2277355213084798132}
 --- !u!65 &2277355213084798132
 BoxCollider:
   m_ObjectHideFlags: 0

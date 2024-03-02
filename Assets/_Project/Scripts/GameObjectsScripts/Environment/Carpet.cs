@@ -45,7 +45,7 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
 
     private float CalculateReward() =>
         .25f * (_gotoSleepTimerPassedTime - _timer.PassedTime);
-   
+
     private void SetSleepTimerReward() =>
         _timer.SetReward(CalculateReward());
 
@@ -56,11 +56,11 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
 
     private void GotoSleep()
     {
+        _player.SetActiveColliders(false);
         _gotoSleepTimerPassedTime = _timer.PassedTime;
         _playerTransform.DOMove(_playerSleepPoint.position, .5f).onComplete = () =>
         {
             _timersPrincipal.SetActiveTimersBySleepPlayerState(false);
-            _player.SetActiveTriggerCollider(false);
             _player.SetState(State.Sleep);
             _timer.SetTimerState(TimerState.Revert);
             _timer.Active = true;
@@ -70,12 +70,11 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
 
     private void ReturnToStayPoint()
     {
-        _player.SetActiveTriggerCollider(true);
+        _player.SetActiveColliders(true);
 
         _playerTransform.DOMove(_playerStayPoint, .5f).onComplete = () =>
         {
             _timersPrincipal.SetActiveTimersBySleepPlayerState(true);
-            _player.SetActiveTriggerCollider(true);
             _player.SetState(State.Awake);
             _timer.Restart();
             _timer.Active = true;

@@ -52,6 +52,12 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
 
         if (hitResult)
         {
+            if (raycastHit.collider.isTrigger)
+            {
+                Position = _startPosition;
+                return;
+            }
+            
             Debug.Log($"Hit to {raycastHit.collider.gameObject.name}");
 
             _stacks = raycastHit.transform.GetComponentsInChildren<IStack>(true);
@@ -69,7 +75,7 @@ public class Stuff : MonoBehaviour, IStuff, IPositionAdapter, IRotationAdapter
     public void OnDrag(PointerEventData eventData)
     {
         Ray screenPointToRay = _camera.ScreenPointToRay(eventData.position);
-        float zPosition = _startPosition.z >= _positionAdapter.Position.z ? _positionAdapter.Position.z - 1 : _startPosition.z;
+        float zPosition = _startPosition.z >= _positionAdapter.Position.z - 1 ? _positionAdapter.Position.z - 1 : _startPosition.z;
         Vector3 currentPosition = new(Position.x, Position.y, zPosition);
         Vector3 negativeCameraPosition = -_camera.transform.forward;
         float t = Vector3.Dot(currentPosition - screenPointToRay.origin, negativeCameraPosition) /

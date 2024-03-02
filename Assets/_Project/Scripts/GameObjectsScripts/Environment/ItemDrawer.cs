@@ -26,15 +26,17 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
     private readonly Dictionary<string, Stuff> _cachedItems = new();
     private DialogManager _dialogManager;
     private IAssetProvider _assetProvider;
+    private IPositionAdapter _positionAdapter;
 
     [Inject]
     public void Contruct(DialogManager dialogManager, IAssetProvider assetProvider, IInventory inventory,
-        ISaveLoadService saveLoadService)
+        ISaveLoadService saveLoadService, Player player)
     {
         _dialogManager = dialogManager;
         _assetProvider = assetProvider;
         Inventory = inventory;
         SaveLoadService = saveLoadService;
+        _positionAdapter = player;
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -49,13 +51,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         ItemType = type;
         string itemName = Enum.GetName(typeof(ItemType), (int)type);
 
-        Stuff stuff = await InstantiateItem(itemName);
-
-        Vector3 position = AnchorPointTransform.position;
-        stuff.StartPosition = position;
-        stuff.AddLastStack(this);
-
-        stuff.Construct(this, new PositionAdapter(position));
+        await InstantiateItem(itemName);
     }
 
     protected async UniTask<Stuff> InstantiateItem(string itemName)
@@ -63,8 +59,7 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
         Stuff stuff;
         if (TryGetItemFromCache(itemName, out Stuff cached))
         {
-            stuff = Instantiate(cached, AnchorPointTransform.position, Quaternion.identity,
-                AnchorPointTransform).GetComponent<Stuff>();
+            stuff = InstantiateStuff(cached.gameObject);
         }
         else
         {
@@ -73,12 +68,21 @@ public abstract class ItemDrawer : MonoBehaviour, IPositionAdapter, IPointerClic
             await UniTask.WaitUntil(() => result.Status != UniTaskStatus.Succeeded);
             GameObject prefab = await result;
             AddToItemCache(prefab.name, prefab.GetComponent<Stuff>());
-            stuff = Instantiate(prefab, AnchorPointTransform.position, Quaternion.identity,
-                AnchorPointTransform).GetComponent<Stuff>();
+            stuff = InstantiateStuff(prefab);
         }
+        
+        stuff.Construct(this, _positionAdapter);
+        stuff.StartPosition = AnchorPointTransform.position;
+        stuff.AddLastStack(this);
         
         _assetProvider.ReleaseAssetsByLabel(itemName);
         return stuff;
+    }
+
+    private Stuff InstantiateStuff(GameObject prefab)
+    {
+        return Instantiate(prefab, AnchorPointTransform.position, Quaternion.identity,
+            AnchorPointTransform).GetComponent<Stuff>();
     }
 
     private bool AddToItemCache(string itemName, Stuff item)

@@ -36,8 +36,6 @@ public class ClothsDrawer : ItemDrawer, ISavedProgress
                 ItemType = clothsType;
                 string clothName = Enum.GetName(typeof(ItemType), (int)clothsType);
                 Stuff stuff = await InstantiateItem(clothName);
-                Vector3 position = _anchorPointTransform.position;
-                stuff.Construct(this, new PositionAdapter(position));
                 stuff.AddLastStack(this);
             }
         }
