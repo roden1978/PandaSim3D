@@ -28,6 +28,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private int _currentGameStateValue;
     private DialogManager _dialogManager;
     private GameOverTimerObserver _gameOverTimerObserver;
+    private SaveGameTimerObserver _saveGameTimerObserver;
     private IPersistentProgress _persistentProgress;
     private GameOverDialog _gameOverDialog;
     
@@ -57,9 +58,17 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
                 }
             );
 
-            if (soTimer.Type == TimerType.GameOver)
+            switch (soTimer.Type)
             {
-                _gameOverTimerObserver = new GameOverTimerObserver(timer);
+                case TimerType.GameOver:
+                    _gameOverTimerObserver = new GameOverTimerObserver(timer);
+                    break;
+                case TimerType.Save:
+                    _saveGameTimerObserver = new SaveGameTimerObserver(timer, saveLoadService);
+                    break;
+                default:
+                    Debug.Log($"Timer name: {soTimer.Type}");
+                    break;
             }
         }
 
@@ -74,6 +83,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         _gameOverTimerObserver.EndGameOverTimer += OnEndGameOverTimer;
         _moodIndicator.Initialize();
         _gameOverTimerObserver.Initialize();
+        _saveGameTimerObserver.Initialize();
     }
 
     private void OnMoodIndicatorUpdateValue(float value)
@@ -186,6 +196,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
         if (_gameOverDialog is not null)
             _gameOverDialog.GameWasContinue -= OnGameWasContinue;
+        
+        _saveGameTimerObserver.Dispose();
     }
 
     public Timer GetTimerByType(TimerType type) =>

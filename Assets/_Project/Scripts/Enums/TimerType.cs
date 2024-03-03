@@ -11,4 +11,5 @@
     GameOver = 8,
     Hot = 9,
     Thermo = 10,
+    Save = 11,
 }
