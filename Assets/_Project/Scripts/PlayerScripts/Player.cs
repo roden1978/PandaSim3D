@@ -12,7 +12,8 @@ namespace PlayerScripts
 {
     public class Player : MonoBehaviour, IPositionAdapter, IRotationAdapter, IPointerClickHandler, ISavedProgress
     {
-       private State _state;
+        private State _state;
+
         public Quaternion Rotation
         {
             get => transform.rotation;
@@ -37,8 +38,8 @@ namespace PlayerScripts
 
         public void SetActiveColliders(bool value)
         {
-                _awakeColliders.ForEach(x => x.isTrigger = !value);
-                _sleepColliders.ForEach(x => x.isTrigger = value);
+            _awakeColliders.ForEach(x => x.isTrigger = !value);
+            _sleepColliders.ForEach(x => x.isTrigger = value);
         }
 
         public void SetState(State state)
@@ -55,10 +56,12 @@ namespace PlayerScripts
         public void LoadProgress(PlayerProgress playerProgress)
         {
             _state = playerProgress.PlayerState.State;
-            SetActiveColliders(true);
-            string currentSceneName = SceneManager.GetActiveScene().name;
             
-            if(currentSceneName == AssetPaths.RoomSceneName.ToString())
+            SetActiveColliders(_state == State.Awake);
+
+            string currentSceneName = SceneManager.GetActiveScene().name;
+
+            if (currentSceneName == AssetPaths.RoomSceneName.ToString())
             {
                 Position = playerProgress.PlayerState.Position.Vector3DataToVector3();
                 Rotation = playerProgress.PlayerState.Rotation.QuaternionDataToQuaternion();

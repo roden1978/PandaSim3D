@@ -88,25 +88,33 @@ namespace GameObjectsScripts.Timers
                 _updateTime = 0;
             }
 
-            if (TimerType == TimerType.GameOver)
+            /*if (TimerType == TimerType.Sleep)
                 Debug.Log(
-                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");
+                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");*/
         }
 
         public void Reset()
         {
-            CurrentTime = _duration;
-            IndicatorValue = 1;
-            _updateTime = 0;
-
+            ResetTimerData();
             UpdateTimerView?.Invoke(IndicatorValue);
         }
 
-        public void Restart()
+        private void ResetTimerData()
         {
             CurrentTime = _duration;
             IndicatorValue = 1;
             _updateTime = 0;
+        }
+
+        public void Restart()
+        {
+            ResetTimerData();
+            Start();
+            RestartTimer?.Invoke(_reward);
+        }
+        
+        public void RestartWithOutReset()
+        {
             Start();
             RestartTimer?.Invoke(_reward);
         }
@@ -137,8 +145,14 @@ namespace GameObjectsScripts.Timers
                 SetTimerState(TimerState.Countdown);
             }
 
-            /*Debug.Log(
-                $"Update time {_updateTime} current time {_currentTime} indicator value {_indicatorValue} duration {_duration}");*/
+            /*if (TimerType == TimerType.Sleep)
+                Debug.Log(
+                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");*/
+        }
+
+        public void RestoreCurrentTime()
+        {
+            CurrentTime = IndicatorValue * _duration;
         }
 
         public void SetTimerState(TimerState value)

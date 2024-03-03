@@ -71,12 +71,14 @@ public class Carpet : MonoBehaviour, IPositionAdapter, IPointerClickHandler
     private void ReturnToStayPoint()
     {
         _player.SetActiveColliders(true);
-
+        
         _playerTransform.DOMove(_playerStayPoint, .5f).onComplete = () =>
         {
             _timersPrincipal.SetActiveTimersBySleepPlayerState(true);
             _player.SetState(State.Awake);
-            _timer.Restart();
+            _timer.SetTimerState(TimerState.Countdown);
+            _timer.RestoreCurrentTime();
+            _timer.RestartWithOutReset();
             _timer.Active = true;
             _saveLoadService.SaveProgress();
         };
