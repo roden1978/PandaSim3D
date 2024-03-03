@@ -9,19 +9,19 @@ namespace PlayerScripts
     {
         private Stuff _stuff;
         private TimersPrincipal _timerPrincipal;
+        private Timer _timer;
 
         [Inject]
         public void Construct(TimersPrincipal timersPrincipal)
         {
             _timerPrincipal = timersPrincipal;
+            _timer = _timerPrincipal.GetTimerByType(TimerType.Fun);
         }
 
         public void Stack(Stuff stuff)
         {
             if (stuff.Item.StuffSpecies == StuffSpecies.Toys)
-            {
-                Reward(stuff);
-            }
+                Reward();
 
             stuff.Position = stuff.StartPosition;
         }
@@ -30,18 +30,17 @@ namespace PlayerScripts
         {
         }
 
-        private void Reward(Stuff stuff)
+        private void Reward()
         {
-            Timer timer = _timerPrincipal.GetTimerByType(TimerType.Fun);
-            
-            float value = Extensions.DivideBy100ToFloat(stuff.Item.Price);
-            float rewardValue = timer.IndicatorValue <= 0
-                ? value * .1f
-                : value * Extensions.DivideBy100ToFloat(timer.PassedTime);
-            timer.SetReward(rewardValue);
-            timer.Stop();
-            timer.SetTimerState(TimerState.Revert);
-            timer.Active = true;
+            float value = _timer.Decrease;
+            float rewardValue = _timer.IndicatorValue <= 0
+                ? value * value
+                : value * _timer.IndicatorValue;
+
+            _timer.SetReward(value * _timer.IndicatorValue);
+            _timer.Stop();
+            _timer.SetTimerState(TimerState.Revert);
+            _timer.Active = true;
             Debug.Log($"Reward value {rewardValue}");
         }
     }

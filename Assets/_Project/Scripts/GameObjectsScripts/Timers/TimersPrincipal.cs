@@ -191,6 +191,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     private void OnDisable()
     {
+        _moodIndicator.UpdateIndicatorValue -= OnMoodIndicatorUpdateValue;
         _gameOverTimerObserver.Dispose();
         _gameOverTimerObserver.EndGameOverTimer -= OnEndGameOverTimer;
 
