@@ -33,7 +33,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void OnUpdateMoodTimer(float value)
     {
-        if (value <= 0) _indicatorValue = 0;
+        //if (value <= 0) _indicatorValue = 0;
         _indicatorValue = value;
         UpdateIndicatorViewValue();
     }

@@ -148,6 +148,8 @@ namespace GameObjectsScripts.Timers
         private void RevertTimer()
         {
             if (_timerState == TimerState.Countdown) return;
+            //TODO: Not good!!!!
+            if (TimerType == TimerType.Mood) return;
 
             IndicatorValue += _timerRevert.GetValue();
 
@@ -174,6 +176,7 @@ namespace GameObjectsScripts.Timers
 
         public void SetTimerState(TimerState value)
         {
+            Debug.Log($"Set timer state {value.ToString()}");
             _timerState = value;
         }
 

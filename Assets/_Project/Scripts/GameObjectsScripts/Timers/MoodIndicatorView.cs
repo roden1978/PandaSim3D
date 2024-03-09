@@ -27,7 +27,7 @@ public class MoodIndicatorView : MonoBehaviour
 
     private void OnUpdateIndicatorView(float value)
     {
-        Debug.Log($"Update mood indicator value {value}");
+        Debug.Log($"Update timer indicator value {value}");
         _indicator.value = value;
         SetColour(value);
     }

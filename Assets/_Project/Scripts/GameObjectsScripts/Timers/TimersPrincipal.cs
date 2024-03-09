@@ -88,7 +88,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     private void OnMoodIndicatorUpdateValue(float value)
     {
-        Debug.Log($"<color=green>Mood indicator value changed: {value} game over timer started: {_isGameOverTimerStarted}</color>");
+        //Debug.Log($"<color=green>Mood indicator value changed: {value} game over timer started: {_isGameOverTimerStarted}</color>");
         
         switch (value)
         {
