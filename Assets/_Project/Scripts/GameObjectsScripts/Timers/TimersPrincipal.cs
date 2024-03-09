@@ -95,12 +95,10 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             case <= 0 when false == _isGameOverTimerStarted:
                 _gameOverTimerObserver.StartGameOverTimer();
                 _isGameOverTimerStarted = true;
-                //SetGameOverTimerAwakeStart(true);
                 break;
             case > 0 when _isGameOverTimerStarted:
                 _gameOverTimerObserver.StopGameOverTimer();
                 _isGameOverTimerStarted = false;
-                //SetGameOverTimerAwakeStart(false);
                 break;
         }
     }
@@ -129,7 +127,6 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private void OnGameWasContinue()
     {
         SetGameOverValue(false);
-        //SetGameOverTimerAwakeStart(false);
         ResetGameOverTimer();
         MoodIndicatorReset();
         RestartBasicTimers();
@@ -159,12 +156,6 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             _gameOverDialog.GameWasContinue -= OnGameWasContinue;
         SaveProgress();
     }
-
-    /*private void SetGameOverTimerAwakeStart(bool value)
-    {
-        _persistentProgress.PlayerProgress.TimersData.GetTimerDataByTimerType(TimerType.GameOver).AwakeStart = value;
-    }*/
-
     private void SaveProgress()
     {
         _saveLoadService.SaveProgress();
@@ -178,7 +169,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     public void SetActiveTimersBySleepPlayerState(bool value)
     {
-        foreach (Timer timer in _timerSet.Where(x => x.HasRole(TimerRoles.StopToSleep)))
+        foreach (Timer timer in _timerSet.Where(x => x.IndicatorValue > 0 & x.HasRole(TimerRoles.StopToSleep)))
         {
             if(value)
                 timer.Start();

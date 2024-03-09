@@ -12,7 +12,8 @@ namespace GameObjectsScripts.Timers
         public float PassedTime => 1 - IndicatorValue;
         public TimerType TimerType { get; private set; }
         public float Decrease { get; }
-        public float CurrentTime { get; private set; }
+        
+        private float _currentTime;
         public  IReadOnlyList <TimerRoles> TimerRolesList => _roles;
 
         public event Action<float> UpdateTimerView;
@@ -36,7 +37,7 @@ namespace GameObjectsScripts.Timers
         {
             _name = soTimer.Type.ToString();
             _duration = soTimer.Duration * TimeUtils.OneMinute;
-            CurrentTime = _duration;
+            _currentTime = _duration;
             _timerRevert = timerRevert;
             Decrease = soTimer.MoodDecrease;
             TimerType = soTimer.Type;
@@ -73,19 +74,20 @@ namespace GameObjectsScripts.Timers
         {
             if (_timerState == TimerState.Revert) return;
 
-            if (_duration > 0 && CurrentTime > 0)
+            if (_duration > 0 && _currentTime > 0)
             {
-                CurrentTime -= Time.unscaledDeltaTime;
+                _currentTime -= Time.unscaledDeltaTime;
                 _updateTime += Time.unscaledDeltaTime;
             }
             else
             {
+                ResetTimerDataByStop();
                 Stop();
                 UpdateTimerView?.Invoke(0);
                 StopCountdownTimer?.Invoke(this);
             }
 
-            IndicatorValue = CurrentTime / _duration;
+            IndicatorValue = _currentTime / _duration;
 
             if (_updateTime >= .1f)
             {
@@ -93,12 +95,12 @@ namespace GameObjectsScripts.Timers
                 _updateTime = 0;
             }
 
-            if (TimerType == TimerType.Mood)
+            /*if (TimerType == TimerType.Mood)
                 Debug.Log(
                     $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");
             if (TimerType == TimerType.GameOver)
                 Debug.Log(
-                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");
+                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");*/
         }
 
         public void Reset()
@@ -107,9 +109,16 @@ namespace GameObjectsScripts.Timers
             UpdateTimerView?.Invoke(IndicatorValue);
         }
 
+        private void ResetTimerDataByStop()
+        {
+            _currentTime = 0;
+            IndicatorValue = 0;
+            _updateTime = 0;
+        }
+
         private void ResetTimerData()
         {
-            CurrentTime = _duration;
+            _currentTime = _duration;
             IndicatorValue = 1;
             _updateTime = 0;
         }
@@ -160,7 +169,7 @@ namespace GameObjectsScripts.Timers
 
         public void RestoreCurrentTime()
         {
-            CurrentTime = IndicatorValue * _duration;
+            _currentTime = IndicatorValue * _duration;
         }
 
         public void SetTimerState(TimerState value)
@@ -174,7 +183,7 @@ namespace GameObjectsScripts.Timers
             TimerType = timerData.Type;
             _startTime = timerData.StartTimerTimeInSeconds;
             _endTime = timerData.EndTimerTimeInSeconds;
-            CurrentTime = timerData.CurrentTime;
+            _currentTime = timerData.CurrentTime;
             _updateTime = timerData.UpdateTime;
             IndicatorValue = timerData.IndicatorValue;
             Active = timerData.Active;
@@ -189,7 +198,7 @@ namespace GameObjectsScripts.Timers
         }
         public void UpdateCurrentTime(float indicatorValue)
         {
-            CurrentTime = indicatorValue * _duration;
+            _currentTime = indicatorValue * _duration;
         }
 
         public TimerData SaveState()
@@ -200,7 +209,7 @@ namespace GameObjectsScripts.Timers
                 Type = TimerType,
                 StartTimerTimeInSeconds = _startTime,
                 EndTimerTimeInSeconds = _endTime,
-                CurrentTime = CurrentTime,
+                CurrentTime = _currentTime,
                 UpdateTime = _updateTime,
                 IndicatorValue = IndicatorValue,
                 Active = Active,

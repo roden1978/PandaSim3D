@@ -40,9 +40,6 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void OnRestartAnyTimer(Timer timer, float reward)
     {
-        /*if (timer.TimerType == TimerType.Carrot)
-            RevertIndicatorValue(reward);*/
-        
         if (timer.HasRole(TimerRoles.Rewardable))
         {
             RevertIndicatorValue(reward);
@@ -55,18 +52,15 @@ public class MoodIndicator : ISavedProgress, IInitializable
     private void OnStopCountdownAnyTimer(Timer timer)
     {
         DecreaseIndicatorValue(timer);
-        WatchAllTimersEnd(timer);
+        WatchAllTimersEnd();
     }
 
-    private void WatchAllTimersEnd(Timer timer)
+    private void WatchAllTimersEnd()
     {
-        //if (false == timer.BasicTimer) return;
-
         int count = _timers.Count(x => x.HasRole(TimerRoles.Basic) & x.Active);
 
         if (count <= 0 & _indicatorValue > 0)
         {
-            //_moodTimer.Reset();
             _moodTimer.UpdateDuration(_indicatorValue * TimeUtils.OneMinute);
             _moodTimer.UpdateCurrentTime(_indicatorValue);
             _moodTimer.Start();
@@ -83,6 +77,8 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void DecreaseIndicatorValue(Timer timer)
     {
+        //Debug.Log($"<color=red>Decrease timer {timer.TimerType.ToString()}</color>");
+
         _indicatorValue -= timer.Decrease;
         UpdateIndicatorViewValue();
         SaveProgress();
@@ -121,16 +117,15 @@ public class MoodIndicator : ISavedProgress, IInitializable
     {
         _indicatorValue = playerProgress.TimersData.MoodIndicatorValue;
         TimerData moodTimerData = playerProgress.TimersData.GetTimerDataByTimerType(TimerType.Mood);
-        
+
         UpdateIndicatorValue?.Invoke(_indicatorValue);
 
-        if (_indicatorValue > 0 && moodTimerData is {Active: true})
+        if (_indicatorValue > 0 && moodTimerData is { Active: true })
         {
             _moodTimer.UpdateDuration(moodTimerData.IndicatorValue * TimeUtils.OneMinute);
             _moodTimer.UpdateCurrentTime(moodTimerData.IndicatorValue);
             _moodTimer.Start();
         }
-
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
