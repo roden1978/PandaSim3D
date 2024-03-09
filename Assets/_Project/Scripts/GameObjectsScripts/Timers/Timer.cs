@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GameObjectsScripts.Timers
@@ -9,15 +11,13 @@ namespace GameObjectsScripts.Timers
         public float IndicatorValue { get; private set; }
         public float PassedTime => 1 - IndicatorValue;
         public TimerType TimerType { get; private set; }
-        public bool AwakeStart { get; private set; }
         public float Decrease { get; }
-        public bool BasicTimer { get; private set; }
         public float CurrentTime { get; private set; }
+        public  IReadOnlyList <TimerRoles> TimerRolesList => _roles;
 
         public event Action<float> UpdateTimerView;
         public event Action<Timer> StopCountdownTimer;
         public event Action<Timer, float> RestartTimer;
-        public event Action UpdateGameState;
         public event Action StopRevertTimer;
 
         private readonly ITimerRevert _timerRevert;
@@ -30,6 +30,7 @@ namespace GameObjectsScripts.Timers
         private float _reward;
         private float _saveStateInterval;
         private TimerState _timerState;
+        private IReadOnlyList<TimerRoles> _roles;
 
         public Timer(SoTimer soTimer, ITimerRevert timerRevert)
         {
@@ -39,8 +40,7 @@ namespace GameObjectsScripts.Timers
             _timerRevert = timerRevert;
             Decrease = soTimer.MoodDecrease;
             TimerType = soTimer.Type;
-            AwakeStart = soTimer.AwakeStart;
-            BasicTimer = soTimer.BasicTimer;
+            _roles = soTimer.TimerRolesList.ToList();
         }
 
         public void Initialize()
@@ -178,9 +178,8 @@ namespace GameObjectsScripts.Timers
             _updateTime = timerData.UpdateTime;
             IndicatorValue = timerData.IndicatorValue;
             Active = timerData.Active;
-            AwakeStart = timerData.AwakeStart;
+            _roles = timerData.TimerRolesList;
             _timerState = timerData.State;
-            BasicTimer = timerData.BasicTimer;
             UpdateTimerView?.Invoke(IndicatorValue);
         }
 
@@ -205,10 +204,14 @@ namespace GameObjectsScripts.Timers
                 UpdateTime = _updateTime,
                 IndicatorValue = IndicatorValue,
                 Active = Active,
-                AwakeStart = AwakeStart,
                 State = _timerState,
-                BasicTimer = BasicTimer,
+                TimerRolesList = _roles.ToList(),
             };
+        }
+
+        public bool HasRole(TimerRoles role)
+        {
+            return _roles.Any(x => x == role);
         }
     }
 

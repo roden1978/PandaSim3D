@@ -95,12 +95,12 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             case <= 0 when false == _isGameOverTimerStarted:
                 _gameOverTimerObserver.StartGameOverTimer();
                 _isGameOverTimerStarted = true;
-                SetGameOverTimerAwakeStart(true);
+                //SetGameOverTimerAwakeStart(true);
                 break;
             case > 0 when _isGameOverTimerStarted:
                 _gameOverTimerObserver.StopGameOverTimer();
                 _isGameOverTimerStarted = false;
-                SetGameOverTimerAwakeStart(false);
+                //SetGameOverTimerAwakeStart(false);
                 break;
         }
     }
@@ -129,7 +129,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private void OnGameWasContinue()
     {
         SetGameOverValue(false);
-        SetGameOverTimerAwakeStart(false);
+        //SetGameOverTimerAwakeStart(false);
         ResetGameOverTimer();
         MoodIndicatorReset();
         RestartBasicTimers();
@@ -137,7 +137,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     private void RestartBasicTimers()
     {
-        foreach (Timer timer in _timerSet.Where(x => x.BasicTimer))
+        foreach (Timer timer in _timerSet.Where(x => x.HasRole(TimerRoles.Basic)))
         {
             timer.Restart();
         }
@@ -160,10 +160,10 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         SaveProgress();
     }
 
-    private void SetGameOverTimerAwakeStart(bool value)
+    /*private void SetGameOverTimerAwakeStart(bool value)
     {
         _persistentProgress.PlayerProgress.TimersData.GetTimerDataByTimerType(TimerType.GameOver).AwakeStart = value;
-    }
+    }*/
 
     private void SaveProgress()
     {
@@ -172,13 +172,13 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
     public void StartTimers()
     {
-        foreach (Timer timer in _timerSet.Where(x => x.AwakeStart))
+        foreach (Timer timer in _timerSet.Where(x => x.HasRole(TimerRoles.AwakeStart)))
             timer.Start();
     }
 
     public void SetActiveTimersBySleepPlayerState(bool value)
     {
-        foreach (Timer timer in _timerSet.Where(x => x.BasicTimer & x.CurrentTime > 0))
+        foreach (Timer timer in _timerSet.Where(x => x.HasRole(TimerRoles.StopToSleep)))
         {
             if(value)
                 timer.Start();

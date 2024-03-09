@@ -13,3 +13,12 @@
     Thermo = 10,
     Save = 11,
 }
+
+public enum TimerRoles
+{
+    None = 0,
+    Basic = 1,
+    AwakeStart = 2,
+    StopToSleep = 3,
+    Rewardable = 4,
+}

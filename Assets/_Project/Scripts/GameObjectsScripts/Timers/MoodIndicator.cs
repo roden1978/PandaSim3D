@@ -40,16 +40,15 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void OnRestartAnyTimer(Timer timer, float reward)
     {
-        if (timer.TimerType == TimerType.Carrot)
-            RevertIndicatorValue(reward);
+        /*if (timer.TimerType == TimerType.Carrot)
+            RevertIndicatorValue(reward);*/
         
-        if (false == timer.BasicTimer) return;
-
-        RevertIndicatorValue(reward);
-
-        if (_moodTimer.Active && timer.BasicTimer)
+        if (timer.HasRole(TimerRoles.Rewardable))
         {
-            _moodTimer.Stop();
+            RevertIndicatorValue(reward);
+
+            if (_moodTimer.Active)
+                _moodTimer.Stop();
         }
     }
 
@@ -61,9 +60,9 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void WatchAllTimersEnd(Timer timer)
     {
-        if (false == timer.BasicTimer) return;
+        //if (false == timer.BasicTimer) return;
 
-        int count = _timers.Count(x => x.BasicTimer & x.Active);
+        int count = _timers.Count(x => x.HasRole(TimerRoles.Basic) & x.Active);
 
         if (count <= 0 & _indicatorValue > 0)
         {

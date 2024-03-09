@@ -24,8 +24,8 @@ public class TimersData
         return Timers.FirstOrDefault(x => x.Type == type);
     }
 
-    public bool HasAnyActiveBasicTimers()
+    /*public bool HasAnyActiveBasicTimers()
     {
         return Timers.Any(x => x.Active && x.BasicTimer);
-    }
+    }*/
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameObjectsScripts.Timers;
 using UnityEngine.Serialization;
+using Timer = Unity.VisualScripting.Timer;
 
 [Serializable]
 public class TimerData
@@ -14,6 +16,5 @@ public class TimerData
     public float UpdateTime;
     public float IndicatorValue;
     public bool Active;
-    public bool AwakeStart;
-    public bool BasicTimer;
+    public List<TimerRoles> TimerRolesList;
 }
