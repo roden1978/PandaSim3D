@@ -1,4 +1,5 @@
 ﻿using GameObjectsScripts.Timers;
+using UnityEngine;
 
 public class SaveGameTimerObserver
 {
@@ -23,7 +24,8 @@ public class SaveGameTimerObserver
 
     private void OnStopTimer(Timer timer)
     {
-        _saveLoadService.SaveProgress();
         timer.Restart();
+        _saveLoadService.SaveProgress();
+        Debug.Log($"<color=blue>Save game timer was stopped</color>");
     }
 }

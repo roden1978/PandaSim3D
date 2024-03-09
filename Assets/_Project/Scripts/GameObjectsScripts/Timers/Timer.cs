@@ -11,12 +11,12 @@ namespace GameObjectsScripts.Timers
         public TimerType TimerType { get; private set; }
         public bool AwakeStart { get; private set; }
         public float Decrease { get; }
-        public bool BasicTimer { get; }
+        public bool BasicTimer { get; private set; }
         public float CurrentTime { get; private set; }
 
         public event Action<float> UpdateTimerView;
         public event Action<Timer> StopCountdownTimer;
-        public event Action<float> RestartTimer;
+        public event Action<Timer, float> RestartTimer;
         public event Action UpdateGameState;
         public event Action StopRevertTimer;
 
@@ -52,8 +52,13 @@ namespace GameObjectsScripts.Timers
         public void Start() =>
             Active = true;
 
-        public void Stop() =>
+        public void Stop()
+        {
+            if (TimerType == TimerType.Mood)
+                Debug.Log(
+                    $"Stop timer {_name}");
             Active = false;
+        }
 
         public void Tick()
         {
@@ -76,7 +81,7 @@ namespace GameObjectsScripts.Timers
             else
             {
                 Stop();
-                UpdateTimerView?.Invoke(Single.Epsilon);
+                UpdateTimerView?.Invoke(0);
                 StopCountdownTimer?.Invoke(this);
             }
 
@@ -88,9 +93,12 @@ namespace GameObjectsScripts.Timers
                 _updateTime = 0;
             }
 
-            /*if (TimerType == TimerType.Sleep)
+            if (TimerType == TimerType.Mood)
                 Debug.Log(
-                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");*/
+                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");
+            if (TimerType == TimerType.GameOver)
+                Debug.Log(
+                    $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");
         }
 
         public void Reset()
@@ -110,13 +118,13 @@ namespace GameObjectsScripts.Timers
         {
             ResetTimerData();
             Start();
-            RestartTimer?.Invoke(_reward);
+            RestartTimer?.Invoke(this, _reward);
         }
-        
+
         public void RestartWithOutReset()
         {
             Start();
-            RestartTimer?.Invoke(_reward);
+            RestartTimer?.Invoke(this, _reward);
         }
 
         public void SetReward(float value)
@@ -145,7 +153,7 @@ namespace GameObjectsScripts.Timers
                 SetTimerState(TimerState.Countdown);
             }
 
-            /*if (TimerType == TimerType.Sleep)
+            /*if (TimerType == TimerType.Mood)
                 Debug.Log(
                     $"Update timer {TimerType.ToString()} time {_updateTime} current time {CurrentTime} indicator value {IndicatorValue} duration {_duration}");*/
         }
@@ -172,13 +180,17 @@ namespace GameObjectsScripts.Timers
             Active = timerData.Active;
             AwakeStart = timerData.AwakeStart;
             _timerState = timerData.State;
-
+            BasicTimer = timerData.BasicTimer;
             UpdateTimerView?.Invoke(IndicatorValue);
         }
 
         public void UpdateDuration(float value)
         {
             _duration = value;
+        }
+        public void UpdateCurrentTime(float indicatorValue)
+        {
+            CurrentTime = indicatorValue * _duration;
         }
 
         public TimerData SaveState()
@@ -195,6 +207,7 @@ namespace GameObjectsScripts.Timers
                 Active = Active,
                 AwakeStart = AwakeStart,
                 State = _timerState,
+                BasicTimer = BasicTimer,
             };
         }
     }

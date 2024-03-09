@@ -11,7 +11,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
     private readonly TimerSet _timers;
     private readonly ISaveLoadService _saveLoadService;
     private float _indicatorValue = 1;
-    private Timer _moodTimer;
+    private readonly Timer _moodTimer;
 
     public MoodIndicator(TimerSet timers, ISaveLoadService saveLoadService)
     {
@@ -33,34 +33,43 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void OnUpdateMoodTimer(float value)
     {
+        if (value <= 0) _indicatorValue = 0;
         _indicatorValue = value;
         UpdateIndicatorViewValue();
     }
 
-    private void OnRestartAnyTimer(float reward)
+    private void OnRestartAnyTimer(Timer timer, float reward)
     {
-        RevertIndicatorValue(reward);
+        if (timer.TimerType == TimerType.Carrot)
+            RevertIndicatorValue(reward);
         
-        if(_moodTimer.Active)
+        if (false == timer.BasicTimer) return;
+
+        RevertIndicatorValue(reward);
+
+        if (_moodTimer.Active && timer.BasicTimer)
         {
             _moodTimer.Stop();
-            _moodTimer.Reset();
         }
     }
 
     private void OnStopCountdownAnyTimer(Timer timer)
     {
         DecreaseIndicatorValue(timer);
-        WatchAllTimersEnd();
+        WatchAllTimersEnd(timer);
     }
 
-    private void WatchAllTimersEnd()
+    private void WatchAllTimersEnd(Timer timer)
     {
+        if (false == timer.BasicTimer) return;
+
         int count = _timers.Count(x => x.BasicTimer & x.Active);
-        
-        if(count <= 0 & _indicatorValue > 0)
+
+        if (count <= 0 & _indicatorValue > 0)
         {
+            //_moodTimer.Reset();
             _moodTimer.UpdateDuration(_indicatorValue * TimeUtils.OneMinute);
+            _moodTimer.UpdateCurrentTime(_indicatorValue);
             _moodTimer.Start();
             _saveLoadService.SaveProgress();
         }
@@ -68,7 +77,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
     private void RevertIndicatorValue(float reward)
     {
-       _indicatorValue += reward;
+        _indicatorValue += reward;
         UpdateIndicatorViewValue();
         SaveProgress();
     }
@@ -92,10 +101,10 @@ public class MoodIndicator : ISavedProgress, IInitializable
         UpdateIndicatorViewValue();
     }
 
-    private void SaveProgress() => 
+    private void SaveProgress() =>
         _saveLoadService.SaveProgress();
 
-    private float Clamp01() => 
+    private float Clamp01() =>
         Mathf.Clamp01(_indicatorValue);
 
     public void Dispose()
@@ -105,6 +114,7 @@ public class MoodIndicator : ISavedProgress, IInitializable
             timer.StopCountdownTimer -= OnStopCountdownAnyTimer;
             timer.RestartTimer -= OnRestartAnyTimer;
         }
+
         _moodTimer.UpdateTimerView -= OnUpdateMoodTimer;
     }
 
@@ -113,12 +123,15 @@ public class MoodIndicator : ISavedProgress, IInitializable
         _indicatorValue = playerProgress.TimersData.MoodIndicatorValue;
         TimerData moodTimerData = playerProgress.TimersData.GetTimerDataByTimerType(TimerType.Mood);
         
-        if (moodTimerData is { IndicatorValue: < 1 })
+        UpdateIndicatorValue?.Invoke(_indicatorValue);
+
+        if (_indicatorValue > 0 && moodTimerData is {Active: true})
         {
             _moodTimer.UpdateDuration(moodTimerData.IndicatorValue * TimeUtils.OneMinute);
+            _moodTimer.UpdateCurrentTime(moodTimerData.IndicatorValue);
             _moodTimer.Start();
         }
-        UpdateIndicatorValue?.Invoke(_indicatorValue);
+
     }
 
     public void SaveProgress(PlayerProgress playerProgress)

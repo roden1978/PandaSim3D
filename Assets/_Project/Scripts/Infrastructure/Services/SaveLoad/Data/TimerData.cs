@@ -15,4 +15,5 @@ public class TimerData
     public float IndicatorValue;
     public bool Active;
     public bool AwakeStart;
+    public bool BasicTimer;
 }

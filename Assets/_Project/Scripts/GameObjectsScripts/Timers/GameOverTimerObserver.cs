@@ -1,5 +1,6 @@
 ﻿using System;
 using GameObjectsScripts.Timers;
+using UnityEngine;
 
 public class GameOverTimerObserver
 {
@@ -28,11 +29,13 @@ public class GameOverTimerObserver
 
     public void StartGameOverTimer()
     {
+        Debug.Log($"<color=red>Game over timer was started</color>");
         _timer.Start();
     }
 
     public void StopGameOverTimer()
     {
+        Debug.Log($"<color=blue>Game over timer was stopped</color>");
         _timer.Stop();
         _timer.Reset();
     }
