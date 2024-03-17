@@ -195,11 +195,11 @@ namespace GameObjectsScripts.Timers
             UpdateTimerView?.Invoke(IndicatorValue);
         }
 
-        public void UpdateDuration(float value)
+        public void UpdateTimerDuration(float value)
         {
             _duration = value;
         }
-        public void UpdateCurrentTime(float indicatorValue)
+        public void UpdateTimerCurrentTime(float indicatorValue)
         {
             _currentTime = indicatorValue * _duration;
         }

@@ -8,10 +8,12 @@ public class TimersData
 {
     public List<TimerData> Timers;
     public float MoodIndicatorValue;
+    public double CurrentWorldTimeInSeconds;
     public TimersData(List<TimerData> timersData)
     {
         Timers = timersData;
         MoodIndicatorValue = 1;
+        CurrentWorldTimeInSeconds = 0;
     }
 
     public void Clear()
@@ -23,9 +25,4 @@ public class TimersData
     {
         return Timers.FirstOrDefault(x => x.Type == type);
     }
-
-    /*public bool HasAnyActiveBasicTimers()
-    {
-        return Timers.Any(x => x.Active && x.BasicTimer);
-    }*/
 }

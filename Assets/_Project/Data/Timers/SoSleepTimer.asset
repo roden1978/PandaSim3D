@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SoSleepTimer
   m_EditorClassIdentifier: 
   _type: 3
-  _duration: 1
+  _duration: 10
   _timerPrefab: {fileID: 2802259814680247830, guid: c4332236121bde2449194c630d70f830,
     type: 3}
   _timerColor: {r: 0, g: 0.823679, b: 1, a: 1}

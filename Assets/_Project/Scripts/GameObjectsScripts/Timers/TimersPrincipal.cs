@@ -20,6 +20,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     [Header("Debug")] [ReadOnly] [SerializeField]
     private List<TimerDebugInfo> _debugTimers;
 
+    private DateTime _timeOrigin;
     private readonly TimerSet _timerSet = new();
     private readonly Dictionary<TimerType, TimerView> _timerViewSet = new();
     private MoodIndicator _moodIndicator;
@@ -31,7 +32,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private SaveGameTimerObserver _saveGameTimerObserver;
     private IPersistentProgress _persistentProgress;
     private GameOverDialog _gameOverDialog;
-    
+
     private bool _isGameOverTimerStarted;
 
     [Inject]
@@ -42,7 +43,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         _saveLoadService = saveLoadService;
         _dialogManager = dialogManager;
         _persistentProgress = persistentProgress;
-
+        _timeOrigin = new DateTime(1970, 1, 1);
         foreach (SoTimer soTimer in _set.SoCommonTimers)
         {
             Timer timer = soTimer.Type == TimerType.Sleep
@@ -50,7 +51,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
                 : new Timer(soTimer, new SimpleRevert());
 
             _timerSet.AddTimer(timer);
-            
+
             _debugTimers.Add(new TimerDebugInfo
                 {
                     Name = timer.TimerType.ToString(),
@@ -58,10 +59,17 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
                 }
             );
 
+            if (soTimer.Type == TimerType.Mood)
+            {
+                _moodIndicator = new MoodIndicator(_timerSet, saveLoadService, _timeOrigin);
+                _moodIndicator.UpdateIndicatorValue += OnMoodIndicatorUpdateValue;
+                InstantiateMoodIndicatorView();
+            }
+
             switch (soTimer.Type)
             {
                 case TimerType.GameOver:
-                    _gameOverTimerObserver = new GameOverTimerObserver(timer);
+                    _gameOverTimerObserver = new GameOverTimerObserver(timer, _moodIndicator, _timeOrigin);
                     _gameOverTimerObserver.EndGameOverTimer += OnEndGameOverTimer;
                     break;
                 case TimerType.Save:
@@ -73,10 +81,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             }
         }
 
-        _moodIndicator = new MoodIndicator(_timerSet, saveLoadService);
-        _moodIndicator.UpdateIndicatorValue += OnMoodIndicatorUpdateValue;
-        InstantiateMoodIndicatorView();
         _saveLoadStorage.RegisterInSaveLoadRepositories(_moodIndicator);
+        _saveLoadStorage.RegisterInSaveLoadRepositories(_gameOverTimerObserver);
     }
 
     public void Initialize()
@@ -89,7 +95,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     private void OnMoodIndicatorUpdateValue(float value)
     {
         //Debug.Log($"<color=green>Mood indicator value changed: {value} game over timer started: {_isGameOverTimerStarted}</color>");
-        
+
         switch (value)
         {
             case <= 0 when false == _isGameOverTimerStarted:
@@ -140,7 +146,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         }
     }
 
-    private void ResetGameOverTimer() => 
+    private void ResetGameOverTimer() =>
         _gameOverTimerObserver.ResetGameOverTimer();
 
     private void MoodIndicatorReset()
@@ -156,6 +162,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             _gameOverDialog.GameWasContinue -= OnGameWasContinue;
         SaveProgress();
     }
+
     private void SaveProgress()
     {
         _saveLoadService.SaveProgress();
@@ -171,13 +178,13 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
     {
         foreach (Timer timer in _timerSet.Where(x => x.IndicatorValue > 0 & x.HasRole(TimerRoles.StopToSleep)))
         {
-            if(value)
+            if (value)
                 timer.Start();
             else
                 timer.Stop();
         }
-        
-        if(value & _moodIndicator.MoodIndicatorValue <= 0)
+
+        if (value & _moodIndicator.MoodIndicatorValue <= 0)
             _gameOverTimerObserver.StartGameOverTimer();
         else
             _gameOverTimerObserver.StopGameOverTimer();
@@ -197,7 +204,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
 
         if (_gameOverDialog is not null)
             _gameOverDialog.GameWasContinue -= OnGameWasContinue;
-        
+
         _saveGameTimerObserver.Dispose();
     }
 
@@ -227,7 +234,7 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
             }
             else
             {
-                timer.UpdateDuration(soTimer.Duration);
+                timer.UpdateTimerDuration(soTimer.Duration);
                 _debugTimers.FirstOrDefault(x => x.Name == timer.TimerType.ToString())!.Duration = soTimer.Duration;
             }
 
@@ -287,8 +294,8 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         if (playerProgress.PlayerState.FirstStartGame) return;
         string roomName = CurrentSceneName();
         AddTimersView(roomName);
-        UpdateTimersProgress(playerProgress);
-
+        var value = CalculateSecondsLastGameSave(playerProgress.TimersData.CurrentWorldTimeInSeconds);
+        UpdateTimersProgress(playerProgress, value);
         if (playerProgress.PlayerState.GameOver)
         {
             StopAllTimers();
@@ -296,29 +303,56 @@ public class TimersPrincipal : MonoBehaviour, ISavedProgress, IInitializable
         }
     }
 
+    private double CalculateSecondsLastGameSave(double seconds)
+    {
+        var result = DateTime.Now.Subtract(_timeOrigin).TotalSeconds - seconds;
+        Debug.Log($"<color=red>Seconds count {result} </color>");
+        return result;
+    }
+
     private static string CurrentSceneName()
     {
         return SceneManager.GetActiveScene().name;
     }
 
-    private void UpdateTimersProgress(PlayerProgress playerProgress)
+    private void UpdateTimersProgress(PlayerProgress playerProgress, double timeDelta)
     {
-        foreach (Timer timer in _timerSet)
+        foreach (Timer timer in _timerSet.Where(x =>
+                     x.HasRole(TimerRoles.Rewardable) ||
+                     x.HasRole(TimerRoles.AwakeStart))
+                )
         {
             TimerData timerData = playerProgress.TimersData.Timers
                 .FirstOrDefault(x => x.Type == timer.TimerType);
 
             if (timerData is not null)
-                timer.UpdateTimerState(timerData);
+            {
+                timer.UpdateTimerState(
+                    UpdateTimerData(timerData, timeDelta)
+                );
 
-            if (timer.Active)
-                timer.Start();
-            
+                if (timer.Active)
+                    timer.Start();
+            }
         }
+    }
+
+    private TimerData UpdateTimerData(TimerData timerData, double timeDelta)
+    {
+        double pastTime = timerData.CurrentTime - timeDelta;
+        
+        if (pastTime <= 0)
+            timerData.CurrentTime = 0;
+        else
+            timerData.CurrentTime = (float)pastTime;
+
+        return timerData;
     }
 
     public void SaveProgress(PlayerProgress playerProgress)
     {
+        playerProgress.TimersData.CurrentWorldTimeInSeconds =
+            DateTime.Now.Subtract(_timeOrigin).TotalSeconds;
         playerProgress.TimersData.Timers.Clear();
         foreach (Timer timer in _timerSet)
         {

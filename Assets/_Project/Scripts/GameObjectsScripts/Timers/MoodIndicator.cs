@@ -6,18 +6,21 @@ using Zenject;
 
 public class MoodIndicator : ISavedProgress, IInitializable
 {
+    private const int MoodScale = 10; //10 minutes mood timer scale
     public event Action<float> UpdateIndicatorValue;
     public float MoodIndicatorValue => _indicatorValue;
     private readonly TimerSet _timers;
     private readonly ISaveLoadService _saveLoadService;
     private float _indicatorValue = 1;
     private readonly Timer _moodTimer;
+    private readonly DateTime _timeOrigin;
 
-    public MoodIndicator(TimerSet timers, ISaveLoadService saveLoadService)
+    public MoodIndicator(TimerSet timers, ISaveLoadService saveLoadService, DateTime timeOrigin)
     {
         _timers = timers;
         _moodTimer = timers.First(x => x.TimerType == TimerType.Mood);
         _saveLoadService = saveLoadService;
+        _timeOrigin = timeOrigin;
     }
 
     public void Initialize()
@@ -61,8 +64,8 @@ public class MoodIndicator : ISavedProgress, IInitializable
 
         if (count <= 0 & _indicatorValue > 0)
         {
-            _moodTimer.UpdateDuration(_indicatorValue * TimeUtils.OneMinute);
-            _moodTimer.UpdateCurrentTime(_indicatorValue);
+            _moodTimer.UpdateTimerDuration(_indicatorValue * TimeUtils.OneMinute * MoodScale);
+            _moodTimer.UpdateTimerCurrentTime(_indicatorValue);
             _moodTimer.Start();
             _saveLoadService.SaveProgress();
         }
@@ -116,17 +119,43 @@ public class MoodIndicator : ISavedProgress, IInitializable
     public void LoadProgress(PlayerProgress playerProgress)
     {
         _indicatorValue = playerProgress.TimersData.MoodIndicatorValue;
-        TimerData moodTimerData = playerProgress.TimersData.GetTimerDataByTimerType(TimerType.Mood);
+        TimerData moodTimer = playerProgress.TimersData.GetTimerDataByTimerType(TimerType.Mood);
 
-        UpdateIndicatorValue?.Invoke(_indicatorValue);
-
-        if (_indicatorValue > 0 && moodTimerData is { Active: true })
+        if (_indicatorValue > 0 && moodTimer is {Active: true})
         {
-            _moodTimer.UpdateDuration(moodTimerData.IndicatorValue * TimeUtils.OneMinute);
-            _moodTimer.UpdateCurrentTime(moodTimerData.IndicatorValue);
+            float duration = CalculateDuration();
+            float currentTime = CalculateCurrentTime(duration);
+            double currentWorldTimeInSeconds = GetCurrentWorldTimeInSeconds(playerProgress);
+            double delta = CalculateSecondsLastGameSave(currentWorldTimeInSeconds);
+            float newCurrentTime = UpdateCurrentTime(currentTime, delta);
+            _indicatorValue = newCurrentTime / duration;
+            float newDuration = _indicatorValue * TimeUtils.OneMinute * MoodScale;
+            _moodTimer.UpdateTimerDuration(newDuration);
+            _moodTimer.UpdateTimerCurrentTime(newCurrentTime / newDuration);
             _moodTimer.Start();
         }
+
+        UpdateIndicatorValue?.Invoke(_indicatorValue);
     }
+
+    private float CalculateCurrentTime(float duration) =>
+        _indicatorValue * duration;
+
+    private float CalculateDuration() =>
+        _indicatorValue * TimeUtils.OneMinute * MoodScale;
+
+    private double GetCurrentWorldTimeInSeconds(PlayerProgress playerProgress) =>
+        playerProgress.TimersData.CurrentWorldTimeInSeconds;
+
+    private double CalculateSecondsLastGameSave(double seconds)
+    {
+        var result = DateTime.Now.Subtract(_timeOrigin).TotalSeconds - seconds;
+        Debug.Log($"<color=red>Seconds count {result} </color>");
+        return result;
+    }
+
+    private float UpdateCurrentTime(float currentTime, double timeDelta) =>
+        currentTime - timeDelta <= 0 ? 0 : (float)(currentTime - timeDelta);
 
     public void SaveProgress(PlayerProgress playerProgress)
     {

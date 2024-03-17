@@ -1,4 +1,6 @@
-﻿public enum TimerType
+﻿using System;
+
+public enum TimerType
 {
     None = 0,
     Mood = 1,

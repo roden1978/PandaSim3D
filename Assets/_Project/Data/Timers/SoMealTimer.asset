@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SoMealTimer
   m_EditorClassIdentifier: 
   _type: 2
-  _duration: 0.3
+  _duration: 3
   _timerPrefab: {fileID: 2802259814680247830, guid: 55b3f2207ed414a43b2d5585fda4e833,
     type: 3}
   _timerColor: {r: 0, g: 1, b: 0.125, a: 1}
