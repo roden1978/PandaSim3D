@@ -27,7 +27,7 @@ MonoBehaviour:
     Position: {x: 2.11, y: 0.032, z: -2.56}
   - Id: Room_bd3b9a36-8850-4409-a746-2b1676f3defa
     GameObjectsTypeId: 12
-    Position: {x: 2.59, y: 0, z: 0.71}
+    Position: {x: 2.51, y: 0, z: 0.71}
   - Id: Room_8f7b069c-cb67-4922-bf8c-d10cc8cb9da4
     GameObjectsTypeId: 8
     Position: {x: 0, y: 0, z: 0}
@@ -46,7 +46,7 @@ MonoBehaviour:
   StuffSpawnData:
   - Id: Room_bff4310f-b9c0-41a2-ab51-1b25eab4f345
     StuffSpecies: 4
-    Position: {x: 2.59, y: 1.27, z: 0.62}
+    Position: {x: 2.51, y: 1.27, z: 0.62}
   - Id: Room_2877e53d-6b8a-4791-99fa-d391c14fa662
     StuffSpecies: 3
     Position: {x: 0, y: 2, z: 0}

@@ -146,7 +146,7 @@ PrefabInstance:
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.59
+      value: 2.51
       objectReference: {fileID: 0}
     - target: {fileID: 9009522805927261094, guid: 7af5d2812c9f27e489a8c50d1b3b20c9,
         type: 3}
@@ -253,7 +253,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97ad50bc73f490c909c31a37edb90fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  View: {fileID: 0}
   _anchorPointTransform: {fileID: 1572286135473845372}
 --- !u!4 &3764960546049072021 stripped
 Transform:
