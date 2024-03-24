@@ -771,6 +771,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WinterRoom
       objectReference: {fileID: 0}
+    - target: {fileID: 4083174362795452025, guid: 27848966a5f70cb40b0e8aac3460e70a,
+        type: 3}
+      propertyPath: Id
+      value: WinterRoom_fb3f951d-a147-4165-a20a-9114805542ad
+      objectReference: {fileID: 0}
     - target: {fileID: 4855115237302743619, guid: 27848966a5f70cb40b0e8aac3460e70a,
         type: 3}
       propertyPath: m_LocalPosition.x

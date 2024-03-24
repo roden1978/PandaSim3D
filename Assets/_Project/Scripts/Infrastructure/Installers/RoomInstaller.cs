@@ -229,8 +229,10 @@ public class RoomInstaller : MonoInstaller
     private void BindPlayer()
     {
         GameObject prefab = _prefabsStorage.Get(typeof(Player));
-        Vector3 position = _levelStaticData.PlayerSpawnPoint;
-        Quaternion rotation = _levelStaticData.PlayerRotation;
+        EnvironmentObjectSpawnData playerSpawnData =
+            _levelStaticData.GetEnvironmentObjectSpawnDataByTypeId(GameObjectsTypeId.Player);
+        Vector3 position = playerSpawnData.Position;
+        Quaternion rotation = playerSpawnData.Rotation;
         
         GameObject player = Container.InstantiatePrefab(prefab, position, rotation, null);
         player.name = nameof(Player);

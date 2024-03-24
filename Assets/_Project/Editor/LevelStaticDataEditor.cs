@@ -26,7 +26,8 @@ namespace Editor
                 levelData.EnvironmentObjectsSpawnData = FindObjectsOfType<EnvironmentObjectMarker>()
                     .Select(x =>
                         new EnvironmentObjectSpawnData(x.GetComponent<UniqueId>().Id,
-                            x.EnvironmentObjectStaticData.GameObjectsTypeId, x.transform.position))
+                            x.EnvironmentObjectStaticData.GameObjectsTypeId, x.transform.position,
+                            x.transform.rotation))
                     .ToList();
 
                 levelData.StuffSpawnData = FindObjectsOfType<StuffSpawnerMarker>()
@@ -36,9 +37,6 @@ namespace Editor
                     .ToList();
 
                 levelData.LevelKey = SceneManager.GetActiveScene().name;
-                Transform playerSpawnPointTransform = FindObjectOfType<PlayerSpawnPoint>().transform;
-                levelData.PlayerSpawnPoint = playerSpawnPointTransform.position;
-                levelData.PlayerRotation = playerSpawnPointTransform.rotation;
             }
 
             if (GUILayout.Button("Clear level data"))
@@ -55,7 +53,7 @@ namespace Editor
                 TemporarySceneObject[] list = FindObjectsOfType<TemporarySceneObject>();
                 if (list.Length != 0)
                 {
-                    DestroyTemporary(list);
+                    DestroyTemporary(list.Select(x => x.gameObject));
                 }
 
                 if (levelData.EnvironmentObjectsSpawnData.Count == 0)
@@ -77,35 +75,43 @@ namespace Editor
                     TemporarySceneObject tmp = tmpGo.GetComponent<TemporarySceneObject>();
                     tmp.Id = objectSpawnData.Id;
                     tmp.Type = objectSpawnData.GameObjectsTypeId;
-                    Transform[] childs = tmpGo.gameObject.GetComponentsInChildren<Transform>(true);
+                    Transform[] componentsInChildren = tmpGo.gameObject.GetComponentsInChildren<Transform>(true);
 
-                    foreach (Transform transform in childs)
+                    foreach (Transform transform in componentsInChildren)
                     {
                         transform.gameObject.SetActive(true);
                     }
                 }
 
-                /*foreach (StuffSpawnData stuffSpawnData in levelData.StuffSpawnData)
+                foreach (StuffSpawnData stuffSpawnData in levelData.StuffSpawnData)
                 {
-                    var markerView = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    GameObject markerView = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                     markerView.transform.position = stuffSpawnData.Position;
                     markerView.transform.localScale = new Vector3(.3f, .3f, .3f);
-                    
-                    var stuffSceneMarker = FindObjectsOfType<UniqueId>()
-                        .First(m => m.GetComponent<UniqueId>().Id == stuffSpawnData.Id);
-
-                    markerView.transform.parent = stuffSceneMarker.transform.parent;
-
                     markerView.AddComponent<StuffTemporaryObject>();
-                    var tmpStuff = markerView.GetComponent<StuffTemporaryObject>();
+                    StuffTemporaryObject tmpStuff = markerView.GetComponent<StuffTemporaryObject>();
                     tmpStuff.Id = stuffSpawnData.Id;
                     tmpStuff.Species = stuffSpawnData.StuffSpecies;
-                }*/
+
+                    UniqueId stuffSceneMarker = FindObjectsOfType<UniqueId>()
+                        .First(m => m.Id == stuffSpawnData.Id);
+                    Transform parent = stuffSceneMarker.transform.parent;
+                    string parentUniqueId = parent.gameObject.GetComponent<UniqueId>().Id;
+
+                    TemporarySceneObject tmpParent = FindObjectsOfType<TemporarySceneObject>()
+                        .First(x => x.Id == parentUniqueId);
+
+                    markerView.name = stuffSceneMarker.name.ToUpper();
+                    markerView.transform.parent = tmpParent.transform;
+                }
             }
-            
+
             if (GUILayout.Button("Delete prefabs"))
             {
-                TemporarySceneObject[] list = FindObjectsOfType<TemporarySceneObject>();
+                TemporarySceneObject[] objList = FindObjectsOfType<TemporarySceneObject>();
+                StuffTemporaryObject[] stuffList = FindObjectsOfType<StuffTemporaryObject>();
+                IEnumerable<GameObject> list = objList.Select(x => x.gameObject)
+                    .Concat(stuffList.Select(x => x.gameObject));
                 DestroyTemporary(list);
             }
 
@@ -113,13 +119,13 @@ namespace Editor
             {
                 List<TemporarySceneObject> list = FindObjectsOfType<TemporarySceneObject>().ToList();
                 List<StuffTemporaryObject> listStuff = FindObjectsOfType<StuffTemporaryObject>().ToList();
-                
+
                 list.ForEach(x =>
                 {
                     EnvironmentObjectSpawnData marker =
                         levelData.EnvironmentObjectsSpawnData.First(z => z.GameObjectsTypeId == x.Type && z.Id == x.Id);
                     Debug.Log($"Marker: {marker.GameObjectsTypeId}");
-                    Vector3 tsoPosition = x.transform.position; 
+                    Vector3 tsoPosition = x.transform.position;
                     marker.Position = tsoPosition;
 
                     EnvironmentObjectMarker sceneMarker = FindObjectsOfType<EnvironmentObjectMarker>()
@@ -127,28 +133,24 @@ namespace Editor
 
                     sceneMarker.transform.position = tsoPosition;
                 });
-                
-                /*listStuff.ForEach(x =>
+
+                listStuff.ForEach(x =>
                 {
                     StuffSpawnData stuffMarker =
                         levelData.StuffSpawnData.First(z => z.StuffSpecies == x.Species && z.Id == x.Id);
                     Vector3 smPosition = x.transform.position;
                     stuffMarker.Position = smPosition;
-                    
-                    
-
-                    //stuffSceneMarker.transform.position = smPosition;
-                });*/
+                });
             }
 
             EditorUtility.SetDirty(target);
         }
 
-        private void DestroyTemporary(IEnumerable<TemporarySceneObject> temporarySceneObjects)
+        private void DestroyTemporary(IEnumerable<GameObject> list)
         {
-            foreach (TemporarySceneObject temporarySceneObject in temporarySceneObjects)
+            foreach (var gameObject in list)
             {
-                DestroyImmediate(temporarySceneObject.gameObject);
+                DestroyImmediate(gameObject);
             }
         }
     }

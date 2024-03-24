@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4765983296705373570}
-  - component: {fileID: -1094906233128805397}
+  - component: {fileID: 7034801625318207720}
+  - component: {fileID: 8224284680695545749}
   m_Layer: 0
   m_Name: PlayerSpawnPoint
   m_TagString: Untagged
@@ -33,7 +34,7 @@ Transform:
   - {fileID: 3152391216260609270}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1094906233128805397
+--- !u!114 &7034801625318207720
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,9 +43,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 6336045704708841382}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49c2b7c1e23df9b4d8d86037547bda6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 6ca559dc77034533b55a04948b5a07be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <EnvironmentObjectStaticData>k__BackingField: {fileID: 11400000, guid: 3362000448bcd5e458a317334424ec37,
+    type: 2}
+  Color: {r: 0, g: 1, b: 0.9917376, a: 128}
+  Size: 0.5
+--- !u!114 &8224284680695545749
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6336045704708841382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0cd5b4efff44a01bdd479e09f295edb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Id: Room_dce2bf5b-3109-4ab4-bb85-7b8257ed0540
 --- !u!1001 &8819034004753293914
 PrefabInstance:
   m_ObjectHideFlags: 0

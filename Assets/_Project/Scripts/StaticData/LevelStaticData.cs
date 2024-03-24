@@ -9,10 +9,6 @@ namespace StaticData
     {
         [CustomReadOnly]
         public string LevelKey;
-        [CustomReadOnly]
-        public Vector3 PlayerSpawnPoint;
-        [CustomReadOnly]
-        public Quaternion PlayerRotation;
         [ReadOnly]
         public List<EnvironmentObjectSpawnData> EnvironmentObjectsSpawnData;
         [ReadOnly]

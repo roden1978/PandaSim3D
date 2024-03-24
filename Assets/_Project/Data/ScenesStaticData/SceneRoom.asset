@@ -13,40 +13,51 @@ MonoBehaviour:
   m_Name: SceneRoom
   m_EditorClassIdentifier: 
   LevelKey: Room
-  PlayerSpawnPoint: {x: 0, y: 0, z: 0}
-  PlayerRotation: {x: -0, y: -0, z: -0, w: 1}
   EnvironmentObjectsSpawnData:
   - Id: Room_53988731-a68d-4734-8e6c-05742dda3268
     GameObjectsTypeId: 15
     Position: {x: 0, y: 0, z: -2.29}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_41038121-4a1a-4dd1-9369-37fed4b6bcbf
     GameObjectsTypeId: 16
     Position: {x: 0, y: 0, z: -2.29}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_3dce9684-8a2c-4ef6-b28a-17bb184113e7
     GameObjectsTypeId: 5
     Position: {x: 2.11, y: 0.032, z: -2.56}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_bd3b9a36-8850-4409-a746-2b1676f3defa
     GameObjectsTypeId: 12
-    Position: {x: 2.51, y: 0, z: 0.71}
+    Position: {x: 2.4, y: 0, z: 0.71}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
+  - Id: Room_dce2bf5b-3109-4ab4-bb85-7b8257ed0540
+    GameObjectsTypeId: 7
+    Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_8f7b069c-cb67-4922-bf8c-d10cc8cb9da4
     GameObjectsTypeId: 8
     Position: {x: 0, y: 0, z: 0}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_c7bd7ef3-e35d-4a47-963b-d9354aadb90e
     GameObjectsTypeId: 3
     Position: {x: -1.81, y: 0, z: -2.63}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_267af659-0b8c-46f9-8b44-e0c8349bce5b
     GameObjectsTypeId: 11
     Position: {x: -2.86, y: 0.1, z: 2.15}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_1765f022-6262-4b49-8f29-d6131e5c5e72
     GameObjectsTypeId: 6
     Position: {x: -3.6699998, y: 0.92, z: 2.15}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   - Id: Room_929486f1-6f5d-4fc7-8aad-7fbfb5d5d286
     GameObjectsTypeId: 4
     Position: {x: -2.86, y: 0, z: 2.15}
+    Rotation: {x: -0, y: -0, z: -0, w: 1}
   StuffSpawnData:
   - Id: Room_bff4310f-b9c0-41a2-ab51-1b25eab4f345
     StuffSpecies: 4
-    Position: {x: 2.51, y: 1.27, z: 0.62}
+    Position: {x: 2.4, y: 1.27, z: 0.62}
   - Id: Room_2877e53d-6b8a-4791-99fa-d391c14fa662
     StuffSpecies: 3
     Position: {x: 0, y: 2, z: 0}
